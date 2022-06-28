@@ -1,0 +1,23 @@
+package main
+
+var CutY float
+var RefX float
+
+func Fragment(position vec4, texCoord vec2, color vec4) vec4 {
+	xDiff := position.x - RefX
+	if position.y < CutY + xDiff/2 {
+		return mixFirstOverSecond(imageSrc0UnsafeAt(texCoord), imageSrc1UnsafeAt(texCoord))
+	} else {
+		return mixFirstOverSecond(imageSrc1UnsafeAt(texCoord), imageSrc0UnsafeAt(texCoord))
+	}
+}
+
+func mixFirstOverSecond(first vec4, second vec4) vec4 {
+	alpha := min(first.a + second.a*(1 - first.a), 1)
+	return vec4 (
+		min(first.r + second.r*(1 - first.a), alpha),
+		min(first.g + second.g*(1 - first.a), alpha),
+		min(first.b + second.b*(1 - first.a), alpha),
+		alpha,
+	)
+}
