@@ -1,6 +1,7 @@
 package game
 
 // std library imports
+import "io"
 import "math"
 import "image"
 import "strconv"
@@ -9,7 +10,6 @@ import "image/color"
 // external imports
 import "github.com/hajimehoshi/ebiten/v2"
 import "github.com/hajimehoshi/ebiten/v2/ebitenutil"
-import "github.com/hajimehoshi/ebiten/v2/audio/mp3"
 
 // internal imports
 import "bindless/src/misc"
@@ -45,13 +45,12 @@ type Game struct {
 
 func New(ctx *misc.Context) (*Game, error) {
 	game := &Game{
-		background: background.New(),
 		context: ctx,
 		logicalScreen: ebiten.NewImage(640, 360),
 		scene: nil,
 	}
-	err := game.loadScene(0)
-	return game, err
+
+	return game, nil
 }
 
 func (self *Game) Layout(w, h int) (int, int) {
@@ -61,6 +60,13 @@ func (self *Game) Layout(w, h int) (int, int) {
 }
 
 func (self *Game) Update() error {
+	// first scene load when asset loading is done
+	if !misc.IsLoadingDone() { return nil }
+	if self.background == nil {
+		self.background = background.New()
+		return self.loadScene(0)
+	}
+
 	// sound update
 	sound.Update()
 
@@ -131,8 +137,14 @@ func (self *Game) Update() error {
 }
 
 func (self *Game) Draw(screen *ebiten.Image) {
+	if self.background == nil {
+		screen.Clear()
+		ebitenutil.DebugPrint(screen, "loading game assets, please wait...")
+		return
+	}
+
 	// draw background and scene to the logical screen
-	self.logicalScreen.Clear()
+	//self.logicalScreen.Clear() // no need, background already draws this
 	self.background.Draw(self.logicalScreen)
 	self.scene.Draw(self.logicalScreen)
 
@@ -285,7 +297,7 @@ func (self *Game) loadScene(id int) error {
 	return nil
 }
 
-func cfgLevelSound(stream *mp3.Stream) {
+func cfgLevelSound(stream io.ReadSeeker) {
 	sound.SetBGMFadeSpeed(0.05) // use fast sound transitions
 	sound.RequestBGM(stream)
 	if stream == sound.ObsessiveMechanics {

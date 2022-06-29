@@ -1,14 +1,18 @@
 package sound
-// import "log"
+//import "log"
 // import "time"
+
+import "io"
+import "io/ioutil"
+import "bytes"
 import "embed"
 import "math/rand"
 
 import "github.com/hajimehoshi/ebiten/v2/audio"
 import "github.com/hajimehoshi/ebiten/v2/audio/mp3"
 
-var ObsessiveMechanics *mp3.Stream
-var MagneticCityMemories *mp3.Stream
+var ObsessiveMechanics io.ReadSeeker
+var MagneticCityMemories io.ReadSeeker
 var obsessiveShortLoop bool = false
 
 // to play sfx, use sound.PlaySfx(sound.SfxNav)
@@ -22,63 +26,59 @@ var bgmMaxVol float64 = 0.7
 var bgmVolume float64 = 0
 var bgmFadeTarget float64
 var bgmFadeSpeed float64 = 0.002
-var bgmNextStream *mp3.Stream
+var bgmNextStream io.ReadSeeker
 
 var ctx *audio.Context
 var bgmPlayer *audio.Player
 var bgmLooper *Looper
-var activeStream *mp3.Stream
+var activeStream io.ReadSeeker
+
+const rawAudioLoad = false // when true, 40MB of bgm are loaded as []byte
 
 func Load(filesys *embed.FS) error {
 	ctx = audio.NewContext(44100)
 	bgmLooper = NewLooper(nil, 0, 0)
 
 	folder := "assets/audio/"
-	file, err := filesys.Open(folder + "obsessive_mechanics.mp3")
-	if err != nil { return err }
-	ObsessiveMechanics, err = mp3.DecodeWithSampleRate(44100, file)
-	if err != nil { return err }
+	if rawAudioLoad {
+		bgmBytes, err := loadAudioBytes(filesys, folder + "obsessive_mechanics.mp3")
+		if err != nil { return err }
+		ObsessiveMechanics = bytes.NewReader(bgmBytes)
 
-	file, err = filesys.Open(folder + "magnetic_city_memories.mp3")
-	if err != nil { return err }
-	MagneticCityMemories, err = mp3.DecodeWithSampleRate(44100, file)
-	if err != nil { return err }
+		bgmBytes, err  = loadAudioBytes(filesys, folder + "magnetic_city_memories.mp3")
+		if err != nil { return err }
+		MagneticCityMemories = bytes.NewReader(bgmBytes)
+	} else {
+		file, err := filesys.Open(folder + "obsessive_mechanics.mp3")
+		if err != nil { return err }
+		ObsessiveMechanics, err = mp3.DecodeWithSampleRate(44100, file)
+		if err != nil { return err }
+
+		file, err = filesys.Open(folder + "magnetic_city_memories.mp3")
+		if err != nil { return err }
+		MagneticCityMemories, err = mp3.DecodeWithSampleRate(44100, file)
+		if err != nil { return err }
+	}
 
 	// load sfx
 	folder += "sfx/"
-	file, err = filesys.Open(folder + "nav.mp3")
+	sfxBytes, err := loadAudioBytes(filesys, folder + "nav.mp3")
 	if err != nil { return err }
-	sfx, err := mp3.DecodeWithSampleRate(44100, file)
-	if err != nil { return err }
-	SfxNav, err = ctx.NewPlayer(sfx)
-	if err != nil { return err }
-
-	sfx, err = mp3.DecodeWithSampleRate(44100, file)
-	if err != nil { return err }
-	SfxLoudNav, err = ctx.NewPlayer(sfx)
-	if err != nil { return err }
+	SfxNav = ctx.NewPlayerFromBytes(sfxBytes)
+	SfxLoudNav = ctx.NewPlayerFromBytes(sfxBytes)
 	SfxLoudNav.SetVolume(0.5)
 
-	file, err = filesys.Open(folder + "nope.mp3")
+	sfxBytes, err = loadAudioBytes(filesys, folder + "nope.mp3")
 	if err != nil { return err }
-	sfx, err = mp3.DecodeWithSampleRate(44100, file)
-	if err != nil { return err }
-	SfxNope, err = ctx.NewPlayer(sfx)
-	if err != nil { return err }
+	SfxNope = ctx.NewPlayerFromBytes(sfxBytes)
 
-	file, err = filesys.Open(folder + "ability.mp3")
+	sfxBytes, err = loadAudioBytes(filesys, folder + "ability.mp3")
 	if err != nil { return err }
-	sfx, err = mp3.DecodeWithSampleRate(44100, file)
-	if err != nil { return err }
-	SfxAbility, err = ctx.NewPlayer(sfx)
-	if err != nil { return err }
+	SfxAbility = ctx.NewPlayerFromBytes(sfxBytes)
 
-	file, err = filesys.Open(folder + "click.mp3")
+	sfxBytes, err = loadAudioBytes(filesys, folder + "click.mp3")
 	if err != nil { return err }
-	sfx, err = mp3.DecodeWithSampleRate(44100, file)
-	if err != nil { return err }
-	SfxClick, err = ctx.NewPlayer(sfx)
-	if err != nil { return err }
+	SfxClick = ctx.NewPlayerFromBytes(sfxBytes)
 
 	return nil
 }
@@ -150,7 +150,7 @@ func msToByte(ms int) int64 {
 	return nearest - fract
 }
 
-func RequestBGM(stream *mp3.Stream) {
+func RequestBGM(stream io.ReadSeeker) {
 	if activeStream == stream && bgmFadeTarget != 0 { return }
 	bgmFadeTarget = 0
 	bgmNextStream = stream
@@ -165,11 +165,10 @@ func RequestFadeOut() {
 }
 
 func PlaySFX(sfxPlayer *audio.Player) {
-	err := sfxPlayer.Rewind()
-	if err != nil { panic(err) }
 	if sfxPlayer == SfxNav {
 		sfxPlayer.SetVolume(0.34 + rand.Float64()/16.0)
 	}
+	sfxPlayer.Rewind()
 	sfxPlayer.Play()
 }
 
@@ -187,4 +186,13 @@ func cfgObsessiveLoop() {
 	} else {
 		bgmLooper.ChangeLoop(msToByte(29091), msToByte(101814 + 500))
 	}
+}
+
+func loadAudioBytes(filesys *embed.FS, filename string) ([]byte, error) {
+	file, err := filesys.Open(filename)
+	if err != nil { return nil, err }
+	stream, err := mp3.DecodeWithSampleRate(44100, file)
+	if err != nil { return nil, err }
+	audioBytes, err := ioutil.ReadAll(stream)
+	return audioBytes, err
 }

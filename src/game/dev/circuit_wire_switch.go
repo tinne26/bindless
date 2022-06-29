@@ -58,13 +58,13 @@ func (self *WireSwitch) Draw(screen *ebiten.Image) {
 }
 
 var pxImg *ebiten.Image
+var pxImgNeutral *ebiten.Image
 func drawWireEnd(screen *ebiten.Image, x, y int, conn WireConn) {
 	if pxImg == nil {
 		pxImg = ebiten.NewImage(1, 1)
 		pxImg.Fill(color.White)
 	}
 	opts := &ebiten.DrawImageOptions{}
-	opts.ColorM.ScaleWithColor(palette.CircuitShadow)
 
 	x += 8 // move from tile coord to wire rect coord
 	y += 4
@@ -73,20 +73,29 @@ func drawWireEnd(screen *ebiten.Image, x, y int, conn WireConn) {
 	switch conn {
 	case ConnNE:
 		x += 14
-		screen.Set(x + 0, y + 1, palette.PolarityNeutral)
-		screen.Set(x + 2, y + 0, palette.PolarityNeutral)
+		opts.GeoM.Translate(float64(x), float64(y + 1))
+		opts.ColorM.ScaleWithColor(palette.PolarityNeutral)
+		screen.DrawImage(pxImg, opts)
+		opts.GeoM.Translate(2, -1)
+		screen.DrawImage(pxImg, opts)
 
-		opts.GeoM.Translate(float64(x), float64(y))
+		opts.GeoM.Translate(-2, 0)
+		opts.ColorM.ScaleWithColor(palette.CircuitShadow)
 		screen.DrawImage(pxImg, opts)
 		opts.GeoM.Translate(1, 1)
 		screen.DrawImage(pxImg, opts)
-		opts.GeoM.Translate(1, -1)
+		opts.GeoM.Translate(2, -1)
 		screen.DrawImage(pxImg, opts)
 	case ConnNW:
 		x += 1
-		screen.Set(x + 0, y + 0, palette.PolarityNeutral)
-		screen.Set(x + 2, y + 1, palette.PolarityNeutral)
-		opts.GeoM.Translate(float64(x - 1), float64(y))
+		opts.GeoM.Translate(float64(x), float64(y))
+		opts.ColorM.ScaleWithColor(palette.PolarityNeutral)
+		screen.DrawImage(pxImg, opts)
+		opts.GeoM.Translate(2, 1)
+		screen.DrawImage(pxImg, opts)
+
+		opts.GeoM.Translate(-3, -1)
+		opts.ColorM.ScaleWithColor(palette.CircuitShadow)
 		screen.DrawImage(pxImg, opts)
 		opts.GeoM.Translate(2, 1)
 		screen.DrawImage(pxImg, opts)
@@ -95,9 +104,14 @@ func drawWireEnd(screen *ebiten.Image, x, y int, conn WireConn) {
 	case ConnSE:
 		x += 15
 		y += 7
-		screen.Set(x + 0, y + 0, palette.PolarityNeutral)
-		screen.Set(x + 2, y + 1, palette.PolarityNeutral)
-		opts.GeoM.Translate(float64(x - 1), float64(y))
+		opts.GeoM.Translate(float64(x), float64(y))
+		opts.ColorM.ScaleWithColor(palette.PolarityNeutral)
+		screen.DrawImage(pxImg, opts)
+		opts.GeoM.Translate(2, 1)
+		screen.DrawImage(pxImg, opts)
+
+		opts.GeoM.Translate(-3, -1)
+		opts.ColorM.ScaleWithColor(palette.CircuitShadow)
 		screen.DrawImage(pxImg, opts)
 		opts.GeoM.Translate(1, -1)
 		screen.DrawImage(pxImg, opts)
@@ -107,9 +121,14 @@ func drawWireEnd(screen *ebiten.Image, x, y int, conn WireConn) {
 		screen.DrawImage(pxImg, opts)
 	case ConnSW:
 		y += 7
-		screen.Set(x + 0, y + 1, palette.PolarityNeutral)
-		screen.Set(x + 2, y + 0, palette.PolarityNeutral)
-		opts.GeoM.Translate(float64(x + 1), float64(y + 1))
+		opts.GeoM.Translate(float64(x), float64(y + 1))
+		opts.ColorM.ScaleWithColor(palette.PolarityNeutral)
+		screen.DrawImage(pxImg, opts)
+		opts.GeoM.Translate(2, -1)
+		screen.DrawImage(pxImg, opts)
+
+		opts.GeoM.Translate(-1, 1)
+		opts.ColorM.ScaleWithColor(palette.CircuitShadow)
 		screen.DrawImage(pxImg, opts)
 		opts.GeoM.Translate(-1, -1)
 		screen.DrawImage(pxImg, opts)

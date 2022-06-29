@@ -1,26 +1,11 @@
 package sound
+
 //import "log"
 import "io"
 import "sync"
+import "bytes"
 
 import "github.com/hajimehoshi/ebiten/v2/audio/mp3"
-
-// an audio looper has a base structure, and then a copy that's instanced
-// from that structure, and when it ends it resets itself.
-// the read implementation is:
-// while bytesLeft > 0
-// 	bytes, err := readCurrentPart(maxBytes)
-//    if err != nil { return err }
-//    bytesLeft -= len(bytes)
-// MultiLoop
-// struct:
-// > stream *mp3.Stream
-// > position int
-// > structure []loops
-// > parts []loops
-// > currentPart int
-//    >> where loops have: startPosition int, loopBackId int, repeatsLeft int
-// Methods, besides Read and Seek... SetStructure(), etc.
 
 type Loop struct {
 	StartPosition int64
@@ -29,7 +14,7 @@ type Loop struct {
 }
 
 type Looper struct {
-	stream *mp3.Stream
+	stream io.ReadSeeker
 	mutex sync.Mutex
 	position int64
 	loopStart int64
@@ -37,7 +22,7 @@ type Looper struct {
 	loopEnd int64
 }
 
-func NewLooper(stream *mp3.Stream, loopStart int64, loopEnd int64) *Looper {
+func NewLooper(stream io.ReadSeeker, loopStart int64, loopEnd int64) *Looper {
 	return &Looper {
 		stream: stream,
 		loopStart: loopStart,
@@ -99,11 +84,24 @@ func (self *Looper) lockedSeek(offset int64, whence int) (int64, error) {
 	switch whence {
 	case io.SeekStart:   startOffset = offset
 	case io.SeekCurrent: startOffset = self.position + offset
-	case io.SeekEnd:     startOffset = self.stream.Length() + offset
+	case io.SeekEnd:
+		switch stream := self.stream.(type) {
+		case *bytes.Reader:
+			startOffset = int64(stream.Len()) + offset
+		case *mp3.Stream:
+			startOffset = stream.Length() + offset
+		// case *ogg.Stream:
+		// 	startOffset = stream.Length() + offset
+		default:
+			startOffset = self.activeLoopEnd + offset
+		}
 	}
+
+	whence = io.SeekStart
 	if startOffset > self.activeLoopEnd {
-		//return 0, fmt.Errorf("can't seek beyond loopEnd")
-		//log.Printf("loop skip with whence = %d", whence)
+		offset = self.loopStart
+	} else if startOffset < 0 {
+		offset = 0
 	}
 
 	var err error
@@ -111,7 +109,7 @@ func (self *Looper) lockedSeek(offset int64, whence int) (int64, error) {
 	return self.position, err
 }
 
-func (self *Looper) Reset(stream *mp3.Stream, loopStart int64, loopEnd int64) {
+func (self *Looper) Reset(stream io.ReadSeeker, loopStart int64, loopEnd int64) {
 	self.mutex.Lock()
 	defer self.mutex.Unlock()
 

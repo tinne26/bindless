@@ -62,7 +62,7 @@ func (self *Title) Update(logCursorX, logCursorY int) error {
 	// detect mouse clicks to go to the next scene if enough ticks have passed
 	if self.exitFadeout == 0 && self.tickCount > untilSubText && misc.MousePressed() {
 		self.exitFadeout += 1
-		sound.PlaySFX(sound.SfxClick)
+		sound.PlaySFX(sound.SfxAbility)
 	}
 
 	// if performing exit fadeout, increase the counter
