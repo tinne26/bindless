@@ -49,7 +49,7 @@ type Level struct {
 	simUpdateCount int
 	abilityExecCues []AbilityExecCue
 	pendingRewires []*dev.WireSwitch
-	pressingEsc bool
+	pressingRestart bool
 
 	leftClickPressed bool
 	offscreen *ebiten.Image
@@ -87,17 +87,17 @@ func New(ctx *misc.Context, key levelKey) (*Level, error) {
 		tick: cycleTicks,
 		offscreen: ebiten.NewImage(640, 360),
 		renderer: renderer,
-		pressingEsc: ebiten.IsKeyPressed(ebiten.KeyEscape),
+		pressingRestart: misc.SkipKeyPressed(),
 	}, nil
 }
 
 func (self *Level) Status() sceneitf.Status {
-	pressingEsc := ebiten.IsKeyPressed(ebiten.KeyEscape)
-	if !pressingEsc { self.pressingEsc = false }
+	pressingRestart := misc.SkipKeyPressed()
+	if !pressingRestart { self.pressingRestart = false }
 
 	if self.fade == fadeOut {
 		if self.opacity == 0 { return sceneitf.IsOver }
-	} else if pressingEsc && !self.pressingEsc {
+	} else if pressingRestart && !self.pressingRestart {
 		sound.PlaySFX(sound.SfxNope)
 		return sceneitf.Restart
 	}
@@ -401,7 +401,7 @@ func (self *Level) DrawHiRes(screen *ebiten.Image, zoomLevel float64) {
 			text = "Disabling MSP security layer..."
 		}
 	} else if self.floatMagnetCount == 0 {
-		text = "(press ESC to restart the level)"
+		text = "(press ESC or TAB to restart the level)"
 	} else if self.key == CleanerTestDock {
 		if self.abilities.Dock > 0 {
 			if self.abilities.Selected != 1 {
@@ -419,7 +419,7 @@ func (self *Level) DrawHiRes(screen *ebiten.Image, zoomLevel float64) {
 			}
 		}
 	} else if self.key == CleanerTestReal {
-		text = "(press ESC to restart the level when you get locked)"
+		text = "(press ESC or TAB to restart the level when you get locked)"
 	} else if self.key == SwitchTest {
 		if self.abilities.Switch > 0 {
 			if self.abilities.Selected != 3 {

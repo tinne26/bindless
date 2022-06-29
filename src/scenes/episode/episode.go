@@ -34,7 +34,7 @@ type Episode struct {
 	writer *typewriter.Writer
 	opacity uint8
 	fade fadeType // fadeIn, fadeNone, fadeOut
-	escPressed bool
+	skipPressed bool
 }
 
 func New(ctx *misc.Context, key episodeKey) (*Episode, error) {
@@ -48,10 +48,11 @@ func New(ctx *misc.Context, key episodeKey) (*Episode, error) {
 }
 
 func (self *Episode) Update(logCursorX, logCursorY int) error {
-	if !ebiten.IsKeyPressed(ebiten.KeyEscape) {
-		self.escPressed = false
-	} else if !self.escPressed {
-		self.escPressed = true
+
+	if !misc.SkipKeyPressed() {
+		self.skipPressed = false
+	} else if !self.skipPressed {
+		self.skipPressed = true
 		if self.writer.ReachedEnd() {
 			sound.PlaySFX(sound.SfxNope)
 		} else {

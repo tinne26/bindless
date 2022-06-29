@@ -22,3 +22,7 @@ func ScaledFontSize(size float64, zoomLevel float64) int {
 func MousePressed() bool {
 	return ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft)
 }
+
+func SkipKeyPressed() bool {
+	return ebiten.IsKeyPressed(ebiten.KeyEscape) || ebiten.IsKeyPressed(ebiten.KeyTab)
+}
