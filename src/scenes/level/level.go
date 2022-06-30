@@ -287,7 +287,7 @@ func (self *Level) Update(logCursorX, logCursorY int) error {
 			circuit, hasCircuit := self.circuits.Get(col, row)
 			if hasCircuit {
 				wireSwitch, isSwitch := circuit.(*dev.WireSwitch)
-				if isSwitch { // && wireSwitch.CanSwitch() <- I accidentally had this o_o
+				if isSwitch && wireSwitch.CanSwitch() {
 					self.abilityActiveHint = graphics.HudRewire
 					if newClick {
 						abilityUsed = true
