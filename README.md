@@ -20,3 +20,12 @@ Additional controls:
 
 ## Licenses
 Code is licensed under the MIT License. Assets are licensed as described in the readme from the [assets folder](https://github.com/tinne26/bindless/tree/main/assets).
+
+## TODO
+I'd like to...
+- Add a more fully fledged ¿optional? tutorial stage after the preamble, explaining magnetism and giving some tips to solve levels.
+- Make different pixel art wireframe scenes for story sections, at least a couple more.
+- Figure out what's the problem with audio loops and Ebitengine streams.
+- Add two extra levels at the end instead of brushing it away with text.
+- Better management of window size / fullscreen on desktop, or explicitly mention F to fullscreen.
+- Spanish and catalan translations.
