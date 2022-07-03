@@ -2,7 +2,7 @@ package dev
 
 import "math/rand"
 
-import "bindless/src/game/iso"
+import "github.com/tinne26/bindless/src/game/iso"
 
 // Movement for magnets is quite tricky. They may move in four directions,
 // but we have to prioritize closer sources of magnetism. There can be

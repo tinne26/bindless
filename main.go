@@ -12,11 +12,11 @@ import "runtime/pprof"
 import "github.com/hajimehoshi/ebiten/v2"
 
 // internal imports
-import "bindless/src/misc"
-import "bindless/src/game"
-import "bindless/src/art/graphics"
-import "bindless/src/shaders"
-import "bindless/src/sound"
+import "github.com/tinne26/bindless/src/misc"
+import "github.com/tinne26/bindless/src/game"
+import "github.com/tinne26/bindless/src/art/graphics"
+import "github.com/tinne26/bindless/src/shaders"
+import "github.com/tinne26/bindless/src/sound"
 
 //go:embed assets/*
 var assetsFS embed.FS
@@ -54,12 +54,10 @@ func main() {
 	// configure window and run the game
 	// ebiten.SetWindowIcon(...)
 	ebiten.SetCursorShape(ebiten.CursorShapeCrosshair)
-	//ebiten.SetWindowResizingMode(ebiten.WindowResizingModeOnlyFullscreenEnabled)
-	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
+	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeOnlyFullscreenEnabled)
 	ebiten.SetWindowTitle("Bindless")
 	ebiten.SetWindowSize(640, 360)
 	ebiten.SetScreenClearedEveryFrame(false)
-	//ebiten.SetFPSMode(ebiten.FPSModeVsyncOffMaximum)
 
 	var file *os.File
 	if profile {

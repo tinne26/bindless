@@ -2,8 +2,8 @@ package dev
 
 import "github.com/hajimehoshi/ebiten/v2"
 
-import "bindless/src/game/iso"
-import "bindless/src/art/graphics"
+import "github.com/tinne26/bindless/src/game/iso"
+import "github.com/tinne26/bindless/src/art/graphics"
 
 type WinPoint struct {
 	Col, Row int16

@@ -12,14 +12,14 @@ import "github.com/hajimehoshi/ebiten/v2"
 import "github.com/hajimehoshi/ebiten/v2/ebitenutil"
 
 // internal imports
-import "bindless/src/misc"
-import "bindless/src/misc/background"
-import "bindless/src/game/sceneitf"
-import "bindless/src/scenes/title"
-import "bindless/src/scenes/text"
-import "bindless/src/scenes/episode"
-import "bindless/src/scenes/level"
-import "bindless/src/sound"
+import "github.com/tinne26/bindless/src/misc"
+import "github.com/tinne26/bindless/src/misc/background"
+import "github.com/tinne26/bindless/src/game/sceneitf"
+import "github.com/tinne26/bindless/src/scenes/title"
+import "github.com/tinne26/bindless/src/scenes/text"
+import "github.com/tinne26/bindless/src/scenes/episode"
+import "github.com/tinne26/bindless/src/scenes/level"
+import "github.com/tinne26/bindless/src/sound"
 
 const numScenes = 21
 

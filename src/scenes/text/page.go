@@ -4,10 +4,10 @@ import "image"
 
 import "github.com/hajimehoshi/ebiten/v2"
 
-import "bindless/src/misc"
-import "bindless/src/misc/typewriter"
-import "bindless/src/game/sceneitf"
-import "bindless/src/sound"
+import "github.com/tinne26/bindless/src/misc"
+import "github.com/tinne26/bindless/src/misc/typewriter"
+import "github.com/tinne26/bindless/src/game/sceneitf"
+import "github.com/tinne26/bindless/src/sound"
 
 type fadeType uint8
 const (

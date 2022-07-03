@@ -1,7 +1,7 @@
 package graphics
 
 import "embed"
-import "bindless/src/misc"
+import "github.com/tinne26/bindless/src/misc"
 
 // loads most of the graphical assets of the game so they are
 // directly available from package-level variables as ebiten images.

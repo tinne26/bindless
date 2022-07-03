@@ -1,7 +1,7 @@
 package level
 
-import "bindless/src/game/iso"
-import "bindless/src/game/dev"
+import "github.com/tinne26/bindless/src/game/iso"
+import "github.com/tinne26/bindless/src/game/dev"
 
 // hardcoded game levels, veeeery raw
 

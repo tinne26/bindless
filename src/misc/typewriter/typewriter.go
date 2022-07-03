@@ -8,8 +8,8 @@ import "github.com/hajimehoshi/ebiten/v2"
 import "golang.org/x/image/math/fixed"
 import "github.com/tinne26/etxt"
 
-import "bindless/src/misc"
-import "bindless/src/sound"
+import "github.com/tinne26/bindless/src/misc"
+import "github.com/tinne26/bindless/src/sound"
 
 const waitStd = 3
 const intermittentCycleTicks = 120 // should be even

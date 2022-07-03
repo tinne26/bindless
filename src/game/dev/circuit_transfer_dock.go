@@ -2,9 +2,9 @@ package dev
 
 import "github.com/hajimehoshi/ebiten/v2"
 
-import "bindless/src/game/iso"
-import "bindless/src/art/graphics"
-import "bindless/src/art/palette"
+import "github.com/tinne26/bindless/src/game/iso"
+import "github.com/tinne26/bindless/src/art/graphics"
+import "github.com/tinne26/bindless/src/art/palette"
 
 type TransferDock struct {
 	X, Y int

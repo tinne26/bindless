@@ -10,9 +10,9 @@ import "github.com/hajimehoshi/ebiten/v2"
 import "github.com/tinne26/etxt"
 import "github.com/tinne26/etxt/esizer"
 
-import "bindless/src/misc"
-import "bindless/src/game/sceneitf"
-import "bindless/src/sound"
+import "github.com/tinne26/bindless/src/misc"
+import "github.com/tinne26/bindless/src/game/sceneitf"
+import "github.com/tinne26/bindless/src/sound"
 
 type Title struct {
 	renderer *etxt.Renderer

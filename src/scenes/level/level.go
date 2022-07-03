@@ -7,12 +7,12 @@ import "sort"
 import "github.com/hajimehoshi/ebiten/v2"
 import "github.com/tinne26/etxt"
 
-import "bindless/src/misc"
-import "bindless/src/game/iso"
-import "bindless/src/game/dev"
-import "bindless/src/game/sceneitf"
-import "bindless/src/art/graphics"
-import "bindless/src/sound"
+import "github.com/tinne26/bindless/src/misc"
+import "github.com/tinne26/bindless/src/game/iso"
+import "github.com/tinne26/bindless/src/game/dev"
+import "github.com/tinne26/bindless/src/game/sceneitf"
+import "github.com/tinne26/bindless/src/art/graphics"
+import "github.com/tinne26/bindless/src/sound"
 
 type fadeType uint8
 const (

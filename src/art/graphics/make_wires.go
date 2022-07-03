@@ -5,7 +5,7 @@ import "image/color"
 
 import "github.com/hajimehoshi/ebiten/v2"
 
-import "bindless/src/art/palette"
+import "github.com/tinne26/bindless/src/art/palette"
 
 // couldn't you just create some nice images? no...
 func loadWires() {

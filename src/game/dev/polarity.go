@@ -2,7 +2,7 @@ package dev
 
 import "image/color"
 
-import "bindless/src/art/palette"
+import "github.com/tinne26/bindless/src/art/palette"
 
 type PolarityType uint8
 const (

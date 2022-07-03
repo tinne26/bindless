@@ -4,7 +4,7 @@ import "image"
 
 import "github.com/hajimehoshi/ebiten/v2"
 
-import "bindless/src/shaders"
+import "github.com/tinne26/bindless/src/shaders"
 
 type FallingMagnet struct {
 	inSpectre bool

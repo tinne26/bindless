@@ -7,8 +7,8 @@ import "math/rand"
 import "github.com/hajimehoshi/ebiten/v2"
 
 // internal imports
-import "bindless/src/art/graphics"
-import "bindless/src/art/palette"
+import "github.com/tinne26/bindless/src/art/graphics"
+import "github.com/tinne26/bindless/src/art/palette"
 
 type backDecoration struct {
 	x int16
