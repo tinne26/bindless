@@ -6,9 +6,18 @@ import "github.com/tinne26/bindless/src/art/graphics"
 import "github.com/tinne26/bindless/src/art/palette"
 import "github.com/tinne26/bindless/src/game/iso"
 
-
+var twoPxImg *ebiten.Image
+var surfaceOffscreen *ebiten.Image
 func surface2img(surface iso.Map[struct{}]) *ebiten.Image {
-	img := ebiten.NewImage(640, 360)
+	if twoPxImg == nil {
+		twoPxImg = ebiten.NewImage(1, 2)
+		twoPxImg.Fill(palette.TileBottom)
+	}
+	if surfaceOffscreen == nil {
+		surfaceOffscreen = ebiten.NewImage(640, 360)
+	} else {
+		surfaceOffscreen.Clear()
+	}
 
 	surface.Each(
 		func(col, row int16, _ struct{}) {
@@ -17,7 +26,7 @@ func surface2img(surface iso.Map[struct{}]) *ebiten.Image {
 			opts := &ebiten.DrawImageOptions{}
 			opts.GeoM.Translate(float64(x), float64(y))
 			opts.ColorM.ScaleWithColor(palette.SampleTileColor())
-			img.DrawImage(graphics.TileMask, opts)
+			surfaceOffscreen.DrawImage(graphics.TileMask, opts)
 
 			// to check for bottom borders to draw, we follow this logic:
 			// - if tile at col-1 doesn't exist, draw main left part
@@ -31,29 +40,30 @@ func surface2img(surface iso.Map[struct{}]) *ebiten.Image {
 			opts.ColorM.Reset()
 			opts.GeoM.Translate(0, 10)
 			if !prevColOccupied {
-				img.DrawImage(graphics.TileBottomLeft, opts)
+				surfaceOffscreen.DrawImage(graphics.TileBottomLeft, opts)
 			}
 			if !nextRowOccupied {
 				opts.GeoM.Translate(18, 0)
-				img.DrawImage(graphics.TileBottomRight, opts)
+				surfaceOffscreen.DrawImage(graphics.TileBottomRight, opts)
 			}
 
+			opts.GeoM.Reset()
 			_, hasTileBelow := surface.Get(col - 1, row + 1)
 			if !hasTileBelow {
 				if prevColOccupied && !nextRowOccupied {
-					img.Set(x + 17, y + 18, palette.TileBottom)
-					img.Set(x + 17, y + 19, palette.TileBottom)
+					opts.GeoM.Translate(float64(x + 17), float64(y + 18))
+					surfaceOffscreen.DrawImage(twoPxImg, opts) // (17, 18-19)
 				} else if !prevColOccupied && !nextRowOccupied {
-					img.Set(x + 16, y + 18, palette.TileBottom)
-					img.Set(x + 16, y + 19, palette.TileBottom)
-					img.Set(x + 17, y + 18, palette.TileBottom)
-					img.Set(x + 17, y + 19, palette.TileBottom)
+					opts.GeoM.Translate(float64(x + 16), float64(y + 18))
+					surfaceOffscreen.DrawImage(twoPxImg, opts) // (16, 18-19)
+					opts.GeoM.Translate(1, 0)
+					surfaceOffscreen.DrawImage(twoPxImg, opts) // (17, 18-19)
 				} else {
-					img.Set(x + 16, y + 18, palette.TileBottom)
-					img.Set(x + 16, y + 19, palette.TileBottom)
+					opts.GeoM.Translate(float64(x + 16), float64(y + 18))
+					surfaceOffscreen.DrawImage(twoPxImg, opts) // (16, 18-19)
 				}
 			}
 		})
 
-	return img
+	return surfaceOffscreen
 }
