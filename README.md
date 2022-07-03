@@ -3,7 +3,7 @@ My entry for [Ebitengine's first game jam ever](https://itch.io/jam/ebiten-game-
 
 You can find static binaries in the releases, or if you have Golang 1.18+, run directly with:
 ```
-go run github.com/tinne26/bindless@latest
+go run github.com/tinne26/bindless@v0.0.1
 ```
 
 Bindless is a puzzle game with a dystopian background story. The puzzles are mostly simulations of levels with magnets, where you can poke and prod a few things in order to solve them.
