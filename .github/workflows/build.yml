@@ -8,10 +8,13 @@ jobs:
       - uses: actions/setup-go@v3
         with:
            go-version: 1.18
+      - name: install dependencies
+        shell: bash
+        run: sudo apt-get -y install libgl1-mesa-dev xorg-dev libasound2-dev
       - name: build linux static binary
         run: go build main.go
       - name: upload linux static binary
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v3
         with:
            name: bindless-linux-64bits
            path: main
