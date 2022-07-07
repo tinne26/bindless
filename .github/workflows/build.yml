@@ -27,7 +27,7 @@ jobs:
         with:
            go-version: 1.18
       - name: build windows static binary
-        run: go build -o bindless-windows-64bits.exe -ldflags -H=windowsgui main.go
+        run: go build -o bindless-windows-64bits.exe -ldflags="-H windowsgui -w" main.go
       - name: upload windows static binary
         uses: actions/upload-artifact@v3
         with:
