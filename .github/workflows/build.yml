@@ -31,7 +31,7 @@ jobs:
       - name: upload windows static binary
         uses: actions/upload-artifact@v3
         with:
-           name: bindless-windows-64bits
+           name: bindless-windows-64bits.exe
            path: bindless-windows-64bits.exe
   
    build-macos:
