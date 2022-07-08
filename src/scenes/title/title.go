@@ -35,8 +35,10 @@ func New(ctx *misc.Context) (*Title, error) {
 	// add a custom sizer to animate the title text and
 	// make the title renderer horizontally unquantized
 	renderer.SetSizer(&esizer.HorzPaddingSizer{})
-	renderer.SetQuantizationMode(etxt.QuantizeNone)
-	// TODO: ^ QuantizeVert should also work, this looks like a bug in etxt?
+	renderer.SetQuantizationMode(etxt.QuantizeVert)
+	// ^ either etxt.QuantizeVert or etxt.QuantizeNone will have
+	//   the same effect here. It's only important to avoid
+	//   horizontal quantization to ensure smooth animation.
 
 	// load fonts from context and set them
 	coda := ctx.FontLib.GetFont("Coda Regular")
