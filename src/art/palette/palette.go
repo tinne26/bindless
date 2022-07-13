@@ -22,3 +22,27 @@ func SampleTileColor() color.RGBA {
 		panic("bad rng, bad!")
 	}
 }
+
+func PreMultAlpha(clr color.RGBA) color.RGBA {
+	clr.R = uint8((uint16(clr.R)*uint16(clr.A))/255)
+	clr.G = uint8((uint16(clr.G)*uint16(clr.A))/255)
+	clr.B = uint8((uint16(clr.B)*uint16(clr.A))/255)
+	return clr
+}
+
+func Mix(over, back color.RGBA) color.RGBA {
+	alpha := (uint32(over.A)*255 + uint32(back.A)*uint32(255 - over.A))/255
+	if alpha > 255 { alpha = 255 }
+	mixResult := color.RGBA{
+		R: min((uint32(over.R)*255 + uint32(back.R)*uint32(255 - over.A))/255, alpha),
+		G: min((uint32(over.G)*255 + uint32(back.G)*uint32(255 - over.A))/255, alpha),
+		B: min((uint32(over.B)*255 + uint32(back.B)*uint32(255 - over.A))/255, alpha),
+		A: uint8(alpha),
+	}
+	return mixResult
+}
+
+func min(a, b uint32) uint8 {
+	if a <= b { return uint8(a) }
+	return uint8(b)
+}

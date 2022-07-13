@@ -235,10 +235,16 @@ func (self *Level) Update(logCursorX, logCursorY int) error {
 			})
 	}
 
-	// update circuits (only necessary for some edge cases)
+	// update circuits (necessary for color transitions)
 	self.circuits.Each(
 		func(_, _ int16, circuit circuitItf) {
 			circuit.Update()
+		})
+	// update magnets (necessary for color transitions)
+	self.magnets.Each(
+		func(_, _ int16, magnet dev.Magnet) {
+			floatMagnet, isFloatMagnet := magnet.(*dev.FloatMagnet)
+			if isFloatMagnet { floatMagnet.Update() }
 		})
 
 	// detect left-clicks for interaction
@@ -278,7 +284,7 @@ func (self *Level) Update(logCursorX, logCursorY int) error {
 							if hasTransferDock {
 								m, f := self.magnets.Get(transferDock.TargetCol, transferDock.TargetRow)
 								if !f { panic("no magnet placed at transfer dock!") }
-								_ = magnet.Dock(m.(*dev.FloatMagnet))
+								_ = magnet.Dock(dev.NewTransferProc(transferDock.Source, m.(*dev.FloatMagnet)))
 							} else { // hasPowerDock
 								_ = magnet.Dock(powerDock)
 							}

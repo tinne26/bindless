@@ -40,7 +40,7 @@ func (self *FallingMagnet) Draw(screen *ebiten.Image, _ float64) {
 	}
 
 	// draw magnet and apply shaders to cut the proper area
-	drawSmallMagnetAt(offscreenMagnetCanvas, 0, 0, self.polarity, self.inSpectre)
+	drawSmallMagnetAt(offscreenMagnetCanvas, 0, 0, self.polarity, self.polarity.Color(), self.inSpectre)
 	baseX, baseY := int(self.origX), int(self.y)
 	screenRegion := screen.SubImage(image.Rect(baseX, baseY, baseX + 16, baseY + 16)).(*ebiten.Image)
 	_, h := screenRegion.Size()

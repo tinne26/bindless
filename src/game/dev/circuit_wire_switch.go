@@ -13,24 +13,30 @@ type WireSwitch struct {
 	a, b WireConn
 	switched bool // if false, we go to a, if true, we go to b
 	pendingSwitch bool
-	polaritySrcFunc func() PolarityType
+	polaritySrcFunc func() (PolarityType, color.RGBA)
 }
 
-func NewWireSwitch(col, row int16, src, a, b WireConn, polaritySrcFunc func() PolarityType) *WireSwitch {
+func NewWireSwitch(col, row int16, src, a, b WireConn, polaritySrcFunc func() (PolarityType, color.RGBA)) *WireSwitch {
 	if a == b || src == a || src == b { panic("invalid wire connection") }
 	x, y := iso.TileCoords(col, row)
-	return &WireSwitch { x: x, y: y, src: src, a: a, b: b, switched: false, polaritySrcFunc: polaritySrcFunc }
+	return &WireSwitch {
+		x: x, y: y,
+		src: src,
+		a: a, b: b,
+		switched: false,
+		polaritySrcFunc: polaritySrcFunc,
+	}
 }
 
 func (self *WireSwitch) Update() {} // nothing for this type of circuit
 
-func (self *WireSwitch) OutA() PolarityType {
-	if self.switched { return PolarityNeutral }
+func (self *WireSwitch) OutA() (PolarityType, color.RGBA) {
+	if self.switched { return PolarityNeutral, PolarityNeutral.Color() }
 	return self.polaritySrcFunc()
 }
 
-func (self *WireSwitch) OutB() PolarityType {
-	if !self.switched { return PolarityNeutral }
+func (self *WireSwitch) OutB() (PolarityType, color.RGBA) {
+	if !self.switched { return PolarityNeutral, PolarityNeutral.Color() }
 	return self.polaritySrcFunc()
 }
 
@@ -50,11 +56,12 @@ func (self *WireSwitch) CanSwitch() bool {
 }
 
 func (self *WireSwitch) Draw(screen *ebiten.Image) {
+	_, clr := self.polaritySrcFunc()
 	if !self.switched {
-		drawWire2(screen, self.x, self.y, self.polaritySrcFunc(), self.src, self.a)
+		drawWire2(screen, self.x, self.y, clr, self.src, self.a)
 		drawWireEnd(screen, self.x, self.y, self.b)
 	} else {
-		drawWire2(screen, self.x, self.y, self.polaritySrcFunc(), self.src, self.b)
+		drawWire2(screen, self.x, self.y, clr, self.src, self.b)
 		drawWireEnd(screen, self.x, self.y, self.a)
 	}
 }

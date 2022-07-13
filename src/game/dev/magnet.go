@@ -1,12 +1,16 @@
 package dev
 
 import "image"
+import "image/color"
 import "math/rand"
 
 import "github.com/hajimehoshi/ebiten/v2"
 
 import "github.com/tinne26/bindless/src/game/iso"
 import "github.com/tinne26/bindless/src/art/graphics"
+import "github.com/tinne26/bindless/src/art/palette"
+
+// TODO: probably remove halo as soon as possible. pass polarity too then.
 
 type Magnet interface {
 	Polarized
@@ -30,6 +34,7 @@ const (
 	StMoveNW FloatMagnetState = 5
 	StMoveSE FloatMagnetState = 6
 	StMoveSW FloatMagnetState = 7
+	StCreate FloatMagnetState = 8 // TODO: implement for tutorials
 )
 
 type FloatMagnet struct {
@@ -46,6 +51,8 @@ type FloatMagnet struct {
 	sway float64 // between 0.0 and 0.2
 	nextSwayTarget float64
 	currentSimUpdate int
+	colorTransitionFrom color.RGBA
+	colorTransitionLeft uint16
 }
 
 func NewFloatMagnet(col, row int16, state FloatMagnetState, polarity PolarityType) *FloatMagnet {
@@ -101,6 +108,9 @@ func (self *FloatMagnet) Dock(dch dockChangeHandler) bool {
 }
 
 func (self *FloatMagnet) PreSetDockChangeHandler(dch dockChangeHandler) {
+	// This method is kind of a hack to put the game levels in the right
+	// state when a small magnet is predefined to start already docked
+	// in a power dock. Otherwise, undocking wouldn't work properly.
 	self.dockChangeHandler = dch
 }
 
@@ -138,6 +148,13 @@ func (self *FloatMagnet) Spectre() bool {
 	if !self.CanSpectre() { return false }
 	self.pendingSpectre = true
 	return true
+}
+
+const colorTransitionFrames = 36 // must be smaller than 59
+func (self *FloatMagnet) Update() {
+	if self.colorTransitionLeft > 0 {
+		self.colorTransitionLeft -= 1
+	}
 }
 
 func (self *FloatMagnet) StateSim(surface iso.Map[struct{}], floatTilePolarity PolarityType, simUpdateCount int) *FallingMagnet {
@@ -199,12 +216,12 @@ func (self *FloatMagnet) StateSim(surface iso.Map[struct{}], floatTilePolarity P
 		self.nextState = StDocked
 		if self.prevState == StDocking {
 			self.dockChangeHandler.OnDockChange(self)
-			_, isFloatMagnet := self.dockChangeHandler.(*FloatMagnet)
+			_, isFloatMagnet := self.dockChangeHandler.(TransferProc)
 			if isFloatMagnet {
+				self.colorTransitionFrom = self.Polarity().Color()
+				self.colorTransitionLeft = colorTransitionFrames
 				self.polarity = PolarityNeutral
 				self.dockChangeHandler = nil
-				// TODO: ^ I moved this line inside the if recently
-				//         in case something breaks
 			}
 		}
 	case StDocking:
@@ -364,6 +381,7 @@ func (self *FloatMagnet) Draw(screen *ebiten.Image, cycle float64) {
 	x, y, shadowY, bframe := self.currentDrawParams(cycle)
 
 	// draw shadow if necessary
+	clr := self.Polarity().Color()
 	if self.state != StDocked {
 		offset := 0
 		if !bframe { offset = 6 }
@@ -374,10 +392,18 @@ func (self *FloatMagnet) Draw(screen *ebiten.Image, cycle float64) {
 		opts.GeoM.Translate(float64(x + 5), float64(shadowY))
 		screen.DrawImage(shadow, opts)
 		opts.CompositeMode = ebiten.CompositeModeSourceOver
+	} else if self.colorTransitionLeft > 0 {
+		// fading to neutral case
+		clr = self.colorTransitionFrom
+		clr.A = uint8((self.colorTransitionLeft*255)/colorTransitionFrames)
+		clr = palette.PreMultAlpha(clr)
+		clr = palette.Mix(clr, palette.PolarityNeutral)
 	}
 
+	// if self.spectreSimsLeft > 0 { clr = some weird color }
+
 	if bframe && self.state >= StFloating { y += 1 }
-	drawSmallMagnetAt(screen, x, y, self.polarity, self.spectreSimsLeft > 0)
+	drawSmallMagnetAt(screen, x, y, self.Polarity(), clr, self.spectreSimsLeft > 0)
 }
 
 func (self *FloatMagnet) couldMoveDir(magnets iso.Map[Magnet], move FloatMagnetState) bool {
@@ -455,16 +481,16 @@ func (self *FloatMagnet) CreateRaising() *RaisingMagnet {
 	return &RaisingMagnet{ polarity: self.polarity, x: x, y: y }
 }
 
-func drawSmallMagnetAt(screen *ebiten.Image, x int, y int, polarity PolarityType, inSpectre bool) {
-	// TODO: handle inSpectre case
+func drawSmallMagnetAt(screen *ebiten.Image, x int, y int, polarity PolarityType, clr color.RGBA, inSpectre bool) {
 	opts := &ebiten.DrawImageOptions{}
 	opts.GeoM.Translate(float64(x), float64(y))
-	opts.ColorM.ScaleWithColor(polarity.Color())
+	opts.ColorM.ScaleWithColor(clr)
 	if polarity == PolarityNeutral {
 		screen.DrawImage(graphics.MagnetSmallFill, opts)
 	} else {
 		screen.DrawImage(graphics.MagnetSmallHalo, opts)
 	}
+	opts.ColorM.Reset()
 	screen.DrawImage(graphics.MagnetSmall, opts)
 }
 

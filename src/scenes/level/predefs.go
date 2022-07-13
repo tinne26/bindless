@@ -20,7 +20,7 @@ const (
 
 const cleanerTestDockCol  , cleanerTestDockRow   int16 = 19, 15
 const cleanerTestRewireCol, cleanerTestRewireRow int16 = 19, 16
-const cleanerTestRealCol  , cleanerTestRealRow   int16 = 19, 19
+const cleanerTestRealCol  , cleanerTestRealRow   int16 = 20, 19
 const researchLabDoorCol  , researchLabDoorRow   int16 = 18, 19
 const researchLabGuard1Col, researchLabGuard1Row int16 = 18, 19
 const researchLabGuard2Col, researchLabGuard2Row int16 = 18, 18
@@ -71,6 +71,11 @@ func makeLevelSurface(key levelKey) iso.Map[struct{}] {
 		surface.Set(col, row - 3, struct{}{})
 		surface.DeleteArea(col + 1, row + 2, 2, 2)
 		surface.Delete(col, row + 2)
+
+		surface.SetArea(col - 5, row, 2, 4, struct{}{})
+		surface.DeleteArea(col - 4, row - 1, 2, 2)
+		surface.Set(col - 6, row, struct{}{})
+		surface.DeleteArea(col - 5, row + 3, 2, 1)
 	case ResearchLabDoor:
 		col, row := researchLabDoorCol, researchLabDoorRow
 		surface.SetArea(col - 4, row - 4, 9, 9, struct{}{})
@@ -90,6 +95,7 @@ func makeLevelSurface(key levelKey) iso.Map[struct{}] {
 		surface.Set(col - 4, row + 5, struct{}{})
 		surface.SetArea(col + 5, row - 2, 2, 2, struct{}{})
 		surface.Set(col + 6, row - 3, struct{}{})
+		surface.DeleteArea(col + 2, row, 2, 1)
 	case ResearchLabGuard2:
 		col, row := researchLabGuard2Col, researchLabGuard2Row
 		surface.SetArea(col - 4, row - 3, 11, 9, struct{}{})
@@ -137,6 +143,9 @@ func makeLevelSurface(key levelKey) iso.Map[struct{}] {
 		surface.Set(col + 4, row - 1, struct{}{})
 		surface.Set(col + 2, row - 5, struct{}{})
 		surface.Set(col + 3, row - 6, struct{}{})
+
+		surface.Delete(col, row) // don't let Zyko cheat his way out
+		surface.Set(col + 1, row - 1, struct{}{})
 	case FinalDoor:
 		col, row := finalDoorCol, finalDoorRow
 		surface.SetArea(col - 3, row - 4, 8, 9, struct{}{})
@@ -282,12 +291,13 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 		c1, r1 := col, row
 		c2, r2 := col, row + 3
 		a, b := dev.NewTransferDockPair(c1, r1, c2, r2)
+		tsrc := a.Source
 		circuits.Set(c1, r1, a)
 		circuits.Set(c2, r2, b)
 
-		wire := dev.NewWire2(col, row + 1, dev.ConnNW, dev.ConnSE, dev.PolarityNeutral.AsFunc())
+		wire := dev.NewWire2(col, row + 1, dev.ConnNW, dev.ConnSE, tsrc.Output)
 		circuits.Set(col, row + 1, wire)
-		wire  = dev.NewWire2(col, row + 2, dev.ConnNW, dev.ConnSE, dev.PolarityNeutral.AsFunc())
+		wire  = dev.NewWire2(col, row + 2, dev.ConnNW, dev.ConnSE, tsrc.Output)
 		circuits.Set(col, row + 2, wire)
 
 		fm1 := dev.NewFloatMagnet(col, row, dev.StFloating, dev.PolarityPositive)
@@ -355,21 +365,21 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 		magnets.Set(col - 3, row + 1, fm1)
 		fm2 := dev.NewFloatMagnet(col - 3, row + 3, dev.StDocked, dev.PolarityPositive)
 		magnets.Set(col - 3, row + 3, fm2)
-		fm3 := dev.NewFloatMagnet(col - 3, row - 1, dev.StFloating, dev.PolarityPositive)
-		magnets.Set(col - 3, row - 1, fm3)
+		fm3 := dev.NewFloatMagnet(col - 6, row, dev.StFloating, dev.PolarityPositive)
+		magnets.Set(col - 6, row, fm3)
 		fm4 := dev.NewFloatMagnet(col - 1, row - 1, dev.StFloating, dev.PolarityNegative)
 		magnets.Set(col - 1, row - 1, fm4)
 		fm5 := dev.NewFloatMagnet(col + 2, row + 1, dev.StDocked, dev.PolarityNeutral)
 		magnets.Set(col + 2, row + 1, fm5)
-		fm6 := dev.NewFloatMagnet(col - 2, row - 1, dev.StDocked, dev.PolarityNeutral)
-		magnets.Set(col - 2, row - 1, fm6)
 
-		a, b := dev.NewTransferDockPair(col - 1, row - 1, col + 2, row + 1)
+		a, b := dev.NewTransferDockPair(col - 3, row + 1, col - 6, row)
+		ts1 := a.Source
+		circuits.Set(col - 3, row + 1, a)
+		circuits.Set(col - 6, row, b)
+		a, b = dev.NewTransferDockPair(col - 1, row - 1, col + 2, row + 1)
+		ts2 := a.Source
 		circuits.Set(col - 1, row - 1, a)
 		circuits.Set(col + 2, row + 1, b)
-		a, b = dev.NewTransferDockPair(col - 3, row + 1, col - 3, row - 1)
-		circuits.Set(col - 3, row + 1, a)
-		circuits.Set(col - 3, row - 1, b)
 
 		powDock1 := dev.NewPowerDock(col - 3, row + 3)
 		circuits.Set(col - 3, row + 3, powDock1)
@@ -387,16 +397,27 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 		sm5 := dev.NewStaticMagnet(col, row - 3, dev.PolarityNegative.AsFunc())
 		magnets.Set(col, row - 3, sm5)
 
-		// transfer dock pair wires
-		wire := dev.NewWire2(col - 3, row, dev.ConnNW, dev.ConnSE, dev.PolarityNeutral.AsFunc())
-		circuits.Set(col - 3, row, wire)
+		// main transfer dock pair wires
+		wire := dev.NewWire2(col - 5, row, dev.ConnSW, dev.ConnSE, ts1.Output)
+		circuits.Set(col - 5, row, wire)
+		wire = dev.NewWire2(col - 5, row + 1, dev.ConnNW, dev.ConnSE, ts1.Output)
+		circuits.Set(col - 5, row + 1, wire)
+		wire = dev.NewWire2(col - 5, row + 2, dev.ConnNW, dev.ConnNE, ts1.Output)
+		circuits.Set(col - 5, row + 2, wire)
+		wire = dev.NewWire2(col - 4, row + 2, dev.ConnSW, dev.ConnNE, ts1.Output)
+		circuits.Set(col - 4, row + 2, wire)
+		wire = dev.NewWire2(col - 3, row + 2, dev.ConnSW, dev.ConnNW, ts1.Output)
+		circuits.Set(col - 3, row + 2, wire)
 
-		wire = dev.NewWire2(col, row - 1, dev.ConnSW, dev.ConnNE, dev.PolarityNeutral.AsFunc())
+		// secondary transfer dock pair wires
+		wire = dev.NewWire2(col, row - 1, dev.ConnSW, dev.ConnNE, ts2.Output)
 		circuits.Set(col, row - 1, wire)
-		wire = dev.NewWire2(col + 1, row - 1, dev.ConnSW, dev.ConnNE, dev.PolarityNeutral.AsFunc())
+		wire = dev.NewWire2(col + 1, row - 1, dev.ConnSW, dev.ConnNE, ts2.Output)
 		circuits.Set(col + 1, row - 1, wire)
-		wire = dev.NewWire2(col + 2, row - 1, dev.ConnSW, dev.ConnSE, dev.PolarityNeutral.AsFunc())
+		wire = dev.NewWire2(col + 2, row - 1, dev.ConnSW, dev.ConnSE, ts2.Output)
 		circuits.Set(col + 2, row - 1, wire)
+		wire = dev.NewWire2(col + 2, row, dev.ConnNW, dev.ConnSE, ts2.Output)
+		circuits.Set(col + 2, row, wire)
 
 		// switch wires
 		wire = dev.NewWire2(col - 2, row + 3, dev.ConnSW, dev.ConnNW, powDock1.Output)
@@ -418,8 +439,6 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 		circuits.Set(col - 1, row - 2, wire)
 		wire = dev.NewWire2(col, row - 2, dev.ConnSW, dev.ConnNE, wSwitch.OutA)
 		circuits.Set(col, row - 2, wire)
-		wire = dev.NewWire2(col + 2, row, dev.ConnNW, dev.ConnSE, wSwitch.OutA)
-		circuits.Set(col + 2, row, wire)
 	case ResearchLabDoor:
 		col, row := researchLabDoorCol, researchLabDoorRow
 
@@ -528,11 +547,10 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 		magnets.Set(col + 2, row - 2, smTop)
 
 		a, b := dev.NewTransferDockPair(col + 1, row - 4, col + 3, row - 1)
+		tsrc := a.Source
 		circuits.Set(col + 1, row - 4, a)
 		circuits.Set(col + 3, row - 1, b)
 
-		fmDead := dev.NewFloatMagnet(col + 2, row, dev.StDocked, dev.PolarityNeutral)
-		magnets.Set(col + 2, row, fmDead)
 		fmTransA := dev.NewFloatMagnet(col + 3, row - 1, dev.StFloating, dev.PolarityPositive)
 		magnets.Set(col + 3, row - 1, fmTransA)
 		fmTransB := dev.NewFloatMagnet(col + 1, row - 4, dev.StDocked, dev.PolarityNeutral)
@@ -586,13 +604,13 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 		circuits.Set(col - 4, row - 2, wire)
 
 		// transfer wires
-		wire  = dev.NewWire2(col + 2, row - 4, dev.ConnSW, dev.ConnNE, dev.PolarityNeutral.AsFunc())
+		wire  = dev.NewWire2(col + 2, row - 4, dev.ConnSW, dev.ConnNE, tsrc.Output)
 		circuits.Set(col + 2, row - 4, wire)
-		wire  = dev.NewWire2(col + 3, row - 4, dev.ConnSW, dev.ConnSE, dev.PolarityNeutral.AsFunc())
+		wire  = dev.NewWire2(col + 3, row - 4, dev.ConnSW, dev.ConnSE, tsrc.Output)
 		circuits.Set(col + 3, row - 4, wire)
-		wire  = dev.NewWire2(col + 3, row - 3, dev.ConnNW, dev.ConnSE, dev.PolarityNeutral.AsFunc())
+		wire  = dev.NewWire2(col + 3, row - 3, dev.ConnNW, dev.ConnSE, tsrc.Output)
 		circuits.Set(col + 3, row - 3, wire)
-		wire  = dev.NewWire2(col + 3, row - 2, dev.ConnNW, dev.ConnSE, dev.PolarityNeutral.AsFunc())
+		wire  = dev.NewWire2(col + 3, row - 2, dev.ConnNW, dev.ConnSE, tsrc.Output)
 		circuits.Set(col + 3, row - 2, wire)
 
 		// NW dock wires
@@ -622,6 +640,7 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 		circuits.Set(col - 2, row - 2, wSwitchLeft)
 
 		a, b := dev.NewTransferDockPair(col + 2, row - 2, col + 6, row + 2)
+		tsrc := a.Source
 		circuits.Set(col + 2, row - 2, a)
 		circuits.Set(col + 6, row + 2, b)
 
@@ -708,19 +727,19 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 		circuits.Set(col + 5, row + 3, wire)
 
 		// transfer wires
-		wire  = dev.NewWire2(col + 2, row - 1, dev.ConnNW, dev.ConnNE, dev.PolarityNeutral.AsFunc())
+		wire  = dev.NewWire2(col + 2, row - 1, dev.ConnNW, dev.ConnNE, tsrc.Output)
 		circuits.Set(col + 2, row - 1, wire)
-		wire  = dev.NewWire2(col + 3, row - 1, dev.ConnSW, dev.ConnSE, dev.PolarityNeutral.AsFunc())
+		wire  = dev.NewWire2(col + 3, row - 1, dev.ConnSW, dev.ConnSE, tsrc.Output)
 		circuits.Set(col + 3, row - 1, wire)
-		wire  = dev.NewWire2(col + 3, row + 0, dev.ConnNW, dev.ConnNE, dev.PolarityNeutral.AsFunc())
+		wire  = dev.NewWire2(col + 3, row + 0, dev.ConnNW, dev.ConnNE, tsrc.Output)
 		circuits.Set(col + 3, row + 0, wire)
-		wire  = dev.NewWire2(col + 4, row + 0, dev.ConnSW, dev.ConnSE, dev.PolarityNeutral.AsFunc())
+		wire  = dev.NewWire2(col + 4, row + 0, dev.ConnSW, dev.ConnSE, tsrc.Output)
 		circuits.Set(col + 4, row + 0, wire)
-		wire  = dev.NewWire2(col + 4, row + 1, dev.ConnNW, dev.ConnSE, dev.PolarityNeutral.AsFunc())
+		wire  = dev.NewWire2(col + 4, row + 1, dev.ConnNW, dev.ConnSE, tsrc.Output)
 		circuits.Set(col + 4, row + 1, wire)
-		wire  = dev.NewWire2(col + 4, row + 2, dev.ConnNW, dev.ConnNE, dev.PolarityNeutral.AsFunc())
+		wire  = dev.NewWire2(col + 4, row + 2, dev.ConnNW, dev.ConnNE, tsrc.Output)
 		circuits.Set(col + 4, row + 2, wire)
-		wire  = dev.NewWire2(col + 5, row + 2, dev.ConnSW, dev.ConnNE, dev.PolarityNeutral.AsFunc())
+		wire  = dev.NewWire2(col + 5, row + 2, dev.ConnSW, dev.ConnNE, tsrc.Output)
 		circuits.Set(col + 5, row + 2, wire)
 	case SwitchTest:
 		col, row := switchTestCol, switchTestRow

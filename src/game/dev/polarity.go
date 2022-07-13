@@ -22,10 +22,10 @@ func (self PolarityType) Color() color.RGBA {
 	}
 }
 
-var polNeutralFunc  = func() PolarityType { return PolarityNeutral  }
-var polPositiveFunc = func() PolarityType { return PolarityPositive }
-var polNegativeFunc = func() PolarityType { return PolarityNegative }
-func (self PolarityType) AsFunc() func() PolarityType {
+var polNeutralFunc  = func() (PolarityType, color.RGBA) { return PolarityNeutral , palette.PolarityNeutral  }
+var polPositiveFunc = func() (PolarityType, color.RGBA) { return PolarityPositive, palette.PolarityPositive }
+var polNegativeFunc = func() (PolarityType, color.RGBA) { return PolarityNegative, palette.PolarityNegative }
+func (self PolarityType) AsFunc() func() (PolarityType, color.RGBA) {
 	switch self {
 	case PolarityNeutral : return polNeutralFunc
 	case PolarityPositive: return polPositiveFunc
