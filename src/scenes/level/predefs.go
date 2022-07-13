@@ -272,8 +272,8 @@ func makeLevelWinPoints(key levelKey) []*dev.WinPoint {
 	}
 }
 
-func makeLevelDevices(key levelKey) (iso.Map[drawable], iso.Map[dev.Magnet]) {
-	circuits := iso.NewMap[drawable]()
+func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
+	circuits := iso.NewMap[circuitItf]()
 	magnets := iso.NewMap[dev.Magnet]()
 
 	switch key {

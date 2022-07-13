@@ -21,6 +21,8 @@ func NewWire2(col, row int16, a, b WireConn, polaritySrcFunc func() PolarityType
 	return &Wire2 { x, y, a, b, polaritySrcFunc }
 }
 
+func (self *Wire2) Update() {} // nothing for this type of circuit
+
 func (self *Wire2) Draw(screen *ebiten.Image) {
 	drawWire2(screen, self.x, self.y, self.polaritySrcFunc(), self.a, self.b)
 }

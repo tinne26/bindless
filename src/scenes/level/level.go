@@ -25,8 +25,9 @@ type ydrawable interface {
 	LogicalY() int
 	Draw(screen *ebiten.Image, cycle float64) // cycle goes from [0..1) and restarts
 }
-type drawable interface {
+type circuitItf interface {
 	Draw(*ebiten.Image)
+	Update()
 }
 
 type Level struct {
@@ -45,7 +46,7 @@ type Level struct {
 	raisingMagnets []*dev.RaisingMagnet
 	floatMagnetCount int
 	winPoints []*dev.WinPoint
-	circuits iso.Map[drawable]
+	circuits iso.Map[circuitItf]
 	simUpdateCount int
 	abilityExecCues []AbilityExecCue
 	pendingRewires []*dev.WireSwitch
@@ -234,6 +235,12 @@ func (self *Level) Update(logCursorX, logCursorY int) error {
 			})
 	}
 
+	// update circuits (only necessary for some edge cases)
+	self.circuits.Each(
+		func(_, _ int16, circuit circuitItf) {
+			circuit.Update()
+		})
+
 	// detect left-clicks for interaction
 	leftClickPressed := misc.MousePressed()
 	newClick := false
@@ -339,7 +346,7 @@ func (self *Level) Draw(screen *ebiten.Image) {
 	self.offscreen.DrawImage(self.baseMapImg, nil)
 
 	// draw circuits
-	self.circuits.Each(func(_, _ int16, c drawable) { c.Draw(self.offscreen) })
+	self.circuits.Each(func(_, _ int16, c circuitItf) { c.Draw(self.offscreen) })
 	for _, winPoint := range self.winPoints { winPoint.Draw(self.offscreen) }
 
 	// TODO: draw floating tiles

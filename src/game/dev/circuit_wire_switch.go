@@ -22,6 +22,8 @@ func NewWireSwitch(col, row int16, src, a, b WireConn, polaritySrcFunc func() Po
 	return &WireSwitch { x: x, y: y, src: src, a: a, b: b, switched: false, polaritySrcFunc: polaritySrcFunc }
 }
 
+func (self *WireSwitch) Update() {} // nothing for this type of circuit
+
 func (self *WireSwitch) OutA() PolarityType {
 	if self.switched { return PolarityNeutral }
 	return self.polaritySrcFunc()

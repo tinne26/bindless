@@ -18,3 +18,7 @@ func (self *WinPoint) Draw(screen *ebiten.Image) {
 	opts.ColorM.ScaleWithColor(self.Polarity.Color())
 	screen.DrawImage(graphics.FieldShape, opts)
 }
+
+func (self *WinPoint) Update() {
+	// nothing yet, maybe some effect when triggered could be nice
+}

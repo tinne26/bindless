@@ -212,7 +212,11 @@ func (self *FloatMagnet) StateSim(surface iso.Map[struct{}], floatTilePolarity P
 	case StUndocking:
 		self.nextState = StFloating
 		if self.dockChangeHandler != nil { // notify power dock case
-			self.dockChangeHandler.OnDockChange(self)
+			powDock := self.dockChangeHandler.(*PowerDock)
+			powDock.OnDockChange(self)
+			if self.prevState == StDocking { // edge case of consecutive dock/undock
+				powDock.MarkEphemerousDock()
+			}
 			self.dockChangeHandler = nil
 		}
 	case StFloating:

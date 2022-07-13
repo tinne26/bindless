@@ -8,6 +8,7 @@ import "github.com/tinne26/bindless/src/art/graphics"
 type PowerDock struct {
 	x, y int
 	magnet *FloatMagnet
+	ephemerousDock uint8
 }
 
 func NewPowerDock(col, row int16) *PowerDock {
@@ -42,5 +43,18 @@ func (self *PowerDock) Draw(screen *ebiten.Image) {
 	if polarity != PolarityNeutral {
 		opts.ColorM.Scale(1, 1, 1, 0.6)
 		screen.DrawImage(graphics.DockFill, opts)
+	}
+}
+
+func (self *PowerDock) MarkEphemerousDock() {
+	self.ephemerousDock = 16
+}
+
+func (self *PowerDock) Update() {
+	if self.ephemerousDock > 0 {
+		self.ephemerousDock -= 1
+		if self.ephemerousDock == 0 {
+			self.magnet = nil
+		}
 	}
 }
