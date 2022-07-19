@@ -54,10 +54,11 @@ func main() {
 	// configure window and run the game
 	// ebiten.SetWindowIcon(...)
 	ebiten.SetCursorShape(ebiten.CursorShapeCrosshair)
-	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeOnlyFullscreenEnabled)
+	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 	ebiten.SetWindowTitle("Bindless")
 	ebiten.SetWindowSize(640, 360)
 	ebiten.SetScreenClearedEveryFrame(false)
+	ebiten.SetFullscreen(true)
 
 	var file *os.File
 	if profile {

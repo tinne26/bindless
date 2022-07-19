@@ -61,19 +61,19 @@ var episodesRawText = []string {
 	"\x0BMirko had been waiting in hidding for the last 6 hours. Marunka Machart, the Leadership member suspected of Joseph's disappearance, had left the place an hour ago.\x04\n" +
 	"\x0BIt was time to find what was inside that place.\n" +
 	"\x0BMirko approached silently and tried to sneak, but the attempt for stealth was futile. As soon as he jumped the fence, a guard automaton popped up from nowhere.\n" +
-	"\x0BDisastrously for Mirko, the guard didn't go right away for him, but retreated to report the breach first.\n" +
+	"\x0BDisastrously for Mirko, the guard didn't go right away after him, but retreated to report the breach first.\n" +
 	"\x0BAs soon as alarms went off, it turned again towards Mirko.\n" +
 	"\x0B\x09Mirko: \x01\x08Tsk.\x02\x03\x07\n" +
 	"\x0B\x08>>",
 	"\x08Marunka Machart's cottage, 14 July 3589\x07\x05\n" +
 	"\x0BMirko really struggled to disable the guard automaton, so there was no time to rest. Security would arrive soon.\x04\n" +
 	"\x0BThe main floor looked clear, so Mirko went directly to the basement. There, a high-security door was preventing access.\n" +
-	"\x0B\x09Mirko: \x01\x08Damn, this is \x0Ereally\x0C going to be a close call...\x02\x07\n" +
+	"\x0B\x09Mirko: \x01\x08Damn, this is \x0Ereally going to be\x0C a close call...\x02\x07\n" +
 	"\x09Mirko: \x01\x08\"Don't push it too hard\"..? Sorry, Jana.\x02\x07\n" +
 	"\x0B\x08>>",
 	"\x08Marunka Machart's basement, 14 July 3589\x07\x05\n" +
 	"\x0BThe interior was spacious. A man was sitting on a couch, reading a book. He immediately got up when he saw Mirko.\n" +
-	"\x0B\x09Man: \x01\x07Who..? Who are you?\x02\x04\n" +
+	"\x0B\x09Man: \x01\x07Who..? \x0EWho are you?\x0C\x02\x04\n" +
 	"\x0BBefore Mirko could respond, a woman came running from another room.\n" +
 	"\x0B\x09Woman: \x01\x07Did you come to rescue us?\x02\n" +
 	"\x0BHer eyes told him everything. High-profile members of Leadership abusing MSP units to turn people into slaves.. was no longer just a rumor.\n" +
