@@ -1,6 +1,4 @@
 package sound
-//import "log"
-// import "time"
 
 import "io"
 import "io/ioutil"
@@ -22,7 +20,9 @@ var SfxAbility *audio.Player
 var SfxNope *audio.Player
 var SfxClick *audio.Player
 
-var bgmMaxVol float64 = 0.7
+var sfxMaxVol float64 = 0.6
+var bgmMaxVol float64 = 0.5
+
 var bgmVolume float64 = 0
 var bgmFadeTarget float64
 var bgmFadeSpeed float64 = 0.002
@@ -66,7 +66,6 @@ func Load(filesys *embed.FS) error {
 	if err != nil { return err }
 	SfxNav = ctx.NewPlayerFromBytes(sfxBytes)
 	SfxLoudNav = ctx.NewPlayerFromBytes(sfxBytes)
-	SfxLoudNav.SetVolume(0.5)
 
 	sfxBytes, err = loadAudioBytes(filesys, folder + "nope.mp3")
 	if err != nil { return err }
@@ -140,7 +139,7 @@ func setupNextStream() {
 	bgmPlayer.Play()
 	bgmFadeTarget = bgmMaxVol
 	if activeStream == ObsessiveMechanics {
-		bgmFadeTarget -= 0.24 // fix for loudness
+		bgmFadeTarget -= 0.3 // fix for loudness
 	}
 }
 
@@ -166,7 +165,12 @@ func RequestFadeOut() {
 
 func PlaySFX(sfxPlayer *audio.Player) {
 	if sfxPlayer == SfxNav {
-		sfxPlayer.SetVolume(0.34 + rand.Float64()/16.0)
+		volume := 0.4 + rand.Float64()/16.0
+		sfxPlayer.SetVolume(volume*sfxMaxVol)
+	} else if sfxPlayer == SfxLoudNav {
+		sfxPlayer.SetVolume(0.6*sfxMaxVol)
+	} else {
+		sfxPlayer.SetVolume(sfxMaxVol)
 	}
 	sfxPlayer.Rewind()
 	sfxPlayer.Play()
