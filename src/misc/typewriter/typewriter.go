@@ -181,7 +181,8 @@ func (self *Writer) Draw(screen *ebiten.Image, fontSize int, bounds image.Rectan
 			}
 
 			// draw the word character by character (so we can apply shaking)
-			for _, codePoint := range word {
+			for charIndex, codePoint := range word {
+				if index + charIndex >= self.index { return }
 				if shakeIntensity > 0 {
 					preY := feed.Position.Y
 					vibr := fixed.Int26_6(rand.Intn(shakeIntensity))
@@ -209,7 +210,7 @@ func (self *Writer) Draw(screen *ebiten.Image, fontSize int, bounds image.Rectan
 
 func (self *Writer) nextWord(index int) string {
 	start := index
-	for index < self.index {
+	for index < len(self.text) {
 		if self.text[index] <= 32 { return self.text[start : index] }
 		index += 1
 	}
