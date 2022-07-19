@@ -139,7 +139,7 @@ func setupNextStream() {
 	bgmPlayer.Play()
 	bgmFadeTarget = bgmMaxVol
 	if activeStream == ObsessiveMechanics {
-		bgmFadeTarget -= 0.3 // fix for loudness
+		bgmFadeTarget -= 0.25 // fix for loudness
 	}
 }
 

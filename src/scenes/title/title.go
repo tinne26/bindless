@@ -13,6 +13,7 @@ import "github.com/tinne26/etxt/esizer"
 import "github.com/tinne26/bindless/src/misc"
 import "github.com/tinne26/bindless/src/game/sceneitf"
 import "github.com/tinne26/bindless/src/sound"
+import "github.com/tinne26/bindless/src/lang"
 
 type Title struct {
 	renderer *etxt.Renderer
@@ -21,8 +22,11 @@ type Title struct {
 	tickCount uint32
 	titlePadExpand bool
 	titleOpacity uint8
-	subOpacity uint8
-
+	optsOpacity uint8
+	mousePressed bool
+	skipKeyPressed bool
+	inLangSubmenu bool
+	optHoverIndex uint8
 	exitFadeout uint8
 }
 
@@ -55,16 +59,89 @@ func New(ctx *misc.Context) (*Title, error) {
 // constants related to text animations
 const baseTitleHorzFract = 560  // fixed.Int26_6 (divide by 64)
 const maxTitleHorzFract  = 1230 // fixed.Int26_6
-const untilSubText = 500
+const untilOptsText = 500
+const untilCanClick = 540
 const startUpPreWait = 80
+const optLogicalSeparation = 26
 
 func (self *Title) Update(logCursorX, logCursorY int) error {
 	const HorzPadWait = 60*6
 
-	// detect mouse clicks to go to the next scene if enough ticks have passed
-	if self.exitFadeout == 0 && self.tickCount > untilSubText && misc.MousePressed() {
-		self.exitFadeout += 1
-		sound.PlaySFX(sound.SfxAbility)
+	// update mouse interaction
+	if self.exitFadeout == 0 && self.tickCount > untilCanClick {
+		// detect hover position
+		hoverIndex := uint8(0)
+		if logCursorX > 270 && logCursorX < 640 - 270 {
+			startY := 177
+			for i := 0; i < 4; i++ {
+				y := startY + i*optLogicalSeparation
+				if logCursorY > y - 9 && logCursorY < y + 9 {
+					hoverIndex = uint8(i + 1)
+					break
+				}
+			}
+		}
+		if !self.inLangSubmenu && hoverIndex == 4 { hoverIndex = 0 }
+		if hoverIndex != self.optHoverIndex {
+			self.optHoverIndex = hoverIndex
+			if hoverIndex != 0 {
+				sound.PlaySFX(sound.SfxLoudNav)
+			}
+		}
+
+		// handle ESC/TAB key presses if in lang submenu to go back
+		skipKeyPressed := misc.SkipKeyPressed()
+		if !skipKeyPressed {
+			self.skipKeyPressed = false
+		} else if !self.skipKeyPressed {
+			self.skipKeyPressed = true
+			if self.inLangSubmenu {
+				self.inLangSubmenu = false
+				if self.optHoverIndex == 4 { self.optHoverIndex = 0 }
+				sound.PlaySFX(sound.SfxClick)
+			}
+		}
+
+		// detect mouse clicks
+		mousePressed := misc.MousePressed()
+		if !mousePressed {
+			self.mousePressed = false
+		} else if !self.mousePressed {
+			self.mousePressed = true
+			if self.inLangSubmenu {
+				switch self.optHoverIndex {
+				case 1: // english
+					lang.Set(lang.EN)
+					sound.PlaySFX(sound.SfxClick)
+					self.inLangSubmenu = false
+				case 2: // spanish
+					lang.Set(lang.ES)
+					sound.PlaySFX(sound.SfxClick)
+					self.inLangSubmenu = false
+				case 3: // catalan
+					lang.Set(lang.CA)
+					sound.PlaySFX(sound.SfxClick)
+					self.inLangSubmenu = false
+				case 4: // back
+					sound.PlaySFX(sound.SfxClick)
+					self.inLangSubmenu = false
+					self.optHoverIndex = 0
+				}
+			} else {
+				switch self.optHoverIndex {
+				case 1: // start game
+					sound.PlaySFX(sound.SfxAbility)
+					self.exitFadeout += 1
+					self.optHoverIndex = 0
+				case 2: // language
+					self.inLangSubmenu = true
+					sound.PlaySFX(sound.SfxClick)
+				case 3: // fullscreen switch
+					sound.PlaySFX(sound.SfxClick)
+					ebiten.SetFullscreen(!ebiten.IsFullscreen())
+				}
+			}
+		}
 	}
 
 	// if performing exit fadeout, increase the counter
@@ -81,8 +158,8 @@ func (self *Title) Update(logCursorX, logCursorY int) error {
 
 	// increase text opacities
 	if self.titleOpacity < 220 { self.titleOpacity += 1 }
-	if self.tickCount > untilSubText && self.subOpacity < 165 {
-		self.subOpacity += 1
+	if self.tickCount > untilOptsText && self.optsOpacity < 136 {
+		self.optsOpacity += 1
 	}
 
 	// temporary wait when title is fully extended or contracted
@@ -136,16 +213,46 @@ func (self *Title) DrawHiRes(screen *ebiten.Image, zoomLevel float64) {
 	y := bounds.Min.Y + height/2 - height/8
 	self.renderer.Draw("BINDLESS", x, y)
 
-	// draw subtext if enough time has passed
-	if self.tickCount >= untilSubText {
-		// adjust padding and size for the subText
-		sizer.SetHorzPadding(int(2*zoomLevel))
-		self.renderer.SetSizePx(misc.ScaledFontSize(10, zoomLevel))
+	// draw options if enough time has passed
+	if self.tickCount >= untilOptsText {
+		// adjust padding and size for the options
+		sizer.SetHorzPadding(int(3*zoomLevel))
+		self.renderer.SetSizePx(misc.ScaledFontSize(13, zoomLevel))
+		optsOpacity := self.adjustedOpacity(self.optsOpacity)
 
-		// set the color and draw
-		subOpacity := self.adjustedOpacity(self.subOpacity)
-		self.renderer.SetColor(color.RGBA{240, 240, 240, subOpacity})
-		self.renderer.Draw("left-click anywhere to start", x, y + int(32*zoomLevel))
+		// draw options
+		y += int(42*zoomLevel)
+		optSeparation := int(optLogicalSeparation*zoomLevel)
+		if self.inLangSubmenu {
+			self.setOptColor(1, optsOpacity)
+			self.renderer.Draw("English", x, y)
+			y += optSeparation
+			self.setOptColor(2, optsOpacity)
+			self.renderer.Draw("Español", x, y)
+			y += optSeparation
+			self.setOptColor(3, optsOpacity)
+			self.renderer.Draw("Català", x, y)
+			y += optSeparation
+			self.setOptColor(4, optsOpacity)
+			self.renderer.Draw("< " + lang.Tr("Back") + " >", x, y)
+		} else {
+			self.setOptColor(1, optsOpacity)
+			self.renderer.Draw(lang.Tr("Start Game"), x, y)
+			y += optSeparation
+			self.setOptColor(2, optsOpacity)
+			self.renderer.Draw(lang.Tr("Language"), x, y)
+			y += optSeparation
+			self.setOptColor(3, optsOpacity)
+			self.renderer.Draw(lang.Tr("Fullscreen"), x, y)
+		}
+	}
+}
+
+func (self *Title) setOptColor(index uint8, optsOpacity uint8) {
+	if index == self.optHoverIndex {
+		self.renderer.SetColor(color.RGBA{240, 240, 240, 255})
+	} else {
+		self.renderer.SetColor(color.RGBA{240, 240, 240, optsOpacity})
 	}
 }
 
