@@ -13,12 +13,12 @@ var ObsessiveMechanics io.ReadSeeker
 var MagneticCityMemories io.ReadSeeker
 var obsessiveShortLoop bool = false
 
-// to play sfx, use sound.PlaySfx(sound.SfxNav)
-var SfxNav *audio.Player
-var SfxLoudNav *audio.Player
-var SfxAbility *audio.Player
-var SfxNope *audio.Player
-var SfxClick *audio.Player
+// to play sfx, use sound.PlaySFX(sound.SfxNav)
+var SfxNav *SfxPlayer
+var SfxLoudNav *SfxPlayer // TODO: rename with SfxTileNav, SfxType and SfxNav
+var SfxAbility *SfxPlayer
+var SfxNope *SfxPlayer
+var SfxClick *SfxPlayer
 
 var sfxMaxVol float64 = 0.6
 var bgmMaxVol float64 = 0.5
@@ -64,25 +64,26 @@ func Load(filesys *embed.FS) error {
 	folder += "sfx/"
 	sfxBytes, err := loadAudioBytes(filesys, folder + "nav.mp3")
 	if err != nil { return err }
-	SfxNav = ctx.NewPlayerFromBytes(sfxBytes)
-	SfxLoudNav = ctx.NewPlayerFromBytes(sfxBytes)
+	SfxNav     = NewSfxPlayer(ctx, sfxBytes)
+	SfxLoudNav = NewSfxPlayer(ctx, sfxBytes)
 
 	sfxBytes, err = loadAudioBytes(filesys, folder + "nope.mp3")
 	if err != nil { return err }
-	SfxNope = ctx.NewPlayerFromBytes(sfxBytes)
+	SfxNope = NewSfxPlayer(ctx, sfxBytes)
 
 	sfxBytes, err = loadAudioBytes(filesys, folder + "ability.mp3")
 	if err != nil { return err }
-	SfxAbility = ctx.NewPlayerFromBytes(sfxBytes)
+	SfxAbility = NewSfxPlayer(ctx, sfxBytes)
 
 	sfxBytes, err = loadAudioBytes(filesys, folder + "click.mp3")
 	if err != nil { return err }
-	SfxClick = ctx.NewPlayerFromBytes(sfxBytes)
+	SfxClick = NewSfxPlayer(ctx, sfxBytes)
 
 	return nil
 }
 
 func Update() {
+	// bgm volume transitions
 	if bgmVolume < bgmFadeTarget {
 		bgmVolume += bgmFadeSpeed
 		if bgmVolume > bgmFadeTarget {
@@ -101,6 +102,13 @@ func Update() {
 	} else if bgmVolume == 0 && bgmNextStream != nil {
 		setupNextStream()
 	}
+
+	// sfx updates
+	SfxNav.Update()
+	SfxLoudNav.Update()
+	SfxAbility.Update()
+	SfxNope.Update()
+	SfxClick.Update()
 }
 
 func setupNextStream() {
@@ -163,17 +171,17 @@ func RequestFadeOut() {
 	bgmFadeTarget = 0
 }
 
-func PlaySFX(sfxPlayer *audio.Player) {
+func PlaySFX(sfxPlayer *SfxPlayer) {
+	var volume float64
 	if sfxPlayer == SfxNav {
-		volume := 0.4 + rand.Float64()/16.0
-		sfxPlayer.SetVolume(volume*sfxMaxVol)
+		volume  = 0.4 + rand.Float64()/16.0
+		volume *= sfxMaxVol
 	} else if sfxPlayer == SfxLoudNav {
-		sfxPlayer.SetVolume(0.76*sfxMaxVol)
+		volume = 0.76*sfxMaxVol
 	} else {
-		sfxPlayer.SetVolume(sfxMaxVol)
+		volume = sfxMaxVol
 	}
-	sfxPlayer.Rewind()
-	sfxPlayer.Play()
+	sfxPlayer.NewPlayWithVolume(volume)
 }
 
 func SetObssessiveShortLoop(active bool) {
