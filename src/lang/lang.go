@@ -3,9 +3,31 @@ package lang
 // TODO: use a package to autodetect language on init based on locale
 
 // yet another package level hack
-var lang Language = EN
-func Current() Language { return lang }
-func Set(language Language) { lang = language }
+var globLang Language = EN
+func Current() Language { return globLang }
+func Set(language Language) { globLang = language }
+
+type Text struct {
+	en string
+	es string
+	ca string
+}
+func NewText(en, es, ca string) *Text {
+	if en == "" || es == "" || ca == "" {
+		panic("can't create empty lang.Text")
+	}
+	return &Text{ en, es, ca }
+}
+func (self *Text) Get() string {
+	switch globLang.Code() {
+	case "en": return self.en
+	case "es": return self.es
+	case "ca": return self.ca
+	default:
+		panic(globLang)
+	}
+}
+func (self *Text) English() string { return self.en }
 
 type Language string
 const (
@@ -28,7 +50,7 @@ func (self Language) Name() string {
 // translate text to current language, or panic
 // if text fragment can't be translated
 func Tr(text string) string {
-	switch lang.Code() {
+	switch globLang.Code() {
 	case "en":
 		return text
 	case "es":
@@ -50,6 +72,6 @@ func Tr(text string) string {
 			panic(text)
 		}
 	default:
-		panic(lang)
+		panic(globLang)
 	}
 }

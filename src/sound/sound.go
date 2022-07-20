@@ -168,7 +168,7 @@ func PlaySFX(sfxPlayer *audio.Player) {
 		volume := 0.4 + rand.Float64()/16.0
 		sfxPlayer.SetVolume(volume*sfxMaxVol)
 	} else if sfxPlayer == SfxLoudNav {
-		sfxPlayer.SetVolume(0.6*sfxMaxVol)
+		sfxPlayer.SetVolume(0.76*sfxMaxVol)
 	} else {
 		sfxPlayer.SetVolume(sfxMaxVol)
 	}

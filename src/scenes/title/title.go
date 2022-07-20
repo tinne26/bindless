@@ -14,19 +14,17 @@ import "github.com/tinne26/bindless/src/misc"
 import "github.com/tinne26/bindless/src/game/sceneitf"
 import "github.com/tinne26/bindless/src/sound"
 import "github.com/tinne26/bindless/src/lang"
+import "github.com/tinne26/bindless/src/ui"
 
 type Title struct {
 	renderer *etxt.Renderer
+	menu *ui.Menu
 	horzPadWait int
 	titleHorzPadding fixed.Int26_6
 	tickCount uint32
 	titlePadExpand bool
 	titleOpacity uint8
 	optsOpacity uint8
-	mousePressed bool
-	skipKeyPressed bool
-	inLangSubmenu bool
-	optHoverIndex uint8
 	exitFadeout uint8
 }
 
@@ -49,11 +47,34 @@ func New(ctx *misc.Context) (*Title, error) {
 	if coda == nil { return nil, fmt.Errorf("missing 'Coda' font") }
 	renderer.SetFont(coda)
 
-	return &Title {
+	// create scene
+	title := &Title {
 		renderer: renderer,
 		titlePadExpand: true,
 		titleHorzPadding: baseTitleHorzFract,
-	}, nil
+	}
+
+	// create menu
+	optsRoot := []*lang.Text{
+		lang.NewText("Start Game", "Empezar", "Començar"),
+		lang.NewText("Language", "Idioma", "Idioma"),
+		lang.NewText("Fullscreen", "Resolución", "Resolució"),
+	}
+	optsLang := []*lang.Text{
+		lang.NewText("English", "English", "English"),
+		lang.NewText("Español", "Español", "Español"),
+		lang.NewText("Català", "Català", "Català"),
+		lang.NewText("-- Back --", "-- Atrás --", "-- Enrere --"),
+	}
+	menu := ui.NewMenu(ctx, coda,  optsRoot, title.menuRootHandler)
+	menu.SetSubOptions("Language", optsLang, title.menuLangHandler)
+	menu.SetCenterTop(320, 170)
+	menu.SetLogFontSize(13)
+	menu.SetLogOptSeparation(26)
+	menu.SetLogHorzPadding(3)
+
+	title.menu = menu
+	return title, nil
 }
 
 // constants related to text animations
@@ -62,86 +83,13 @@ const maxTitleHorzFract  = 1230 // fixed.Int26_6
 const untilOptsText = 500
 const untilCanClick = 540
 const startUpPreWait = 80
-const optLogicalSeparation = 26
 
 func (self *Title) Update(logCursorX, logCursorY int) error {
 	const HorzPadWait = 60*6
 
-	// update mouse interaction
+	// update interactive menu
 	if self.exitFadeout == 0 && self.tickCount > untilCanClick {
-		// detect hover position
-		hoverIndex := uint8(0)
-		if logCursorX > 270 && logCursorX < 640 - 270 {
-			startY := 177
-			for i := 0; i < 4; i++ {
-				y := startY + i*optLogicalSeparation
-				if logCursorY > y - 9 && logCursorY < y + 9 {
-					hoverIndex = uint8(i + 1)
-					break
-				}
-			}
-		}
-		if !self.inLangSubmenu && hoverIndex == 4 { hoverIndex = 0 }
-		if hoverIndex != self.optHoverIndex {
-			self.optHoverIndex = hoverIndex
-			if hoverIndex != 0 {
-				sound.PlaySFX(sound.SfxLoudNav)
-			}
-		}
-
-		// handle ESC/TAB key presses if in lang submenu to go back
-		skipKeyPressed := misc.SkipKeyPressed()
-		if !skipKeyPressed {
-			self.skipKeyPressed = false
-		} else if !self.skipKeyPressed {
-			self.skipKeyPressed = true
-			if self.inLangSubmenu {
-				self.inLangSubmenu = false
-				if self.optHoverIndex == 4 { self.optHoverIndex = 0 }
-				sound.PlaySFX(sound.SfxClick)
-			}
-		}
-
-		// detect mouse clicks
-		mousePressed := misc.MousePressed()
-		if !mousePressed {
-			self.mousePressed = false
-		} else if !self.mousePressed {
-			self.mousePressed = true
-			if self.inLangSubmenu {
-				switch self.optHoverIndex {
-				case 1: // english
-					lang.Set(lang.EN)
-					sound.PlaySFX(sound.SfxClick)
-					self.inLangSubmenu = false
-				case 2: // spanish
-					lang.Set(lang.ES)
-					sound.PlaySFX(sound.SfxClick)
-					self.inLangSubmenu = false
-				case 3: // catalan
-					lang.Set(lang.CA)
-					sound.PlaySFX(sound.SfxClick)
-					self.inLangSubmenu = false
-				case 4: // back
-					sound.PlaySFX(sound.SfxClick)
-					self.inLangSubmenu = false
-					self.optHoverIndex = 0
-				}
-			} else {
-				switch self.optHoverIndex {
-				case 1: // start game
-					sound.PlaySFX(sound.SfxAbility)
-					self.exitFadeout += 1
-					self.optHoverIndex = 0
-				case 2: // language
-					self.inLangSubmenu = true
-					sound.PlaySFX(sound.SfxClick)
-				case 3: // fullscreen switch
-					sound.PlaySFX(sound.SfxClick)
-					ebiten.SetFullscreen(!ebiten.IsFullscreen())
-				}
-			}
-		}
+		self.menu.Update(logCursorX, logCursorY)
 	}
 
 	// if performing exit fadeout, increase the counter
@@ -213,46 +161,11 @@ func (self *Title) DrawHiRes(screen *ebiten.Image, zoomLevel float64) {
 	y := bounds.Min.Y + height/2 - height/8
 	self.renderer.Draw("BINDLESS", x, y)
 
-	// draw options if enough time has passed
+	// draw menu if enough time has passed
 	if self.tickCount >= untilOptsText {
-		// adjust padding and size for the options
-		sizer.SetHorzPadding(int(3*zoomLevel))
-		self.renderer.SetSizePx(misc.ScaledFontSize(13, zoomLevel))
 		optsOpacity := self.adjustedOpacity(self.optsOpacity)
-
-		// draw options
-		y += int(42*zoomLevel)
-		optSeparation := int(optLogicalSeparation*zoomLevel)
-		if self.inLangSubmenu {
-			self.setOptColor(1, optsOpacity)
-			self.renderer.Draw("English", x, y)
-			y += optSeparation
-			self.setOptColor(2, optsOpacity)
-			self.renderer.Draw("Español", x, y)
-			y += optSeparation
-			self.setOptColor(3, optsOpacity)
-			self.renderer.Draw("Català", x, y)
-			y += optSeparation
-			self.setOptColor(4, optsOpacity)
-			self.renderer.Draw("< " + lang.Tr("Back") + " >", x, y)
-		} else {
-			self.setOptColor(1, optsOpacity)
-			self.renderer.Draw(lang.Tr("Start Game"), x, y)
-			y += optSeparation
-			self.setOptColor(2, optsOpacity)
-			self.renderer.Draw(lang.Tr("Language"), x, y)
-			y += optSeparation
-			self.setOptColor(3, optsOpacity)
-			self.renderer.Draw(lang.Tr("Fullscreen"), x, y)
-		}
-	}
-}
-
-func (self *Title) setOptColor(index uint8, optsOpacity uint8) {
-	if index == self.optHoverIndex {
-		self.renderer.SetColor(color.RGBA{240, 240, 240, 255})
-	} else {
-		self.renderer.SetColor(color.RGBA{240, 240, 240, optsOpacity})
+		self.menu.SetBaseOpacity(optsOpacity)
+		self.menu.DrawHiRes(screen, zoomLevel)
 	}
 }
 
@@ -266,4 +179,40 @@ func (self *Title) adjustedOpacity(opacity uint8) uint8 {
 	if self.exitFadeout == 0 { return opacity }
 	if self.exitFadeout >= opacity { return 0 }
 	return opacity - self.exitFadeout
+}
+
+func (self *Title) menuRootHandler(option string) {
+	switch option {
+	case "Start Game":
+		sound.PlaySFX(sound.SfxAbility)
+		self.exitFadeout += 1
+		self.menu.Unselect()
+	case "Language": // language
+		sound.PlaySFX(sound.SfxClick)
+		self.menu.NavIn()
+	case "Fullscreen": // fullscreen switch
+		sound.PlaySFX(sound.SfxClick)
+		ebiten.SetFullscreen(!ebiten.IsFullscreen())
+	default:
+		panic(option)
+	}
+}
+
+func (self *Title) menuLangHandler(option string) {
+	self.menu.NavOut()
+	switch option {
+	case "English":
+		lang.Set(lang.EN)
+		sound.PlaySFX(sound.SfxClick)
+	case "Español":
+		lang.Set(lang.ES)
+		sound.PlaySFX(sound.SfxClick)
+	case "Català":
+		lang.Set(lang.CA)
+		sound.PlaySFX(sound.SfxClick)
+	case "-- Back --":
+		sound.PlaySFX(sound.SfxClick)
+	default:
+		panic(option)
+	}
 }
