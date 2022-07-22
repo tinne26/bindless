@@ -102,13 +102,6 @@ func Update() {
 	} else if bgmVolume == 0 && bgmNextStream != nil {
 		setupNextStream()
 	}
-
-	// sfx updates
-	SfxNav.Update()
-	SfxLoudNav.Update()
-	SfxAbility.Update()
-	SfxNope.Update()
-	SfxClick.Update()
 }
 
 func setupNextStream() {
