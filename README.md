@@ -3,11 +3,11 @@ My entry for [Ebitengine's first game jam ever](https://itch.io/jam/ebiten-game-
 
 ![Bindless tutorial level](https://github.com/tinne26/bindless/blob/main/screenshots/01.png)
 
-Bindless is a puzzle game with a dystopian background story. The puzzles are based on electromagnetic simulations where you use abilities to affect magnets and circuits while trying to reach a target. The game is now available in English, Spanish and Catalan, with a duration of at least half an hour if you are good at puzzles (most people need ).
+Bindless is a puzzle game with a dystopian background story. The puzzles are based on electromagnetic simulations where you use abilities to affect magnets and circuits while trying to reach a target. The game is now available in English, Spanish and Catalan (lies, this is WIP, give me a week please), with a duration of at least half an hour if you are good at puzzles (many people need more than an hour).
 
 You can play from the browser or download at [itch.io](https://tinne26.itch.io/bindless), get static binaries from the releases here on Github, or if you have Golang 1.18+, you can also build and run directly with:
 ```
-go run github.com/tinne26/bindless@v0.0.2
+go run github.com/tinne26/bindless@v0.0.1
 ```
 *(Notice that on linux Ebitengine has a [few dependencies](https://ebiten.org/documents/install.html?os=linux#Dependencies) that you may need to install if you have never used Ebitengine with Golang.)*
 
