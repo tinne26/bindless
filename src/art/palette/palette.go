@@ -10,7 +10,7 @@ var PolarityNeutral  = color.RGBA{200, 200, 200, 255}
 var SceneWireframe   = color.RGBA{175,  82, 141, 255}
 var AbilityDefault   = color.RGBA{240, 240, 240, 255}
 var TileBottom       = color.RGBA{104,  81,  95, 255}
-var AbilitySelected  = color.RGBA{255,  99, 112, 255}
+var Focus            = color.RGBA{255,  99, 112, 255}
 var CircuitShadow    = color.RGBA{ 25,  25,  14,  72}
 
 func SampleTileColor() color.RGBA {

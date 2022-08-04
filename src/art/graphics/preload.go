@@ -1,6 +1,7 @@
 package graphics
 
 import "embed"
+
 import "github.com/tinne26/bindless/src/misc"
 
 // loads most of the graphical assets of the game so they are
@@ -58,6 +59,8 @@ func Load(files *embed.FS) error {
 	if err != nil { return err }
 	IconSpectre, err = misc.LoadPNG(files, baseDir + "icon_spectre.png")
 	if err != nil { return err }
+	IconMenu, err = misc.LoadPNG(files, baseDir + "icon_menu.png")
+	if err != nil { return err }
 	baseDir = "assets/graphics/hud/msg/"
 	HudDock, err = misc.LoadPNG(files, baseDir + "dock.png")
 	if err != nil { return err }
@@ -68,6 +71,8 @@ func Load(files *embed.FS) error {
 	HudSwitch, err = misc.LoadPNG(files, baseDir + "switch.png")
 	if err != nil { return err }
 	HudSpectre, err = misc.LoadPNG(files, baseDir + "spectre.png")
+	if err != nil { return err }
+	HudMenu, err = misc.LoadPNG(files, baseDir + "menu.png")
 	if err != nil { return err }
 	HudMsgTail, err = misc.LoadPNG(files, baseDir + "tail.png")
 	if err != nil { return err }
@@ -102,6 +107,10 @@ func Load(files *embed.FS) error {
 	DockShadow, err = misc.LoadPNG(files, baseDir + "dock_shadows.png")
 	if err != nil { return err }
 	DockFill, err = misc.LoadPNG(files, baseDir + "dock_fill.png")
+	if err != nil { return err }
+	TargetShape, err = misc.LoadPNG(files, baseDir + "target.png")
+	if err != nil { return err }
+	TargetShadow, err = misc.LoadPNG(files, baseDir + "target_shadows.png")
 	if err != nil { return err }
 
 	// create wire images manually

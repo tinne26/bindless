@@ -21,11 +21,13 @@ var IconDock *ebiten.Image
 var IconRewire *ebiten.Image
 var IconSwitch *ebiten.Image
 var IconSpectre *ebiten.Image
+var IconMenu *ebiten.Image
 var HudDock *ebiten.Image
 var HudUndock *ebiten.Image
 var HudRewire *ebiten.Image
 var HudSwitch *ebiten.Image
 var HudSpectre *ebiten.Image
+var HudMenu *ebiten.Image
 var HudMsgTail *ebiten.Image
 
 // magnets!
@@ -44,6 +46,8 @@ var FieldShadow *ebiten.Image
 var DockShape *ebiten.Image
 var DockShadow *ebiten.Image
 var DockFill *ebiten.Image
+var TargetShape *ebiten.Image
+var TargetShadow *ebiten.Image
 
 // wire circuits!
 var WireNW2NE [2]*ebiten.Image // first element is the wire, second the shadow
