@@ -11,8 +11,9 @@ import "github.com/tinne26/etxt"
 import "github.com/tinne26/bindless/src/misc"
 import "github.com/tinne26/bindless/src/sound"
 
-const waitStd = 3
-const intermittentCycleTicks = 120 // should be even
+const waitStd  = 2.5
+const pauseStd = 3.1
+const intermittentCycleTicks = 120
 
 // TODO: backtracking would be cool, but it's tricky and I don't have
 //       the time to spare. we could use a tree with branches or
@@ -41,7 +42,7 @@ type Writer struct {
 	renderer *etxt.Renderer
 	text string
 	index int
-	wait int
+	wait float64
 	intermittent int
 }
 
@@ -74,22 +75,27 @@ func (self *Writer) Tick() {
 
 	self.wait -= 1
 	if self.wait <= 0 {
-		self.wait = waitStd
-
 		char := self.text[self.index]
 		if char >= 32 {
-			if char == 44 { self.wait *= 5 } // ,
-			if char == 46 || char == 33 || char == 63 { self.wait *= 8 } // .!?
-			if char == 58 { self.wait *= 8 } // :
+			switch char {
+			case 44: self.wait += pauseStd*5 // ,
+			case 46: self.wait += pauseStd*8 // .
+			case 58: self.wait += pauseStd*8 // :
+			case 33: self.wait += pauseStd*8 // !
+			case 63: self.wait += pauseStd*8 // ?
+			default:
+				self.wait += waitStd
+			}
 		} else {
 			switch char {
-			case 3: self.wait *= 6
-			case 4: self.wait *= 10
-			case 5: self.wait *= 13
+			case 3: self.wait += pauseStd*6
+			case 4: self.wait += pauseStd*10
+			case 5: self.wait += pauseStd*13
 			default:
 				self.wait = 0
 			}
 		}
+		
 		self.index += 1
 		if self.wait != 0 {
 			sound.PlaySFX(sound.SfxNav)
@@ -102,7 +108,7 @@ func (self *Writer) Tick() {
 	}
 }
 
-func (self *Writer) Draw(screen *ebiten.Image, fontSize int, bounds image.Rectangle, opacity uint8) {
+func (self *Writer) Draw(screen *ebiten.Image, fontSize int, bounds image.Rectangle, opacity uint8) (int, int) {
 	self.renderer.SetTarget(screen)
 	self.renderer.SetSizePx(fontSize)
 	mainColor := color.RGBA{240, 240, 240, opacity}
@@ -170,19 +176,23 @@ func (self *Writer) Draw(screen *ebiten.Image, fontSize int, bounds image.Rectan
 			}
 
 			// abort if we are going beyond the vertical working area
-			if feed.Position.Y.Floor() >= bounds.Max.Y { return }
+			if feed.Position.Y.Floor() >= bounds.Max.Y {
+				return feed.Position.X.Ceil(), feed.Position.Y.Ceil()
+			}
 
 			// consider intermittency
 			intrm := (intermittentOn && self.intermittent < intermittentCycleTicks/2)
 			var clr color.RGBA
 			if intrm {
 				clr = self.renderer.GetColor().(color.RGBA)
-				self.renderer.SetColor(color.RGBA{clr.R, clr.G, clr.B, clr.A/2})
+				self.renderer.SetColor(color.RGBA{clr.R, clr.G, clr.B, clr.A - clr.A/4})
 			}
 
 			// draw the word character by character (so we can apply shaking)
 			for charIndex, codePoint := range word {
-				if index + charIndex >= self.index { return }
+				if index + charIndex >= self.index {
+					return feed.Position.X.Ceil(), feed.Position.Y.Ceil()
+				}
 				if shakeIntensity > 0 {
 					preY := feed.Position.Y
 					vibr := fixed.Int26_6(rand.Intn(shakeIntensity))
@@ -206,6 +216,8 @@ func (self *Writer) Draw(screen *ebiten.Image, fontSize int, bounds image.Rectan
 			comingFromLineBreak = true
 		}
 	}
+	
+	return feed.Position.X.Ceil(), feed.Position.Y.Ceil()
 }
 
 func (self *Writer) nextWord(index int) string {
