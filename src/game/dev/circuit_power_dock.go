@@ -7,10 +7,6 @@ import "github.com/hajimehoshi/ebiten/v2"
 import "github.com/tinne26/bindless/src/game/iso"
 import "github.com/tinne26/bindless/src/art/graphics"
 
-// TODO: update to allow progressive color changes on ephemerous
-//       docks. the obvious implementation may slow down some things
-//       though.
-
 type PowerDock struct {
 	x, y int
 	magnet *FloatMagnet

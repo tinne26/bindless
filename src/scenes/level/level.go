@@ -1,5 +1,6 @@
 package level
 
+import "image"
 import "image/color"
 import "fmt"
 import "sort"
@@ -8,11 +9,14 @@ import "github.com/hajimehoshi/ebiten/v2"
 import "github.com/tinne26/etxt"
 
 import "github.com/tinne26/bindless/src/misc"
+import "github.com/tinne26/bindless/src/misc/typewriter"
 import "github.com/tinne26/bindless/src/game/iso"
 import "github.com/tinne26/bindless/src/game/dev"
 import "github.com/tinne26/bindless/src/game/sceneitf"
 import "github.com/tinne26/bindless/src/art/graphics"
 import "github.com/tinne26/bindless/src/sound"
+import "github.com/tinne26/bindless/src/ui"
+import "github.com/tinne26/bindless/src/lang"
 
 type fadeType uint8
 const (
@@ -34,7 +38,9 @@ type Level struct {
 	key levelKey
 	fade fadeType
 	opacity uint8
+	overDir sceneitf.Status 
 	tick int
+	fadeOutSpeed uint8
 
 	baseMapImg *ebiten.Image
 	surface iso.Map[struct{}] // only indicates passability
@@ -55,6 +61,9 @@ type Level struct {
 	leftClickPressed bool
 	offscreen *ebiten.Image
 	renderer *etxt.Renderer
+	infoWriter *typewriter.Writer
+	horzChoice *ui.HorzChoice
+	auxMenu *AuxMenu
 }
 
 func New(ctx *misc.Context, key levelKey) (*Level, error) {
@@ -72,8 +81,9 @@ func New(ctx *misc.Context, key levelKey) (*Level, error) {
 	if coda == nil { return nil, fmt.Errorf("missing 'Coda' font") }
 	renderer.SetFont(coda)
 
-	return &Level {
+	lvl := &Level {
 		key: key,
+		fadeOutSpeed: 3,
 		baseMapImg: surface2img(surface),
 		surface: surface,
 		abilities: makeLevelAbilities(key),
@@ -89,7 +99,43 @@ func New(ctx *misc.Context, key levelKey) (*Level, error) {
 		offscreen: ebiten.NewImage(640, 360),
 		renderer: renderer,
 		pressingRestart: misc.SkipKeyPressed(),
-	}, nil
+	}
+
+	// setup writer and choices
+	var infoWriter *typewriter.Writer
+	text, hasText := levelTexts[int(key)]
+	if hasText {
+		infoWriter = typewriter.New(text.Get(), ctx)
+		infoWriter.SkipToEnd()
+		lvl.infoWriter = infoWriter
+		lvl.setupHorzChoices(ctx, coda, key)
+	}
+
+	// setup aux menu
+	rootOpts := []*lang.Text {
+		lang.NewText("Restart Level", "Reiniciar Nivel", "Reiniciar Nivell"),
+		//lang.NewText("Select Scene", "Seleccionar Escena", "Seleccionar Escena"),
+		lang.NewText("Shortcuts", "Atajos", "Dreceres"),
+		lang.NewText("Fullscreen", "Resolución", "Resolució"),
+		lang.NewText("-- Continue --", "-- Continuar --", "-- Continuar --"),
+	}
+	auxMenu := ui.NewMenu(ctx, coda, rootOpts, lvl.fnHandlerAuxMenuRoot)
+	shortcutsInfo := []*lang.Text {
+		lang.NewText("Restart level: TAB", "Reiniciar nivel: TAB", "Reiniciar nivell: TAB"),
+		lang.NewText("Skip text: TAB", "Saltar texto: TAB", "Saltar text: TAB"),
+		lang.NewText("Select ability: 1-9", "Seleccionar habilidad: 1-9", "Seleccionar habilitat: 1-9"),
+		lang.NewText("Fullscreen / windowed: F", "Cambiar resolución: F", "Canviar resolució: F"),
+		lang.NewText("Display FPS: D", "Mostrar FPS: D", "Mostrar FPS: D"),
+		lang.NewText("Cheat: hold J + scene ID", "Trampas: mantener J + ID escena", "Trampes: aguantar J + ID escena"),
+		lang.NewText("-- Back --", "-- Atrás --", "-- Enrere --"),
+	}
+	auxMenu.SetSubOptions("Shortcuts", shortcutsInfo, lvl.fnHandlerShortcuts)
+	auxMenu.SetLogFontSize(12)
+	auxMenu.SetLogOptSeparation(22)
+	auxMenu.SetLogHorzPadding(2)
+	lvl.auxMenu = NewAuxMenu(auxMenu)
+
+	return lvl, nil
 }
 
 func (self *Level) Status() sceneitf.Status {
@@ -97,7 +143,7 @@ func (self *Level) Status() sceneitf.Status {
 	if !pressingRestart { self.pressingRestart = false }
 
 	if self.fade == fadeOut {
-		if self.opacity == 0 { return sceneitf.IsOver }
+		if self.opacity == 0 { return self.overDir }
 	} else if pressingRestart && !self.pressingRestart {
 		sound.PlaySFX(sound.SfxNope)
 		return sceneitf.Restart
@@ -107,9 +153,30 @@ func (self *Level) Status() sceneitf.Status {
 
 const cycleTicks = 70
 func (self *Level) Update(logCursorX, logCursorY int) error {
+	// update aux menu
+	if self.opacity > 80 {
+		wasActive := self.auxMenu.active
+		self.auxMenu.Update(logCursorX, logCursorY)
+		if self.fade == fadeOut { self.auxMenu.active = false }
+		if wasActive || self.auxMenu.active {
+			self.pressingRestart = true
+			return nil
+		}
+	}
+	
 	// update tick
 	self.tick += 1
 	if self.tick >= cycleTicks { self.tick = 0 }
+
+	// update choices if present
+	if self.horzChoice != nil && self.opacity > 80 {
+		self.horzChoice.Update(logCursorX, logCursorY)
+	}
+
+	// update typewriter if present
+	if self.infoWriter != nil {
+		self.infoWriter.Tick()
+	}
 
 	// update fades
 	switch self.fade {
@@ -121,8 +188,8 @@ func (self *Level) Update(logCursorX, logCursorY int) error {
 			self.fade = fadeNone
 		}
 	case fadeOut:
-		if self.opacity > 3 {
-			self.opacity -= 3
+		if self.opacity > self.fadeOutSpeed {
+			self.opacity -= self.fadeOutSpeed
 		} else {
 			self.opacity = 0
 		}
@@ -159,12 +226,17 @@ func (self *Level) Update(logCursorX, logCursorY int) error {
 		raisingMagnet.Update()
 		if raisingMagnet.Y() < 100 && self.fade != fadeOut {
 			self.fade = fadeOut
+			self.overDir = sceneitf.IsOverNext
+			self.fadeOutSpeed = 3
 		}
 	}
 
 	// update level elements
 	self.floatMagnetCount = 0
 	if self.tick == 0 {
+		// update targets for tutorial level 5
+		self.tutorial5Hook()
+
 		// clear ability exec cues
 		self.abilityExecCues = self.abilityExecCues[0 : 0]
 
@@ -234,7 +306,7 @@ func (self *Level) Update(logCursorX, logCursorY int) error {
 				if isFloatMagnet { self.floatMagnetCount += 1 }
 			})
 	}
-
+	
 	// update circuits (necessary for color transitions)
 	self.circuits.Each(
 		func(_, _ int16, circuit circuitItf) {
@@ -384,6 +456,7 @@ func (self *Level) Draw(screen *ebiten.Image) {
 
 	// draw HUD
 	self.abilities.Draw(self.offscreen)
+	self.auxMenu.Draw(self.offscreen)
 
 	for _, execCue := range self.abilityExecCues {
 		execCue.Draw(self.offscreen, cycle)
@@ -405,10 +478,26 @@ func (self *Level) Draw(screen *ebiten.Image) {
 }
 
 func (self *Level) DrawHiRes(screen *ebiten.Image, zoomLevel float64) {
+	if self.infoWriter != nil { // tutorial level with information
+		fontSize := misc.ScaledFontSize(10, zoomLevel)
+		bounds := screen.Bounds()
+		xPad, yPad := int(zoomLevel*16), int(zoomLevel*14)
+		x, y   := bounds.Min.X + xPad, bounds.Min.Y + yPad
+		rect   := image.Rect(x, y, x + int(220*zoomLevel), y + int(320*zoomLevel))
+		_, endY := self.infoWriter.Draw(screen, fontSize, rect, self.opacity)
+		if self.horzChoice != nil {
+			self.horzChoice.SetBaseOpacity(uint8((float64(self.opacity)/255)*128))
+			self.horzChoice.SetTopLeft(16, int(float64(endY - bounds.Min.Y)/zoomLevel) + 13)
+			self.horzChoice.DrawHiRes(screen, zoomLevel)
+		}
+	}
+	self.auxMenu.DrawHiRes(screen, zoomLevel)
+	return // TODO: complete when necessary
+
 	// draw tutorial info and other misc text
 	var text string
 	if len(self.raisingMagnets) > 0 {
-		if self.key == SwitchTest {
+		if self.key == SwitchTutorial {
 			text = "Tutorial level complete..."
 		} else {
 			text = "Disabling MSP security layer..."
@@ -431,9 +520,9 @@ func (self *Level) DrawHiRes(screen *ebiten.Image, zoomLevel float64) {
 				text = "(use 'Rewire' on the tile where the wires split)"
 			}
 		}
-	} else if self.key == CleanerTestReal {
+	} else if self.key == CleanerAutomaton {
 		text = "(press ESC or TAB to restart the level when you get locked)"
-	} else if self.key == SwitchTest {
+	} else if self.key == SwitchTutorial {
 		if self.abilities.Switch > 0 {
 			if self.abilities.Selected != 3 {
 				text = "('Switch' allows changing the polarity of small magnets)"
@@ -467,4 +556,128 @@ func (self *Level) getFloatMagnet(col, row int16) *dev.FloatMagnet {
 	floatMagnet, isFloatMagnet := magnet.(*dev.FloatMagnet)
 	if !isFloatMagnet { return nil }
 	return floatMagnet
+}
+
+
+// handlers for horzChoice options
+func (self *Level) setupHorzChoices(ctx *misc.Context, font *etxt.Font, key levelKey) {
+	choiceList := LevelChoices[int(key)]
+	if len(choiceList) == 0 { return }
+	
+	horzChoice := ui.NewHorzChoice(ctx, font)
+	horzChoice.SetLogOptSeparation(4)
+	for _, choice := range choiceList {
+		// link handlers to options. Notice that we are modifying
+		// the option objects, but it doesn't matter since they are
+		// only used in one scene at a time and without dups
+		switch choice.Text.English() {
+		case "[ Previous ]":
+			if key == Tutorial1 {
+				choice.Handler = nil // disabled option
+			} else {
+				choice.Handler = self.fnPrevHandler
+			}
+		case "[ Next ]":
+			choice.Handler = self.fnNextHandler
+		case "[ Solve to continue ]":
+			choice.Handler = nil
+		case "[ Recharge abilities ]":
+			choice.Handler = self.fnRechargeHandler
+		default:
+			panic(choice.Text.English())
+		}
+		horzChoice.AddHChoice(choice)
+	}
+	self.horzChoice = horzChoice
+}
+
+func (self *Level) fnNextHandler(_ string) {
+	self.fade = fadeOut
+	self.fadeOutSpeed = 6
+	self.overDir = sceneitf.IsOverNext
+	sound.PlaySFX(sound.SfxClick)
+	self.horzChoice.Unfocus()
+}
+
+func (self *Level) fnPrevHandler(_ string) {
+	self.fade = fadeOut
+	self.fadeOutSpeed = 6
+	self.overDir = sceneitf.IsOverPrev
+	sound.PlaySFX(sound.SfxClick)
+	self.horzChoice.Unfocus()
+}
+
+func (self *Level) fnRechargeHandler(caller string) {
+	switch self.key {
+	case Tutorial5:
+		if caller == "__ongame__" { // magnet reached target normally
+			self.abilities.Dock   = 3
+			self.abilities.Rewire = 2
+			sound.PlaySFX(sound.SfxClick)
+		} else { // player manually clicked on the recharge option
+			self.abilities.Dock   = 4
+			self.abilities.Rewire = 4
+			sound.PlaySFX(sound.SfxAbility)
+		}
+	default:
+		panic("unhandled recharge case")
+	}
+}
+
+// Hacks to make tutorial 5 work with the custom "target" circuit. It moves
+// from one position to another when you manage to place a magnet over it,
+// and it also partially refills your abilities.
+func (self *Level) tutorial5Hook() {
+	if self.key != Tutorial5 { return }
+	self.circuits.Each(
+		func(_, _ int16, circuit circuitItf) {
+			devTarget, isTarget := circuit.(*dev.Target)
+			if isTarget {
+				col, row := devTarget.GetColRow()
+				magnet := self.getFloatMagnet(col, row)
+				if magnet != nil {
+					self.fnRechargeHandler("__ongame__")
+					self.circuits.Delete(col, row)
+					devTarget.Move()
+					col, row := devTarget.GetColRow()
+					if col != -1 && row != -1 {
+						self.circuits.Set(col, row, devTarget)
+					}
+				}
+			}
+		})
+}
+
+func (self *Level) fnHandlerAuxMenuRoot(opt string) {
+	switch opt {
+	case "Restart Level":
+		self.fade = fadeOut
+		self.opacity = 0
+		self.overDir = sceneitf.Restart
+		self.auxMenu.menu.Unselect()
+		self.auxMenu.active = false
+		sound.PlaySFX(sound.SfxClick)
+	case "Shortcuts":
+		self.auxMenu.menu.NavIn()
+		sound.PlaySFX(sound.SfxClick)
+	case "Fullscreen":
+		self.auxMenu.menu.Unselect()
+		self.auxMenu.active = false
+		ebiten.SetFullscreen(!ebiten.IsFullscreen())
+		sound.PlaySFX(sound.SfxClick)
+	case "-- Continue --":
+		self.auxMenu.active = false
+		sound.PlaySFX(sound.SfxClick)
+	default:
+		panic(opt)
+	}
+}
+
+func (self *Level) fnHandlerShortcuts(opt string) {
+	if opt == "-- Back --" {
+		self.auxMenu.menu.NavOut()	
+		sound.PlaySFX(sound.SfxClick)
+	} else {
+		sound.PlaySFX(sound.SfxNope)
+	}
 }

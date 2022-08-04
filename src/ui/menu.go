@@ -99,6 +99,10 @@ func (self *Menu) NavRoot() {
 	self.tree.Unselect()
 }
 
+func (self *Menu) AtRoot() bool {
+	return self.selDepth == 0
+}
+
 func (self *Menu) Unselect() {
 	self.tree.NavDepth(self.selDepth).Unselect()
 }
@@ -195,7 +199,7 @@ func (self *Menu) DrawHiRes(screen *ebiten.Image, zoomLevel float64) {
 	self.renderer.SetTarget(screen)
 	if self.logHorzPadding != 0 {
 		sizer := self.renderer.GetSizer().(*esizer.HorzPaddingSizer)
-		sizer.SetHorzPadding(int(3*zoomLevel))
+		sizer.SetHorzPadding(int(float64(self.logHorzPadding)*zoomLevel))
 	}
 	self.renderer.SetSizePx(misc.ScaledFontSize(float64(self.logTextSize), zoomLevel))
 	self.renderer.SetHorzAlign(etxt.XCenter)

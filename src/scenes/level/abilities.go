@@ -43,7 +43,7 @@ func (self *Abilities) Update(click bool, logCursorX, logCursorY int) {
 	if self.BlinkLeft > 0 { self.BlinkLeft -= 1 }
 	if self.CantSelectLeft > 0 { self.CantSelectLeft -= 1 }
 
-	x, y := 10, 360 - 10 - 29
+	x, y := 10, 360 - 9 - 29
 	cx, cy := logCursorX, logCursorY
 
 	target := uint8(0)
@@ -52,7 +52,7 @@ func (self *Abilities) Update(click bool, logCursorX, logCursorY int) {
 			if pointWithinRect(cx, cy, x, y, x + 29, y + 29) {
 				target = index
 			}
-			x += 29 + 3
+			x += 29 + 4
 		}
 	}
 
@@ -132,23 +132,23 @@ func (self *Abilities) HasChargesLeft(abilityId uint8) bool {
 }
 
 func (self *Abilities) Draw(screen *ebiten.Image) {
-	x, y := 10, 360 - 10 - 29
+	x, y := 10, 360 - 9 - 29
 
 	if self.Dock != -1 {
 		self.drawAbility(screen, x, y, 1, self.Dock, graphics.IconDock, graphics.HudDock)
-		x += 29 + 3
+		x += 29 + 4
 	}
 	if self.Rewire != -1 {
 		self.drawAbility(screen, x, y, 2, self.Rewire, graphics.IconRewire, graphics.HudRewire)
-		x += 29 + 3
+		x += 29 + 4
 	}
 	if self.Switch != -1 {
 		self.drawAbility(screen, x, y, 3, self.Switch, graphics.IconSwitch, graphics.HudSwitch)
-		x += 29 + 3
+		x += 29 + 4
 	}
 	if self.Spectre != -1 {
 		self.drawAbility(screen, x, y, 4, self.Spectre, graphics.IconSpectre, graphics.HudSpectre)
-		x += 29 + 3
+		x += 29 + 4
 	}
 }
 
@@ -171,7 +171,6 @@ func (self *Abilities) DrawWordHint(screen *ebiten.Image, col, row int16, word *
 	screen.DrawImage(word, opts)
 	opts.GeoM.Translate(float64(w), float64(h - 2))
 	screen.DrawImage(graphics.HudMsgTail, opts)
-
 }
 
 func (self *Abilities) drawAbility(screen *ebiten.Image, x, y int, selectionIndex uint8, charges int8, icon, word *ebiten.Image) {
@@ -182,12 +181,12 @@ func (self *Abilities) drawAbility(screen *ebiten.Image, x, y int, selectionInde
 	if self.Selected == selectionIndex {
 		drawWord = true
 		if self.BlinkLeft == 0 {
-			drawColor = palette.AbilitySelected
+			drawColor = palette.Focus
 		}
 	} else if self.BlinkLeft > 0 && self.Selected == 0 {
-		drawColor = palette.AbilitySelected
+		drawColor = palette.Focus
 	} else if self.CantSelectLeft > 0 && self.CantSelectTarget == selectionIndex {
-		drawColor = palette.AbilitySelected
+		drawColor = palette.Focus
 	}
 	if self.Hovered == selectionIndex { drawWord = true }
 

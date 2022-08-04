@@ -26,5 +26,5 @@ func (self *AbilityExecCue) Draw(screen *ebiten.Image, cycle float64) {
 	screen.SubImage(image.Rect(x, y, x + w, y + 1)).(*ebiten.Image).Fill(color.RGBA{180, 180, 180, 255})
 	w = int(cycle*float64(w))
 	if w == 0 { return }
-	screen.SubImage(image.Rect(x, y, x + w, y + 1)).(*ebiten.Image).Fill(palette.AbilitySelected)
+	screen.SubImage(image.Rect(x, y, x + w, y + 1)).(*ebiten.Image).Fill(palette.Focus)
 }

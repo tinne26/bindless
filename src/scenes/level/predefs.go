@@ -7,30 +7,103 @@ import "github.com/tinne26/bindless/src/game/dev"
 
 type levelKey int
 const (
-	CleanerTestDock   levelKey = 0
-	CleanerTestRewire levelKey = 1
-	CleanerTestReal   levelKey = 2
-	ResearchLabDoor   levelKey = 3
-	ResearchLabGuard1 levelKey = 4
-	ResearchLabGuard2 levelKey = 5
-	SwitchTest        levelKey = 6
-	FinalGuard        levelKey = 7
-	FinalDoor         levelKey = 8
+	Tutorial1         levelKey = 0
+	Tutorial2         levelKey = 1
+	Tutorial3         levelKey = 2
+	Tutorial4         levelKey = 3
+	Tutorial5         levelKey = 4
+	Tutorial6         levelKey = 5
+	CleanerAutomaton  levelKey = 6
+	CleanerAutomaton2 levelKey = 7
+	ResearchLabDoor   levelKey = 8
+	ResearchLabGuard1 levelKey = 9
+	ResearchLabGuard2 levelKey = 10
+	SwitchTutorial    levelKey = 11
+	FinalGuard        levelKey = 12
+	FinalGuard2       levelKey = 13
+	FinalDoor         levelKey = 14
+
+	// TODO: remove when done with the new tutorials
+	CleanerTestDock   levelKey = 991
+	CleanerTestRewire levelKey = 992
 )
 
+const tutorial1Col        , tutorial1Row         int16 = 22, 22
+const tutorial2Col        , tutorial2Row         int16 = 22, 22
+const tutorial3Col        , tutorial3Row         int16 = 22, 22
+const tutorial4Col        , tutorial4Row         int16 = 22, 21
+const tutorial5Col        , tutorial5Row         int16 = 22, 21
+const tutorial6Col        , tutorial6Row         int16 = 22, 22
 const cleanerTestDockCol  , cleanerTestDockRow   int16 = 19, 15
 const cleanerTestRewireCol, cleanerTestRewireRow int16 = 19, 16
-const cleanerTestRealCol  , cleanerTestRealRow   int16 = 20, 19
+const cleanerAutomatonCol , cleanerAutomatonRow  int16 = 19, 19
+const cleanerAutomaton2Col, cleanerAutomaton2Row int16 = 20, 19
 const researchLabDoorCol  , researchLabDoorRow   int16 = 18, 19
 const researchLabGuard1Col, researchLabGuard1Row int16 = 18, 19
 const researchLabGuard2Col, researchLabGuard2Row int16 = 18, 18
-const switchTestCol       , switchTestRow        int16 = 18, 19
+const switchTutorialCol   , switchTutorialRow    int16 = 18, 19
 const finalGuardCol       , finalGuardRow        int16 = 18, 19
 const finalDoorCol        , finalDoorRow         int16 = 18, 19
 
 func makeLevelSurface(key levelKey) iso.Map[struct{}] {
 	surface := iso.NewMap[struct{}]()
 	switch key {
+	case Tutorial1:
+		col, row := tutorial1Col, tutorial1Row
+		surface.SetArea(col - 4, row - 3, 9, 7, struct{}{})
+
+		surface.DeleteArea(col - 4, row + 2, 4, 2)
+		surface.DeleteArea(col + 1, row - 3, 4, 2)
+		surface.SetArea(col + 2, row - 4, 2, 2, struct{}{})
+		surface.SetArea(col - 3, row + 3, 2, 2, struct{}{})
+		
+		surface.DeleteArea(col - 1, row, 3, 1)
+		surface.Delete(col - 1, row - 1)
+		surface.Delete(col + 1, row + 1)
+
+		surface.DeleteArea(col - 4, row - 3, 1, 3)
+		surface.DeleteArea(col + 4, row + 1, 1, 3)
+
+		surface.DeleteArea(col - 4, row, 2, 1)
+		surface.DeleteArea(col + 3, row, 2, 1)
+	case Tutorial2:
+		col, row := tutorial2Col, tutorial2Row
+		surface.SetArea(col - 4, row - 2, 9, 4, struct{}{})
+		
+		surface.DeleteArea(col - 3, row - 2, 1, 4)
+		surface.SetArea(col + 1, row - 3, 2, 6, struct{}{})
+		surface.Delete(col - 4, row - 2)
+		surface.Delete(col - 4, row + 1)
+	case Tutorial3:
+		col, row := tutorial3Col, tutorial3Row
+		surface.SetArea(col - 2, row - 3, 6, 6, struct{}{})
+
+		surface.SetArea(col - 4, row - 2, 1, 4, struct{}{})
+		surface.SetArea(col + 5, row - 2, 1, 4, struct{}{})
+		surface.SetArea(col - 1, row - 5, 4, 1, struct{}{})
+		surface.SetArea(col - 1, row + 4, 4, 1, struct{}{})
+	case Tutorial4:
+		col, row := tutorial4Col, tutorial4Row
+		surface.SetArea(col - 3, row - 2, 8, 5, struct{}{})
+		surface.DeleteArea(col - 1, row - 1, 4, 1)
+		surface.DeleteArea(col - 1, row + 1, 4, 1)
+		surface.DeleteArea(col, row, 2, 1)
+	case Tutorial5:
+		col, row := tutorial5Col, tutorial5Row
+		surface.SetArea(col - 4, row - 4, 9, 9, struct{}{})
+	case Tutorial6:
+		col, row := tutorial6Col, tutorial6Row
+		surface.SetArea(col - 4, row - 5, 10, 10, struct{}{})
+		
+		surface.DeleteArea(col + 1, row - 5, 4, 1)
+		surface.DeleteArea(col + 1, row + 4, 4, 1)
+
+		surface.DeleteArea(col - 3, row - 4, 1, 8)
+		surface.DeleteArea(col - 1, row - 3, 6, 1)
+		surface.DeleteArea(col - 1, row + 2, 6, 1)
+		surface.DeleteArea(col + 4, row - 2, 1, 4)
+		surface.DeleteArea(col - 2, row - 4, 2, 1)
+		surface.DeleteArea(col - 2, row + 3, 2, 1)
 	case CleanerTestDock:
 		col, row := cleanerTestDockCol, cleanerTestDockRow
 		surface.SetArea(col, row, 1, 4, struct{}{})
@@ -61,8 +134,26 @@ func makeLevelSurface(key levelKey) iso.Map[struct{}] {
 		surface.SetArea(col, row + 6, 2, 1, struct{}{})
 		surface.SetArea(col - 5, row + 4, 1, 3, struct{}{})
 		surface.SetArea(col - 5, row + 7, 2, 1, struct{}{})
-	case CleanerTestReal:
-		col, row := cleanerTestRealCol, cleanerTestRealRow
+	case CleanerAutomaton:
+		col, row := cleanerAutomatonCol, cleanerAutomatonRow
+		surface.SetArea(col - 3, row - 3, 6, 7, struct{}{})
+		surface.DeleteArea(col - 2, row - 2, 2, 2)
+		surface.DeleteArea(col + 2, row - 2, 1, 2)
+		surface.DeleteArea(col + 2, row + 1, 1, 3)
+		surface.DeleteArea(col + 1, row + 1, 1, 2)
+		surface.DeleteArea(col - 1, row + 1, 1, 2)
+		surface.DeleteArea(col - 3, row + 2, 1, 2)
+
+		surface.Set(col + 3, row + 2, struct{}{})
+		surface.Set(col - 5, row - 1, struct{}{})
+		surface.Set(col - 2, row - 5, struct{}{})
+		surface.Set(col - 4, row + 3, struct{}{})
+		surface.SetArea(col + 4, row - 4, 1, 3, struct{}{})
+		surface.SetArea(col + 2, row - 5, 3, 1, struct{}{})
+
+		surface.Delete(col - 1, row) // this forces slightly tighter timing, though still very easy
+	case CleanerAutomaton2:
+		col, row := cleanerAutomaton2Col, cleanerAutomaton2Row
 		surface.SetArea(col - 3, row - 2, 6, 6, struct{}{})
 		surface.Delete(col - 1, row)
 		surface.Delete(col + 1, row)
@@ -111,8 +202,8 @@ func makeLevelSurface(key levelKey) iso.Map[struct{}] {
 		surface.Delete(col - 4, row + 5)
 		surface.Delete(col + 6, row + 5)
 		surface.Set(col + 5, row - 3, struct{}{})
-	case SwitchTest:
-		col, row := switchTestCol, switchTestRow
+	case SwitchTutorial:
+		col, row := switchTutorialCol, switchTutorialRow
 		surface.SetArea(col - 2, row - 2, 5, 5, struct{}{})
 		surface.SetArea(col - 4, row - 1, 1, 3, struct{}{})
 		surface.SetArea(col + 4, row - 1, 1, 3, struct{}{})
@@ -174,6 +265,48 @@ func makeLevelSurface(key levelKey) iso.Map[struct{}] {
 
 func makeLevelAbilities(key levelKey) Abilities {
 	switch key {
+	case Tutorial1:
+		return Abilities {
+			Dock: -1,
+			Rewire: -1,
+			Switch: -1,
+			Spectre: -1,
+		}
+	case Tutorial2:
+		return Abilities {
+			Dock: -1,
+			Rewire: -1,
+			Switch: -1,
+			Spectre: -1,
+		}
+	case Tutorial3:
+		return Abilities {
+			Dock: -1,
+			Rewire: -1,
+			Switch: -1,
+			Spectre: -1,
+		}
+	case Tutorial4:
+		return Abilities {
+			Dock: 1,
+			Rewire: 1,
+			Switch: -1,
+			Spectre: -1,
+		}
+	case Tutorial5:
+		return Abilities {
+			Dock: 3,
+			Rewire: 2,
+			Switch: -1,
+			Spectre: -1,
+		}
+	case Tutorial6:
+		return Abilities {
+			Dock: 1,
+			Rewire: 2,
+			Switch: -1,
+			Spectre: -1,
+		}
 	case CleanerTestDock:
 		return Abilities {
 			Dock: 1,
@@ -188,7 +321,14 @@ func makeLevelAbilities(key levelKey) Abilities {
 			Switch: -1,
 			Spectre: -1,
 		}
-	case CleanerTestReal:
+	case CleanerAutomaton:
+		return Abilities {
+			Dock: 1,
+			Rewire: 3,
+			Switch: -1,
+			Spectre: -1,
+		}
+	case CleanerAutomaton2:
 		return Abilities {
 			Dock: 4,
 			Rewire: 2,
@@ -216,7 +356,7 @@ func makeLevelAbilities(key levelKey) Abilities {
 			Switch: -1,
 			Spectre: -1,
 		}
-	case SwitchTest:
+	case SwitchTutorial:
 		return Abilities {
 			Dock: 0,
 			Rewire: 0,
@@ -244,14 +384,31 @@ func makeLevelAbilities(key levelKey) Abilities {
 
 func makeLevelWinPoints(key levelKey) []*dev.WinPoint {
 	switch key {
+	case Tutorial1:
+		return nil
+	case Tutorial2:
+		return nil
+	case Tutorial3:
+		return nil	
+	case Tutorial4:
+		col, row := tutorial4Col + 3, tutorial4Row
+		return []*dev.WinPoint{&dev.WinPoint{ Col: col, Row: row, Polarity: dev.PolarityPositive }}
+	case Tutorial5:
+		return nil
+	case Tutorial6:
+		col, row := tutorial6Col - 2, tutorial6Row - 3
+		return []*dev.WinPoint{&dev.WinPoint{ Col: col, Row: row, Polarity: dev.PolarityPositive }}
 	case CleanerTestDock:
 		col, row := cleanerTestDockCol, cleanerTestDockRow + 5
 		return []*dev.WinPoint{&dev.WinPoint{ Col: col, Row: row, Polarity: dev.PolarityPositive }}
 	case CleanerTestRewire:
 		col, row := cleanerTestRewireCol - 2, cleanerTestRewireRow + 1
 		return []*dev.WinPoint{&dev.WinPoint{ Col: col, Row: row, Polarity: dev.PolarityNegative }}
-	case CleanerTestReal:
-		col, row := cleanerTestRealCol - 3, cleanerTestRealRow - 2
+	case CleanerAutomaton:
+		col, row := cleanerAutomatonCol - 3, cleanerAutomatonRow
+		return []*dev.WinPoint{&dev.WinPoint{ Col: col, Row: row, Polarity: dev.PolarityNegative }}
+	case CleanerAutomaton2:
+		col, row := cleanerAutomaton2Col - 3, cleanerAutomaton2Row - 2
 		return []*dev.WinPoint{&dev.WinPoint{ Col: col, Row: row, Polarity: dev.PolarityPositive }}
 	case ResearchLabDoor:
 		col, row := researchLabDoorCol, researchLabDoorRow
@@ -267,8 +424,8 @@ func makeLevelWinPoints(key levelKey) []*dev.WinPoint {
 	case ResearchLabGuard2:
 		col, row := researchLabGuard2Col, researchLabGuard2Row
 		return []*dev.WinPoint{&dev.WinPoint{ Col: col, Row: row, Polarity: dev.PolarityNegative }}
-	case SwitchTest:
-		col, row := switchTestCol, switchTestRow
+	case SwitchTutorial:
+		col, row := switchTutorialCol, switchTutorialRow
 		return []*dev.WinPoint{&dev.WinPoint{ Col: col, Row: row, Polarity: dev.PolarityNegative }}
 	case FinalGuard:
 		col, row := finalGuardCol, finalGuardRow
@@ -286,6 +443,276 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 	magnets := iso.NewMap[dev.Magnet]()
 
 	switch key {
+	// case Tutorial1:
+	// 	col, row := tutorial1Col, tutorial1Row
+	// 	fm := dev.NewFloatMagnet(col + 1, row + 1, dev.StFloating, dev.PolarityNegative)
+	// 	magnets.Set(col + 1, row + 1, fm)
+	// 	smAttract1 := dev.NewStaticMagnet(col + 1, row - 2, dev.PolarityPositive.AsFunc())
+	// 	magnets.Set(col + 1, row - 2, smAttract1)
+	// 	smRepel1   := dev.NewStaticMagnet(col + 2, row - 1, dev.PolarityNegative.AsFunc())
+	// 	magnets.Set(col + 2, row - 1, smRepel1)
+	// 	smAttract2 := dev.NewStaticMagnet(col - 2, row + 2, dev.PolarityPositive.AsFunc())
+	// 	magnets.Set(col - 2, row + 2, smAttract2)
+	// 	smRepel2   := dev.NewStaticMagnet(col - 3, row + 1, dev.PolarityNegative.AsFunc())
+	// 	magnets.Set(col - 3, row + 1, smRepel2)
+	case Tutorial1:
+		col, row := tutorial1Col, tutorial1Row
+		fm1 := dev.NewFloatMagnet(col, row - 1, dev.StFloating, dev.PolarityNegative)
+		magnets.Set(col, row - 1, fm1)
+		fm2 := dev.NewFloatMagnet(col, row + 1, dev.StFloating, dev.PolarityNegative)
+		magnets.Set(col, row + 1, fm2)
+		
+		smAttractNW := dev.NewStaticMagnet(col - 3, row - 2, dev.PolarityPositive.AsFunc())
+		magnets.Set(col - 3, row - 2, smAttractNW)
+		smAttractSE := dev.NewStaticMagnet(col + 3, row + 2, dev.PolarityPositive.AsFunc())
+		magnets.Set(col + 3, row + 2, smAttractSE)
+		
+		smPushSideNW := dev.NewStaticMagnet(col - 2, row - 3, dev.PolarityNegative.AsFunc())
+		magnets.Set(col - 2, row - 3, smPushSideNW)
+		smPushSideSE := dev.NewStaticMagnet(col + 2, row + 3, dev.PolarityNegative.AsFunc())
+		magnets.Set(col + 2, row + 3, smPushSideSE)
+
+		smPushCtrSW := dev.NewStaticMagnet(col - 4, row + 1, dev.PolarityNegative.AsFunc())
+		magnets.Set(col - 4, row + 1, smPushCtrSW)
+		smPushCtrNE := dev.NewStaticMagnet(col + 4, row - 1, dev.PolarityNegative.AsFunc())
+		magnets.Set(col + 4, row - 1, smPushCtrNE)
+	case Tutorial2:
+		col, row := tutorial2Col, tutorial2Row
+		fm1 := dev.NewFloatMagnet(col - 2, row, dev.StFloating, dev.PolarityPositive)
+		magnets.Set(col - 2, row, fm1)
+		fm2 := dev.NewFloatMagnet(col + 1, row, dev.StFloating, dev.PolarityPositive)
+		magnets.Set(col + 1, row, fm2)
+
+		fmDuoNeg := dev.NewFloatMagnet(col - 1, row + 1, dev.StDocked, dev.PolarityNegative)
+		magnets.Set(col - 1, row + 1, fmDuoNeg)
+		fmDuoPos := dev.NewFloatMagnet(col - 2, row + 1, dev.StDocked, dev.PolarityPositive)
+		magnets.Set(col - 2, row + 1, fmDuoPos)
+		fmAuxDead := dev.NewFloatMagnet(col - 2, row - 2, dev.StDocked, dev.PolarityNeutral)
+		magnets.Set(col - 2, row - 2, fmAuxDead)
+		
+		fmGapPos := dev.NewFloatMagnet(col - 4, row - 1, dev.StDocked, dev.PolarityPositive)
+		magnets.Set(col - 4, row - 1, fmGapPos)
+
+		smFarDead := dev.NewStaticMagnet(col + 3, row - 2, dev.PolarityNeutral.AsFunc())
+		magnets.Set(col + 3, row - 2, smFarDead)
+		
+		smFarPos := dev.NewStaticMagnet(col + 3, row + 1, dev.PolarityPositive.AsFunc())
+		magnets.Set(col + 3, row + 1, smFarPos)
+		smFarPos2 := dev.NewStaticMagnet(col + 4, row - 1, dev.PolarityPositive.AsFunc())
+		magnets.Set(col + 4, row - 1, smFarPos2)
+		smFarNeg := dev.NewStaticMagnet(col + 4, row, dev.PolarityNegative.AsFunc())
+		magnets.Set(col + 4, row, smFarNeg)
+		smCtrPos := dev.NewStaticMagnet(col, row - 2, dev.PolarityPositive.AsFunc())
+		magnets.Set(col, row - 2, smCtrPos)
+	case Tutorial3:
+		col, row := tutorial3Col, tutorial3Row
+		fm1 := dev.NewFloatMagnet(col, row - 3, dev.StFloating, dev.PolarityNegative)
+		magnets.Set(col, row - 3, fm1)
+		fm2 := dev.NewFloatMagnet(col + 3, row, dev.StFloating, dev.PolarityNegative)
+		magnets.Set(col + 3, row, fm2)
+
+		fmN1 := dev.NewFloatMagnet(col, row, dev.StFloating, dev.PolarityNegative)
+		magnets.Set(col, row, fmN1)
+		fmN2 := dev.NewFloatMagnet(col - 1, row - 1, dev.StFloating, dev.PolarityPositive)
+		magnets.Set(col - 1, row - 1, fmN2)
+		fmN3 := dev.NewFloatMagnet(col + 1, row + 1, dev.StFloating, dev.PolarityPositive)
+		magnets.Set(col + 1, row + 1, fmN3)
+
+		fmN4 := dev.NewFloatMagnet(col - 1, row + 2, dev.StFloating, dev.PolarityPositive)
+		magnets.Set(col - 1, row + 2, fmN4)
+		fmN5 := dev.NewFloatMagnet(col - 2, row + 1, dev.StFloating, dev.PolarityPositive)
+		magnets.Set(col - 2, row + 1, fmN5)
+		
+		smUp := dev.NewStaticMagnet(col + 3, row - 3, dev.PolarityNegative.AsFunc())
+		magnets.Set(col + 3, row - 3, smUp)
+		smLeft := dev.NewStaticMagnet(col - 2, row - 3, dev.PolarityNegative.AsFunc())
+		magnets.Set(col - 2, row - 3, smLeft)
+		smRight := dev.NewStaticMagnet(col + 3, row + 2, dev.PolarityNegative.AsFunc())
+		magnets.Set(col + 3, row + 2, smRight)
+	case Tutorial4:
+		col, row := tutorial4Col, tutorial4Row
+		fmPow  := dev.NewFloatMagnet(col - 3, row - 2, dev.StFloating, dev.PolarityPositive)
+		magnets.Set(col - 3, row - 2, fmPow)
+		fmMain := dev.NewFloatMagnet(col + 1, row + 2, dev.StFloating, dev.PolarityPositive)
+		magnets.Set(col + 1, row + 2, fmMain)
+		fmSac  := dev.NewFloatMagnet(col - 1, row, dev.StFloating, dev.PolarityPositive)
+		magnets.Set(col - 1, row, fmSac)
+
+		fmBlocker := dev.NewFloatMagnet(col + 4, row + 2, dev.StDocked, dev.PolarityNeutral)
+		magnets.Set(col + 4, row + 2, fmBlocker)
+		
+		powDock := dev.NewPowerDock(col - 3, row - 2)
+		circuits.Set(col - 3, row - 2, powDock)
+		wSwitch := dev.NewWireSwitch(col - 3, row, dev.ConnNW, dev.ConnNE, dev.ConnSE, powDock.Output)
+		circuits.Set(col - 3, row, wSwitch)
+
+		wire := dev.NewWire2(col - 3, row - 1, dev.ConnNW, dev.ConnSE, powDock.Output)
+		circuits.Set(col - 3, row - 1, wire)
+		wire  = dev.NewWire2(col - 1, row + 2, dev.ConnSW, dev.ConnNE, wSwitch.OutB)
+		circuits.Set(col - 1, row + 2, wire)
+		wire  = dev.NewWire2(col - 2, row + 2, dev.ConnSW, dev.ConnNE, wSwitch.OutB)
+		circuits.Set(col - 2, row + 2, wire)
+		wire  = dev.NewWire2(col - 3, row + 2, dev.ConnNW, dev.ConnNE, wSwitch.OutB)
+		circuits.Set(col - 3, row + 2, wire)
+		wire  = dev.NewWire2(col - 3, row + 1, dev.ConnNW, dev.ConnSE, wSwitch.OutB)
+		circuits.Set(col - 3, row + 1, wire)
+
+		smPowA := dev.NewStaticMagnet(col - 2, row, wSwitch.OutA)
+		magnets.Set(col - 2, row, smPowA)
+		smPowB := dev.NewStaticMagnet(col, row + 2, wSwitch.OutB)
+		magnets.Set(col, row + 2, smPowB)
+		smAttract := dev.NewStaticMagnet(col + 3, row - 1, dev.PolarityNegative.AsFunc())
+		magnets.Set(col + 3, row - 1, smAttract)
+	case Tutorial5:
+		col, row := tutorial5Col, tutorial5Row
+		fmA := dev.NewFloatMagnet(col - 2, row - 2, dev.StFloating, dev.PolarityNegative)
+		magnets.Set(col - 2, row - 2, fmA)
+		fmB := dev.NewFloatMagnet(col + 2, row - 2, dev.StDocked, dev.PolarityNeutral)
+		magnets.Set(col + 2, row - 2, fmB)
+
+		fmPowSW := dev.NewFloatMagnet(col - 3, row + 3, dev.StDocked, dev.PolarityNegative)
+		magnets.Set(col - 3, row + 3, fmPowSW)
+		fmPowNE := dev.NewFloatMagnet(col + 3, row + 3, dev.StDocked, dev.PolarityNegative)
+		magnets.Set(col + 3, row + 3, fmPowNE)
+
+		a, b := dev.NewTransferDockPair(col - 2, row - 2, col + 2, row - 2)
+		tsrc := a.Source
+		circuits.Set(col - 2, row - 2, a)
+		circuits.Set(col + 2, row - 2, b)
+
+		wire := dev.NewWire2(col - 3, row - 2, dev.ConnNE, dev.ConnNW, tsrc.Output)
+		circuits.Set(col - 3, row - 2, wire)
+		wire  = dev.NewWire2(col - 3, row - 3, dev.ConnNW, dev.ConnSE, tsrc.Output)
+		circuits.Set(col - 3, row - 3, wire)
+		wire  = dev.NewWire2(col - 3, row - 4, dev.ConnNE, dev.ConnSE, tsrc.Output)
+		circuits.Set(col - 3, row - 4, wire)
+		wire  = dev.NewWire2(col - 2, row - 4, dev.ConnSW, dev.ConnNE, tsrc.Output)
+		circuits.Set(col - 2, row - 4, wire)
+		wire  = dev.NewWire2(col - 1, row - 4, dev.ConnSW, dev.ConnNE, tsrc.Output)
+		circuits.Set(col - 1, row - 4, wire)
+		wire  = dev.NewWire2(col + 0, row - 4, dev.ConnSW, dev.ConnNE, tsrc.Output)
+		circuits.Set(col + 0, row - 4, wire)
+		wire  = dev.NewWire2(col + 1, row - 4, dev.ConnSW, dev.ConnNE, tsrc.Output)
+		circuits.Set(col + 1, row - 4, wire)
+		wire  = dev.NewWire2(col + 2, row - 4, dev.ConnSW, dev.ConnNE, tsrc.Output)
+		circuits.Set(col + 2, row - 4, wire)
+		wire  = dev.NewWire2(col + 3, row - 4, dev.ConnSW, dev.ConnSE, tsrc.Output)
+		circuits.Set(col + 3, row - 4, wire)
+		wire  = dev.NewWire2(col + 3, row - 3, dev.ConnNW, dev.ConnSE, tsrc.Output)
+		circuits.Set(col + 3, row - 3, wire)
+		wire  = dev.NewWire2(col + 3, row - 2, dev.ConnNW, dev.ConnSW, tsrc.Output)
+		circuits.Set(col + 3, row - 2, wire)
+
+		dockSW := dev.NewPowerDock(col - 3, row + 3)
+		circuits.Set(col - 3, row + 3, dockSW)
+		dockNE := dev.NewPowerDock(col + 3, row + 3)
+		circuits.Set(col + 3, row + 3, dockNE)
+
+		dockSW.PreSetMagnet(fmPowSW)
+		fmPowSW.PreSetDockChangeHandler(dockSW)
+		dockNE.PreSetMagnet(fmPowNE)
+		fmPowNE.PreSetDockChangeHandler(dockNE)
+
+		switchSW := dev.NewWireSwitch(col - 2, row + 3, dev.ConnSW, dev.ConnNW, dev.ConnNE, dockSW.Output)
+		circuits.Set(col - 2, row + 3, switchSW)
+		switchNE := dev.NewWireSwitch(col + 2, row + 3, dev.ConnNE, dev.ConnNW, dev.ConnSW, dockNE.Output)
+		circuits.Set(col + 2, row + 3, switchNE)
+
+		smPushA := dev.NewStaticMagnet(col - 2, row - 3, switchNE.OutB)
+		magnets.Set(col - 2, row - 3, smPushA)
+		smPushB := dev.NewStaticMagnet(col + 2, row - 3, switchSW.OutB)
+		magnets.Set(col + 2, row - 3, smPushB)
+		smBounceA := dev.NewStaticMagnet(col - 2, row + 2, switchSW.OutA)
+		magnets.Set(col - 2, row + 2, smBounceA)
+		smBounceB := dev.NewStaticMagnet(col + 2, row + 2, switchNE.OutA)
+		magnets.Set(col + 2, row + 2, smBounceB)
+
+		wire = dev.NewWire2(col - 1, row + 3, dev.ConnSW, dev.ConnNE, switchSW.OutB)
+		circuits.Set(col - 1, row + 3, wire)
+		wire = dev.NewWire2(col + 0, row + 3, dev.ConnSW, dev.ConnNW, switchSW.OutB)
+		circuits.Set(col + 0, row + 3, wire)
+		wire = dev.NewWire2(col + 0, row + 2, dev.ConnSE, dev.ConnNW, switchSW.OutB)
+		circuits.Set(col + 0, row + 2, wire)
+		wire = dev.NewWire2(col + 0, row + 1, dev.ConnSE, dev.ConnNW, switchSW.OutB)
+		circuits.Set(col + 0, row + 1, wire)
+		wire = dev.NewWire2(col + 0, row + 0, dev.ConnSE, dev.ConnNW, switchSW.OutB)
+		circuits.Set(col + 0, row + 0, wire)
+		wire = dev.NewWire2(col + 0, row - 1, dev.ConnSE, dev.ConnNW, switchSW.OutB)
+		circuits.Set(col + 0, row - 1, wire)
+		wire = dev.NewWire2(col + 0, row - 2, dev.ConnSE, dev.ConnNW, switchSW.OutB)
+		circuits.Set(col + 0, row - 2, wire)
+		wire = dev.NewWire2(col + 0, row - 3, dev.ConnSE, dev.ConnNE, switchSW.OutB)
+		circuits.Set(col + 0, row - 3, wire)
+		wire = dev.NewWire2(col + 1, row - 3, dev.ConnSW, dev.ConnNE, switchSW.OutB)
+		circuits.Set(col + 1, row - 3, wire)
+
+		wire = dev.NewWire2(col - 1, row - 3, dev.ConnSW, dev.ConnSE, switchNE.OutB)
+		circuits.Set(col - 1, row - 3, wire)
+		wire = dev.NewWire2(col - 1, row - 2, dev.ConnNW, dev.ConnSE, switchNE.OutB)
+		circuits.Set(col - 1, row - 2, wire)
+		wire = dev.NewWire2(col - 1, row - 1, dev.ConnNW, dev.ConnSE, switchNE.OutB)
+		circuits.Set(col - 1, row - 1, wire)
+		wire = dev.NewWire2(col - 1, row + 0, dev.ConnNW, dev.ConnSW, switchNE.OutB)
+		circuits.Set(col - 1, row + 0, wire)
+		wire = dev.NewWire2(col - 2, row + 0, dev.ConnNE, dev.ConnSW, switchNE.OutB)
+		circuits.Set(col - 2, row + 0, wire)
+		wire = dev.NewWire2(col - 3, row + 0, dev.ConnNE, dev.ConnSW, switchNE.OutB)
+		circuits.Set(col - 3, row + 0, wire)
+		wire = dev.NewWire2(col - 4, row + 0, dev.ConnNE, dev.ConnSE, switchNE.OutB)
+		circuits.Set(col - 4, row + 0, wire)
+		wire = dev.NewWire2(col - 4, row + 1, dev.ConnNW, dev.ConnSE, switchNE.OutB)
+		circuits.Set(col - 4, row + 1, wire)
+		wire = dev.NewWire2(col - 4, row + 2, dev.ConnNW, dev.ConnSE, switchNE.OutB)
+		circuits.Set(col - 4, row + 2, wire)
+		wire = dev.NewWire2(col - 4, row + 3, dev.ConnNW, dev.ConnSE, switchNE.OutB)
+		circuits.Set(col - 4, row + 3, wire)
+		wire = dev.NewWire2(col - 4, row + 4, dev.ConnNW, dev.ConnNE, switchNE.OutB)
+		circuits.Set(col - 4, row + 4, wire)
+		wire = dev.NewWire2(col - 3, row + 4, dev.ConnSW, dev.ConnNE, switchNE.OutB)
+		circuits.Set(col - 3, row + 4, wire)
+		wire = dev.NewWire2(col - 2, row + 4, dev.ConnSW, dev.ConnNE, switchNE.OutB)
+		circuits.Set(col - 2, row + 4, wire)
+		wire = dev.NewWire2(col - 1, row + 4, dev.ConnSW, dev.ConnNE, switchNE.OutB)
+		circuits.Set(col - 1, row + 4, wire)
+		wire = dev.NewWire2(col + 0, row + 4, dev.ConnSW, dev.ConnNE, switchNE.OutB)
+		circuits.Set(col + 0, row + 4, wire)
+		wire = dev.NewWire2(col + 1, row + 4, dev.ConnSW, dev.ConnNW, switchNE.OutB)
+		circuits.Set(col + 1, row + 4, wire)
+		wire = dev.NewWire2(col + 1, row + 3, dev.ConnSE, dev.ConnNE, switchNE.OutB)
+		circuits.Set(col + 1, row + 3, wire)
+
+		// unique "target" circuit to orient player and recharge abilities
+		target := dev.NewTarget(col - 2, row + 1, true)
+		circuits.Set(col - 2, row + 1, target)
+		target.AddPos(col + 2, row + 1)
+	case Tutorial6:
+		col, row := tutorial6Col, tutorial6Row
+		fmPower := dev.NewFloatMagnet(col + 3, row - 1, dev.StFloating, dev.PolarityPositive)
+		magnets.Set(col + 3, row - 1, fmPower)
+		fmMain := dev.NewFloatMagnet(col + 0, row - 2, dev.StFloating, dev.PolarityPositive)
+		magnets.Set(col + 0, row - 2, fmMain)
+		fmPusher := dev.NewFloatMagnet(col + 0, row + 1, dev.StFloating, dev.PolarityPositive)
+		magnets.Set(col + 0, row + 1, fmPusher)
+
+		powDock := dev.NewPowerDock(col + 3, row - 1)
+		circuits.Set(col + 3, row - 1, powDock)
+
+		wSwitch := dev.NewWireSwitch(col + 2, row - 1, dev.ConnNE, dev.ConnNW, dev.ConnSE, powDock.Output)
+		circuits.Set(col + 2, row - 1, wSwitch)
+		
+		wire := dev.NewWire2(col + 2, row - 2, dev.ConnSE, dev.ConnSW, wSwitch.OutA)
+		circuits.Set(col + 2, row - 2, wire)
+		wire  = dev.NewWire2(col + 2, row + 0, dev.ConnSE, dev.ConnNW, wSwitch.OutB)
+		circuits.Set(col + 2, row + 0, wire)
+		wire  = dev.NewWire2(col + 2, row + 1, dev.ConnNW, dev.ConnSW, wSwitch.OutB)
+		circuits.Set(col + 2, row + 1, wire)
+
+		smMain   := dev.NewStaticMagnet(col + 1, row - 2, wSwitch.OutA)
+		magnets.Set(col + 1, row - 2, smMain)
+		smPusher := dev.NewStaticMagnet(col + 1, row + 1, wSwitch.OutB)
+		magnets.Set(col + 1, row + 1, smPusher)
+		smRedir := dev.NewStaticMagnet(col - 2, row + 2, dev.PolarityPositive.AsFunc())
+		magnets.Set(col - 2, row + 2, smRedir)
 	case CleanerTestDock:
 		col, row := cleanerTestDockCol, cleanerTestDockRow
 		c1, r1 := col, row
@@ -358,8 +785,54 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 		magnets.Set(col, row + 3, sm2)
 		sm3 := dev.NewStaticMagnet(col + 1, row + 2, powDock2.Output)
 		magnets.Set(col + 1, row + 2, sm3)
-	case CleanerTestReal:
-		col, row := cleanerTestRealCol, cleanerTestRealRow
+	case CleanerAutomaton:
+		col, row := cleanerAutomatonCol, cleanerAutomatonRow
+
+		fmTop := dev.NewFloatMagnet(col + 1, row - 2, dev.StFloating, dev.PolarityNegative)
+		magnets.Set(col + 1, row - 2, fmTop)
+		fmBottom := dev.NewFloatMagnet(col - 2, row + 2, dev.StFloating, dev.PolarityNegative)
+		magnets.Set(col - 2, row + 2, fmBottom)
+		fmPow := dev.NewFloatMagnet(col + 1, row + 3, dev.StFloating, dev.PolarityNegative)
+		magnets.Set(col + 1, row + 3, fmPow)
+
+		powDock := dev.NewPowerDock(col + 1, row + 3)
+		circuits.Set(col + 1, row + 3, powDock)
+		
+		switchMain := dev.NewWireSwitch(col + 0, row + 3, dev.ConnNE, dev.ConnSW, dev.ConnNW, powDock.Output)
+		circuits.Set(col + 0, row + 3, switchMain)
+		switchSub  := dev.NewWireSwitch(col + 0, row + 0, dev.ConnSE, dev.ConnNW, dev.ConnNE, switchMain.OutB)
+		circuits.Set(col + 0, row + 0, switchSub)
+
+		smPush := dev.NewStaticMagnet(col + 2, row + 0, switchSub.OutB)
+		magnets.Set(col + 2, row + 0, smPush)
+		smTop  := dev.NewStaticMagnet(col + 1, row - 3, switchSub.OutA)
+		magnets.Set(col + 1, row - 3, smTop)
+		smBottom := dev.NewStaticMagnet(col - 2, row + 3, switchMain.OutA)
+		magnets.Set(col - 2, row + 3, smBottom)
+
+		// wires for bottom
+		wire := dev.NewWire2(col - 1, row + 3, dev.ConnNE, dev.ConnSW, switchMain.OutA)
+		circuits.Set(col - 1, row + 3, wire)
+		
+		// wires for main switch to sub switch
+		wire = dev.NewWire2(col + 0, row + 2, dev.ConnSE, dev.ConnNW, switchMain.OutB)
+		circuits.Set(col + 0, row + 2, wire)
+		wire = dev.NewWire2(col + 0, row + 1, dev.ConnSE, dev.ConnNW, switchMain.OutB)
+		circuits.Set(col + 0, row + 1, wire)
+
+		// wires for sub switch to push
+		wire = dev.NewWire2(col + 1, row + 0, dev.ConnSW, dev.ConnNE, switchSub.OutB)
+		circuits.Set(col + 1, row + 0, wire)
+
+		// wires for sub switch to top
+		wire = dev.NewWire2(col + 0, row - 1, dev.ConnSE, dev.ConnNW, switchSub.OutA)
+		circuits.Set(col + 0, row - 1, wire)
+		wire = dev.NewWire2(col + 0, row - 2, dev.ConnSE, dev.ConnNW, switchSub.OutA)
+		circuits.Set(col + 0, row - 2, wire)
+		wire = dev.NewWire2(col + 0, row - 3, dev.ConnSE, dev.ConnNE, switchSub.OutA)
+		circuits.Set(col + 0, row - 3, wire)
+	case CleanerAutomaton2:
+		col, row := cleanerAutomaton2Col, cleanerAutomaton2Row
 
 		fm1 := dev.NewFloatMagnet(col - 3, row + 1, dev.StDocked, dev.PolarityNeutral)
 		magnets.Set(col - 3, row + 1, fm1)
@@ -741,8 +1214,8 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 		circuits.Set(col + 4, row + 2, wire)
 		wire  = dev.NewWire2(col + 5, row + 2, dev.ConnSW, dev.ConnNE, tsrc.Output)
 		circuits.Set(col + 5, row + 2, wire)
-	case SwitchTest:
-		col, row := switchTestCol, switchTestRow
+	case SwitchTutorial:
+		col, row := switchTutorialCol, switchTutorialRow
 		smNW := dev.NewStaticMagnet(col + 1, row - 2, dev.PolarityNegative.AsFunc())
 		magnets.Set(col + 1, row - 2, smNW)
 		smNE := dev.NewStaticMagnet(col + 2, row + 1, dev.PolarityNegative.AsFunc())

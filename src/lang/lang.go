@@ -1,9 +1,20 @@
 package lang
 
+import "os"
 // TODO: use a package to autodetect language on init based on locale
 
 // yet another package level hack
 var globLang Language = EN
+func init() {
+	for _, arg := range os.Args {
+		switch arg {
+		case "--en": globLang = EN
+		case "--es": globLang = ES
+		case "--ca": globLang = CA
+		}
+	}
+}
+
 func Current() Language { return globLang }
 func Set(language Language) { globLang = language }
 
@@ -12,6 +23,7 @@ type Text struct {
 	es string
 	ca string
 }
+
 func NewText(en, es, ca string) *Text {
 	if en == "" || es == "" || ca == "" {
 		panic("can't create empty lang.Text")

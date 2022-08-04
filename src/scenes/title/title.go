@@ -68,7 +68,6 @@ func New(ctx *misc.Context) (*Title, error) {
 	}
 	menu := ui.NewMenu(ctx, coda,  optsRoot, title.menuRootHandler)
 	menu.SetSubOptions("Language", optsLang, title.menuLangHandler)
-	menu.SetCenterTop(320, 170)
 	menu.SetLogFontSize(13)
 	menu.SetLogOptSeparation(26)
 	menu.SetLogHorzPadding(3)
@@ -164,13 +163,15 @@ func (self *Title) DrawHiRes(screen *ebiten.Image, zoomLevel float64) {
 	// draw menu if enough time has passed
 	if self.tickCount >= untilOptsText {
 		optsOpacity := self.adjustedOpacity(self.optsOpacity)
+		x, y := bounds.Dx()/2, int(float64(bounds.Dy())*0.4722)
+		self.menu.SetCenterTop(int(float64(x)/zoomLevel), int(float64(y)/zoomLevel))
 		self.menu.SetBaseOpacity(optsOpacity)
 		self.menu.DrawHiRes(screen, zoomLevel)
 	}
 }
 
 func (self *Title) Status() sceneitf.Status {
-	if self.exitFadeout == 255 { return sceneitf.IsOver }
+	if self.exitFadeout == 255 { return sceneitf.IsOverNext }
 	return sceneitf.KeepAlive
 }
 

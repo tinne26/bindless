@@ -19,14 +19,14 @@ const (
 
 type episodeKey int
 const (
-	CleaningAutomatonTest episodeKey = 0
-	ResearchLabDoor       episodeKey = 1
-	ResearchLabGuard      episodeKey = 2
-	ResearchLabSteal      episodeKey = 3
-	JanaNewAbility        episodeKey = 4
-	Infiltration          episodeKey = 5
-	BasementDoor          episodeKey = 6
-	InTheBasement         episodeKey = 7
+	CleaningAutomaton episodeKey = 0
+	ResearchLabDoor   episodeKey = 1
+	ResearchLabGuard  episodeKey = 2
+	ResearchLabSteal  episodeKey = 3
+	JanaNewAbility    episodeKey = 4
+	Infiltration      episodeKey = 5
+	BasementDoor      episodeKey = 6
+	InTheBasement     episodeKey = 7
 )
 
 type Episode struct {
@@ -43,7 +43,7 @@ func New(ctx *misc.Context, key episodeKey) (*Episode, error) {
 
 	return &Episode {
 		img: ebiImg,
-		writer: typewriter.New(episodesRawText[int(key)], ctx),
+		writer: typewriter.New(episodesRawText[int(key)].Get(), ctx),
 	}, nil
 }
 
@@ -104,7 +104,7 @@ func (self *Episode) DrawHiRes(screen *ebiten.Image, zoomLevel float64) {
 
 func (self *Episode) Status() sceneitf.Status {
 	if self.fade == fadeOut && self.opacity == 0 {
-		return sceneitf.IsOver
+		return sceneitf.IsOverNext
 	}
 	return sceneitf.KeepAlive
 }

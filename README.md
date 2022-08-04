@@ -3,39 +3,27 @@ My entry for [Ebitengine's first game jam ever](https://itch.io/jam/ebiten-game-
 
 ![Bindless tutorial level](https://github.com/tinne26/bindless/blob/main/screenshots/01.png)
 
-Bindless is a puzzle game with a dystopian background story. The puzzles are mostly simulations of levels with magnets, where you can poke and prod a few things in order to solve them.
+Bindless is a puzzle game with a dystopian background story. The puzzles are based on electromagnetic simulations where you use abilities to affect magnets and circuits while trying to reach a target. The game is now available in English, Spanish and Catalan, with a duration of at least half an hour if you are good at puzzles (most people need ).
 
-You can find static binaries in the releases, on itch.io, or if you have Golang 1.18+, you can also run directly with:
+You can play from the browser or download at [itch.io](https://tinne26.itch.io/bindless), get static binaries from the releases here on Github, or if you have Golang 1.18+, you can also build and run directly with:
 ```
-go run github.com/tinne26/bindless@v0.0.1
+go run github.com/tinne26/bindless@v0.0.2
 ```
+*(Notice that on linux Ebitengine has a [few dependencies](https://ebiten.org/documents/install.html?os=linux#Dependencies) that you may need to install if you have never used Ebitengine with Golang.)*
 
-## Controls
-- Use the mouse and left-click to select and use your abilities.
-- Press TAB on levels to reset them if you are locked.
-
-Additional controls:
-- Press F to switch between fullscreen and windowed modes.
-- Use 1-9 to make it easier to switch between abilities.
-- Press TAB to skip the typewriter effect on story sections.
-
-## Mechanics
-If you already tried the game but are struggling to understand how the puzzles work, read this:
-- You have limited "charges" for each ability on each level.
-- Small magnets can move pushed or pulled by other magnets, while larger magnets are static, always stuck in place.
-- Magnets have polarity (positive / negative) and can be powered or unpowered. Powered magnets will attract or repel each other. Unpowered magnets don't interact.
-- Large magnets have a wider magnetic field than small magnets (3 vs 2 tiles).
-- Circuits can share or transfer power from one magnet to another.
-- In the cases where magnets could be pulled/pushed in different directions, closeness to other magnets and movement inertia are the deciding factors.
+## Controls And Mechanics
+The game requires a mouse to play. For the mechanics, they are explained in the tutorial within the game itself.
 
 ## Licenses
 Code is licensed under the MIT License. Assets are licensed as described in the readme from the [assets folder](https://github.com/tinne26/bindless/tree/main/assets).
 
+## Misc. Esoteric Knowledge
+- Unusual program arguments: `--directx` to use DirectX (Windows only), `--nohighdpi` to ignore DPI scaling, and `--en`, `--es` or `--ca` to set the language from the start.
+- Large magnets have a wider magnetic field than small magnets (3 vs 2 tiles).
+- In the cases where magnets could be pulled/pushed in different directions, closeness to other magnets and movement inertia are the deciding factors.
+
 ## TODO
 I'd like to...
-- Add a more fully fledged ¿optional? tutorial stage after the preamble, explaining magnetism and giving some tips to solve levels.
 - Make different pixel art wireframe scenes for story sections, at least a couple more.
 - Figure out what's the problem with audio loops and Ebitengine streams.
 - Add two extra levels at the end instead of brushing it away with text.
-- Better management of window size / fullscreen on desktop, or explicitly mention F to fullscreen.
-- Spanish and catalan translations.
