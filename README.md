@@ -7,18 +7,23 @@ Bindless is a puzzle game with a dystopian background story. The puzzles are bas
 
 You can play from the browser or download at [itch.io](https://tinne26.itch.io/bindless), get static binaries from the releases here on Github, or if you have Golang 1.18+, you can also build and run directly with:
 ```
-go run github.com/tinne26/bindless@v0.0.1
+go run github.com/tinne26/bindless@v0.0.2
 ```
 *(Notice that on linux Ebitengine has a [few dependencies](https://ebiten.org/documents/install.html?os=linux#Dependencies) that you may need to install if you have never used Ebitengine with Golang.)*
 
 ## Controls And Mechanics
-The game requires a mouse to play. For the mechanics, they are explained in the tutorial within the game itself.
+The game requires a mouse or touchpad to play. For the mechanics, they are explained in the tutorial within the game itself.
 
 ## Licenses
 Code is licensed under the MIT License. Assets are licensed as described in the readme from the [assets folder](https://github.com/tinne26/bindless/tree/main/assets).
 
+Special acknowledgments:
+- [hajimehoshi/ebiten](https://github.com/hajimehoshi/ebiten).
+- [Vernon Adams](https://fonts.google.com/?query=Vernon+Adams) (Coda and many other great fonts).
+- [jeandeaual/go-locale](https://github.com/jeandeaual/go-locale).
+
 ## Misc. Esoteric Knowledge
-- Unusual program arguments: `--directx` to use DirectX (Windows only), `--nohighdpi` to ignore DPI scaling, and `--en`, `--es` or `--ca` to set the language from the start.
+- Unusual program arguments: `--directx` to use DirectX (Windows only), `--windowed` to start the game in windowed mode and `--en`, `--es` or `--ca` to set the language from the start overriding locale autodetection.
 - Large magnets have a wider magnetic field than small magnets (3 vs 2 tiles).
 - In the cases where magnets could be pulled/pushed in different directions, closeness to other magnets and movement inertia are the deciding factors.
 

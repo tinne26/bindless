@@ -1,7 +1,6 @@
 package game
 
 // std library imports
-import "os"
 import "io"
 import "math"
 import "image"
@@ -37,7 +36,6 @@ type Game struct {
 	quickLevelJumpIndex int
 	lastJumpKeyPress ebiten.Key
 
-	disableHighDPI bool
 	fKeyPressed bool
 	dKeyPressed bool
 	fpsDebugActive bool
@@ -46,40 +44,18 @@ type Game struct {
 }
 
 func New(ctx *misc.Context) (*Game, error) {
-	disableHighDPI := false
-	for _, arg := range os.Args {
-		if arg == "--nohighdpi" {
-			disableHighDPI = true
-		}
-	}
-
 	game := &Game{
 		context: ctx,
 		logicalScreen: ebiten.NewImage(640, 360),
 		scene: nil,
-		disableHighDPI: disableHighDPI,
 	}
 
 	return game, nil
 }
 
 func (self *Game) Layout(w, h int) (int, int) {
-	if self.disableHighDPI { return w, h }
 	factor := ebiten.DeviceScaleFactor()
-	if !ebiten.IsFullscreen() {
-		// ignore fractional scaling on windowed mode, as black borders would
-		// be shown anyway (because this game does *only* integer scaling)
-		factor = math.Floor(factor)	
-	}
-	w, h = int(float64(w)*factor), int(float64(h)*factor)
-	
-	// hard limit screen size (see ebiten/issues/2225 (not ebitengine's fault))
-	// maxw, maxh := ebiten.ScreenSizeInFullscreen()
-	// if w > maxw { w = maxw }
-	// if h > maxh { h = maxh }
-	// NOTE: ^ this would require ScreenSizeInFullscreen to not return the
-	//         DPI-adjusted size, but rather the raw resolution
-	return w, h
+	return int(float64(w)*factor), int(float64(h)*factor)
 }
 
 func (self *Game) Update() error {
@@ -334,7 +310,7 @@ func (self *Game) loadScene(id int) error {
 		cfgLevelSound(sound.ObsessiveMechanics)
 		self.scene, err = level.New(self.context, level.FinalGuard)
 		if err != nil { return err }
-	case 22: // infiltration guard level (second part, this one is so cool)
+	case 22: // infiltration guard level (second part, this one is *so cool*)
 		cfgLevelSound(sound.ObsessiveMechanics)
 		self.scene, err = level.New(self.context, level.FinalGuard2)
 		if err != nil { return err }

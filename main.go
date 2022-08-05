@@ -3,6 +3,7 @@ package main
 // std library imports
 import "os"
 import "log"
+import "math"
 import "time"
 import "embed"
 import "math/rand"
@@ -51,14 +52,31 @@ func main() {
 	game, err := game.New(ctx)
 	if err != nil { log.Fatal(err) }
 
-	// configure window and run the game
+	// configure window
 	// ebiten.SetWindowIcon(...)
 	ebiten.SetCursorShape(ebiten.CursorShapeCrosshair)
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 	ebiten.SetWindowTitle("Bindless")
-	ebiten.SetWindowSize(640, 360)
 	ebiten.SetScreenClearedEveryFrame(false)
-	ebiten.SetFullscreen(true)
+	isFullscreen := true
+	for _, arg := range os.Args {
+		if arg == "--windowed" { isFullscreen = false }
+	}
+	ebiten.SetFullscreen(isFullscreen)
+
+	// configure window size (you would have to keep track of device
+	// scale factor and keep adjusting if you want to change device
+	// scale factor through the game, but whatever...)
+	// (actually, moving the window to another monitor can cause
+	//  DPI scale to be changed, though... who wants to do that)
+	scale := ebiten.DeviceScaleFactor()
+	whole, fract := math.Modf(scale)
+	if fract == 0 {
+		ebiten.SetWindowSize(int(640*whole), int(360*whole))
+	} else {
+		cFactor := 1.0/(1.0 + fract)
+		ebiten.SetWindowSize(int(640*whole*cFactor), int(360*whole*cFactor))
+	}
 
 	var file *os.File
 	if profile {
