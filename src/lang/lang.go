@@ -1,11 +1,16 @@
 package lang
 
 import "os"
-// TODO: use a package to autodetect language on init based on locale
+import "log"
+import "strings"
+
+import "github.com/jeandeaual/go-locale"
 
 // yet another package level hack
-var globLang Language = EN
+var globLang Language
 func init() {
+	// program args for language have preference over locale auto-detection
+	globLang = UNSET
 	for _, arg := range os.Args {
 		switch arg {
 		case "--en": globLang = EN
@@ -13,6 +18,33 @@ func init() {
 		case "--ca": globLang = CA
 		}
 	}
+	if globLang != UNSET { return }
+
+	// detect locales
+	locales, err := locale.GetLocales()
+	if err != nil {
+		log.Printf("Error while retrieving locales: %s", err.Error())
+		globLang = ES
+		return
+	}
+
+	// process locales and find best match
+	for _, locale := range locales {
+		langCode := strings.SplitN(locale, "-", 2)[0]
+		switch langCode {
+		case "en":
+			globLang = EN
+			return
+		case "es":
+			globLang = ES
+			return
+		case "ca":
+			globLang = CA
+			return
+		}
+	}
+
+	globLang = EN
 }
 
 func Current() Language { return globLang }
@@ -43,6 +75,7 @@ func (self *Text) English() string { return self.en }
 
 type Language string
 const (
+	UNSET Language = "unset"
 	EN Language = "en" // english
 	ES Language = "es" // spanish / español
 	CA Language = "ca" // catalan / català

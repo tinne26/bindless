@@ -9,6 +9,7 @@ require (
 	github.com/hajimehoshi/ebiten/v2 v2.4.0-alpha.7 // indirect
 	github.com/hajimehoshi/go-mp3 v0.3.3 // indirect
 	github.com/hajimehoshi/oto/v2 v2.2.0-alpha.3 // indirect
+	github.com/jeandeaual/go-locale v0.0.0-20220711133428-7de61946b173 // indirect
 	github.com/jezek/xgb v1.0.0 // indirect
 	github.com/jfreymuth/oggvorbis v1.0.3 // indirect
 	github.com/jfreymuth/vorbis v1.0.2 // indirect
