@@ -23,7 +23,7 @@ func init() {
 	// detect locales
 	locales, err := locale.GetLocales()
 	if err != nil {
-		log.Printf("Error while retrieving locales: %s", err.Error())
+		log.Printf("Error while retrieving locales: %s\n", err.Error())
 		globLang = ES
 		return
 	}

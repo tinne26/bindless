@@ -27,34 +27,34 @@ var episodesRawText = []*lang.Text {
 		"\x0B\x09S\x10C\x10A: \x01\x07...\x02\n" +
 		"\x09S\x10C\x10A: \x01\x07Unable to identify individual.\x04\x02\n" +
 		"\x09Mirko: \x01\x08Exactly what I was hoping for.\x04\x02\n" +
-		"\x09S\x10C\x10A: \x01\x07Unable to identify individual, initiating emergency paralysis \x0Cs\x0De\x0Cq\x0D-#!\x0C\x04\x02\n\n" +
-		"Mirko quickly grabbed his modulated MSP and slapped it onto the street cleaner automaton.\x05\n" +
+		"\x09S\x10C\x10A: \x01\x07Unable to identify individual, initiating emergency paralysis \x0Cs\x0De\x0Cq\x0D-#!\x0C\x04\x02\n" +
+		"\x0BMirko quickly grabbed his modulated MSP and slapped it onto the street cleaner automaton.\x05\n" +
 		"\x0B\x09Mirko: \x01\x07Shut up already.\x02\n" +
 		"\x0B\x08>>",
-		"\x08Afueras de Ritapola, 29 de Junio de 3589\x07\x05\n" +
-		"\x0BMirko saltó justo en frente del automata.\x03\n" +
+		"\x08Afueras de Ritapola, 29 de junio de 3589\x07\x05\n" +
+		"\x0BMirko saltó justo en frente del autómata.\x03\n" +
 		"\x0B\x09A\x10L\x10P: \x01\x07Por favor apártese de la vía mientras realizo mis tareas de limpieza.\x03\x02\n" +
 		"\x09Mirko: \x01\x07Espera! Te he estado buscando durante todo el día!\x03\x02\n" +
 		"\x09A\x10L\x10P: \x01\x07-Por favor apártese de la vía m\x0Di\x0Cen\x0Dtras\x0C\x05\x04\x02\n" +
-		"\x0BLa máquina se congeló de repente.\x05\x04\n" +
+		"\x0BLa máquina se congeló de repente.\x03\x04\n" +
 		"\x0B\x09A\x10L\x10P: \x01\x07...\x02\n" +
-		"\x09A\x10L\x10P: \x01\x07Incapaz de identificar al individuo.\x04\x02\n" +
+		"\x09A\x10L\x10P: \x01\x07Incapaz de identificar individuo.\x04\x02\n" +
 		"\x09Mirko: \x01\x08Justo lo que esperaba.\x04\x02\n" +
-		"\x09A\x10L\x10P: \x01\x07Incapaz de identificar al individuo, iniciando parálisis de emerge\x0C\x0Dn\x0Cc\x0D-#!\x0C\x05\x02\n\n" +
-		"Mirko rápidamente cogió su unidad de MSP modulada y se la pegó al automata barrendero.\x05\n" +
+		"\x09A\x10L\x10P: \x01\x07Incapaz de identificar individuo, iniciando parálisis de emerge\x0C\x0Dn\x0Cc\x0D-#!\x0C\x04\x02\n" +
+		"\x0BMirko rápidamente cogió su unidad de MSP modulada y se la pegó al autómata barrendero.\x05\n" +
 		"\x0B\x09Mirko: \x01\x07Cállate ya.\x02\n" +
 		"\x0B\x08>>",
-		"\x08Afores de Ritapola, 29 de Juny de 3589\x07\x05\n" +
-		"\x0BEn Mirko es va plantar just davant l'automata.\x03\n" +
+		"\x08Afores de Ritapola, 29 de juny de 3589\x07\x05\n" +
+		"\x0BEn Mirko es va moure just davant l'autòmata.\x03\n" +
 		"\x0B\x09A\x10N\x10P: \x01\x07Si us plau aparti's de la via mentre realitzo les tasques de neteja.\x03\x02\n" +
 		"\x09Mirko: \x01\x07Espera! T'he estat buscant durant tot el dia!\x03\x02\n" +
 		"\x09A\x10N\x10P: \x01\x07-Si us plau aparti's de la via m\x0De\x0Cnt\x0Dre\x0C\x05\x04\x02\n" +
-		"\x0BLa màquina es va congelar de cop.\x05\x04\n" +
+		"\x0BLa màquina es va congelar de cop.\x03\x04\n" +
 		"\x0B\x09A\x10N\x10P: \x01\x07...\x02\n" +
 		"\x09A\x10N\x10P: \x01\x07Incapaç d'identificar l'individu.\x04\x02\n" +
 		"\x09Mirko: \x01\x08Precisament el que esperava.\x04\x02\n" +
-		"\x09A\x10N\x10P: \x01\x07Incapaç d'identificar l'individu, iniciant paràlisis d'emergè\x0C\x0Dn\x0Cc\x0D-#!\x0C\x05\x02\n\n" +
-		"En Mirko ràpidament va agafar la seva unitat MSP modulada i la va plantar sobre l'automata de neteja.\x05\n" +
+		"\x09A\x10N\x10P: \x01\x07Incapaç d'identificar l'individu, iniciant paràlisis\nd'emergè\x0C\x0Dn\x0Cc\x0D-#!\x0C\x04\x02\n" +
+		"\x0BEn Mirko ràpidament va agafar la seva unitat MSP modulada i la va plantar sobre l'autòmata de neteja.\x05\n" +
 		"\x0B\x09Mirko: \x01\x07Calla d'una vegada.\x02\n" +
 		"\x0B\x08>>",
 	),
@@ -65,18 +65,38 @@ var episodesRawText = []*lang.Text {
 		"\x0BFor starters, he had to get past the door.\n" +
 		"\x0B\x09Mirko: \x01\x08Will this even work..?\x02\n" +
 		"\x0B\x08>>",
-		"no traducido",
-		"no traduït",
+		"\x08Ritapola, Laboratorios MGNT, 29 de junio de 3589\x07\x05\n" +
+		"\x0BPocas horas después de la prueba del A\x10L\x10P, Mirko se dirigió al complejo de laboratorios de investigación que Indústrias MGNT tenía en la ciudad.\n" +
+		"\x0BLa unidad magnética de un autómata de limpieza tenía un sistema de seguridad muy básico, pero aquí las cosas podrían ser distintas.\n" +
+		"\x0BPara empezar, Mirko necesitaba superar la puerta.\n" +
+		"\x0B\x09Mirko: \x01\x08Funcionará esto..?\x02\n" +
+		"\x0B\x08>>",
+		"\x08Ritapola, Laboratoris MGNT, 29 de juny de 3589\x07\x05\n" +
+		"\x0BPoques hores després de la prova del A\x10N\x10P, en Mirko es va dirigir al complex de laboratoris d'investigació que Indústries MGNT tenia a la ciutat.\n" +
+		"\x0BLa unitat magnètica d'un autòmata de neteja tenia un sistema de seguretat molt bàsic, però aquí les coses podrien ser diferents.\n" +
+		"\x0BPer començar, en Mirko necessitava superar la porta.\n" +
+		"\x0B\x09Mirko: \x01\x08Funcionarà això..?\x02\n" +
+		"\x0B\x08>>",
 	),
 	lang.NewText(
 		"\x08Ritapola, inside MGNT Research Lab\x07\x05\n" +
-		"\x0BMirko gained access to the facility and started searching the rooms, but a guard automaton detected him and quickly approached.\n" +
+		"\x0BMirko gained access to the facility and started searching the rooms, but a guard automaton detected him and quickly approached.\x03\n" +
 		"\x0B\x09Mirko: \x01\x08Aarrghh... wish I didn't have to meet you.\x07\x04\x02\n" +
 		"\x0BThe automaton attempted to stop Mirko with magnetic commands, but like earlier, the attempts had no effect.\x04\n" +
 		"\x0BMirko didn't have an MSP implanted in the spine anymore.\n" +
 		"\x0B\x08>>",
-		"no traducido",
-		"no traduït",
+		"\x08Ritapola, dentro los Laboratorios MGNT\x07\x05\n" +
+		"\x0BMirko consiguió acceder al complejo y empezó a buscar en cada habitación, pero un autómata de seguridad rápidamente lo detectó y se acercó a él.\x03\n" +
+		"\x0B\x09Mirko: \x01\x08Aarrghh... hubiese preferido no tener que conocerte.\x07\x04\x02\n" +
+		"\x0BEl autómata intentó detener a Mirko con comandos magnéticos, pero tal como antes, el intento fue en vano.\x04\n" +
+		"\x0BMirko ya no tenía ninguna unidad MSP implantada en la columna.\n" +
+		"\x0B\x08>>",
+		"\x08Ritapola, dins els Laboratoris MGNT\x07\x05\n" +
+		"\x0BEn Mirko va entrar al complex i va començar a buscar en cada habitació, però un autòmata de seguretat ràpidament el va detectar i es va apropar a ell.\x03\n" +
+		"\x0B\x09Mirko: \x01\x08Aarrghh... hagués preferit no haver-te de conèixer.\x07\x04\x02\n" +
+		"\x0BL'autòmata va tractar d'immobilitzar en Mirko amb directives magnètiques, però tal com abans, l'intent va ser inútil.\x04\n" +
+		"\x0BEn Mirko ja no tenia cap unitat MSP implantada a la columna.\n" +
+		"\x0B\x08>>",
 	),
 	lang.NewText(
 		"\x08Ritapola, inside MGNT Research Lab\x07\x05\n" +
@@ -85,8 +105,18 @@ var episodesRawText = []*lang.Text {
 		"\x0B\x09Mirko: \x01\x08These are definitely not easy to come by. Let's hope they don't notice them missing too soon..\x07\x04\x02\n" +
 		"\x0BMirko grabbed the two military-grade MSP units and promptly left the scene.\n" +
 		"\x0B\x08>>",
-		"no traducido",
-		"no traduït",
+		"\x08Ritapola, dentro los Laboratorios MGNT\x07\x05\n" +
+		"\x0BTras desactivar el autómata de seguridad, Mirko retomó la búsqueda.\n" +
+		"\x0BCon solo unas pocas habitaciones restantes, finalmente encontró lo que buscaba.\n" +
+		"\x0B\x09Mirko: \x01\x08Estas no son nada fáciles de ver por ahí. Espero que no las echen de menos demasiado pronto..\x07\x04\x02\n" +
+		"\x0BMirko cogió las dos unidades MSP militares e inmediatamente abandonó la escena.\n" +
+		"\x0B\x08>>",
+		"\x08Ritapola, dins els Laboratoris MGNT\x07\x05\n" +
+		"\x0BDesprés de desactivar l'autòmata de seguretat, en Mirko va reiniciar la cerca.\n" +
+		"\x0BQuan només quedaven quatre habitacions comptades, finalment va trobar el que buscava.\n" +
+		"\x0B\x09Mirko: \x01\x08No s'en veuen sovint, d'aquestes. Espero que no les trobin a faltar massa aviat..\x07\x04\x02\n" +
+		"\x0BEn Mirko va agafar les dues unitats MSP militars i immediatament va abandonar l'escena.\n" +
+		"\x0B\x08>>",
 	),
 	lang.NewText(
 		"\x08Ritapola, hidden drop-off location, 12 July 3589\x07\x05\n" +
@@ -98,12 +128,28 @@ var episodesRawText = []*lang.Text {
 		"\x0B\x07Jana had finally done it.\x04\n" +
 		"\x0B\x08The ability \x09[Switch]\x08 has been unlocked.\n" +
 		"\x0B\x08>>",
-		"no traducido",
-		"no traduït",
+		"\x08Ritapola, punto de entrega secreto, 12 de julio de 3589\x07\x05\n" +
+		"\x0BComo cada día, Mirko revisó el escondrijo.\n" +
+		"\x0B\x09Mirko: \x01\x08\x0D!\x0C\x02\x04\n" +
+		"\x0B\x07Mirko cogió la nota y la leyó con afán:\x04\n" +
+		"\x0B\x09Jana: \x01\x08No puedo garantizar que sea 100% seguro, pero es lo mejor que he podido hacer. Tendría que ser yo la que hiciera esto, no tú. Ya sé que Joseph es tu hermano, pero me mata tener que quedarme aquí esperando. A veces me quitaría mi MSP yo misma. Lo sé, lo sé, no te preocupes, me contendré.\x03\n" +
+		"\x0BNo te excedas demasiado. Y buena suerte ahí fuera.\x02\x05\n" +
+		"\x0B\x07Jana finalmente lo había conseguido.\x04\n" +
+		"\x0B\x08La habilidad \x09[Switch]\x08 ha sido desbloqueada.\n" +
+		"\x0B\x08>>",
+		"\x08Ritapola, punt d'entrega secret, 12 de juliol de 3589\x07\x05\n" +
+		"\x0BCom cada dia, en Mirko va revisar l'amagatall.\n" +
+		"\x0B\x09Mirko: \x01\x08\x0D!\x0C\x02\x04\n" +
+		"\x0B\x07En Mirko va treure la nota i va llegir ansiosament:\x04\n" +
+		"\x0B\x09Jana: \x01\x08No puc garantitzar que sigui 100% segur, però és el millor que he pogut fer. Hauria de ser jo qui fes això, no tu. Ja sé que en Joseph és el teu germà, però em mata haver de quedar-me aquí esperant. A vegades em treuria la MSP jo mateixa. Ho sé, ho sé, no et preocupis, em contindré.\x03\n" +
+		"\x0BNo t'excedeixis massa allà fora. Bona sort.\x02\x05\n" +
+		"\x0B\x07La Jana finalment ho havia aconseguit.\x04\n" +
+		"\x0B\x08L'habilitat \x09[Switch]\x08 ha estat desbloquejada.\n" +
+		"\x0B\x08>>",
 	),
 	lang.NewText(
 		"\x08Marunka Machart's cottage, 14 July 3589\x07\x05\n" +
-		"\x0BMirko had been waiting in hidding for the last 6 hours. Marunka Machart, the Leadership member suspected of Joseph's disappearance, had left the place an hour ago.\x04\n" +
+		"\x0BMirko had been waiting in hidding for the last 6 hours. Marunka Machart, the Headsteer member suspected of Joseph's disappearance, had left the place an hour ago.\x04\n" +
 		"\x0BIt was time to find what was inside that place.\n" +
 		"\x0BMirko approached silently and tried to sneak, but the attempt for stealth was futile. As soon as he jumped the fence, a guard automaton popped up from nowhere.\n" +
 		"\x0BDisastrously for Mirko, the guard didn't go right away after him, but retreated to report the breach first.\n" +
@@ -129,7 +175,7 @@ var episodesRawText = []*lang.Text {
 		"\x0B\x09Man: \x01\x07Who..? \x0EWho are you?\x0C\x02\x04\n" +
 		"\x0BBefore Mirko could respond, a woman came running from another room.\n" +
 		"\x0B\x09Woman: \x01\x07Did you come to rescue us?\x02\n" +
-		"\x0BHer eyes told him everything. High-profile members of Leadership abusing MSP units to turn people into slaves.. was no longer just a rumor.\n" +
+		"\x0BHer eyes told him everything. High-profile members of Headsteer abusing MSP units to turn people into slaves.. was no longer just a rumor.\n" +
 		"\x0B\x09Man: \x01\x07-Kayla, don't-\x02\x04\n" +
 		"\x09Mirko: \x01\x07Something like that. But we don't have time. Is Joseph Tatar here?\x02\x04\n" +
 		"\x09Kayla: \x01\x07Joseph was taken somewhere else two weeks ago.\x02\n" +

@@ -21,16 +21,16 @@ var levelTexts = map[int]*lang.Text {
 	1: lang.NewText(
 		"\x08MSP Hacking Tutorial ( 2 / 6 )\x07\n" +
 		"\x0B\x09Electromagnet Types\x07\n" +
-		"\x0BOnly small electromagnets that are floating can move; large electromagnets are always static, anchored to a fixed point. \n" +
+		"\x0BOnly small electromagnets that are floating can move; large electromagnets stay always anchored to a fixed location. \n" +
 		"\x0BUnpowered electromagnets don't interact magnetically, but may still act as physical blockers.",
 		"\x08MSP Tutorial de Jaqueo de MSPs ( 2 / 6 )\x07\n" +
 		"\x0B\x09Tipos de Electroimanes\x07\n" +
-		"\x0BSolo los electroimanes pequeños que están flotando pueden moverse; los electroimanes grandes son siempre estáticos, anclados a un punto fijo.\n" +
-		"\x0BLos electroimanes inactivos no interaccionan magnéticamente, pero pueden actuar como obstáculos de todas formas.",
+		"\x0BSolo los electroimanes pequeños que están flotando pueden moverse; los electroimanes grandes están siempre fijos.\n" +
+		"\x0BLos electroimanes inactivos no interaccionan magnéticamente, pero pueden actuar como obstáculos físicos igualmente.",
 		"\x08MSP Tutorial de Pirateig de MSPs ( 2 / 6 )\x07\n" +
 		"\x0B\x09Tipus d'electroimants\x07\n" +
-		"\x0BNomés els electroimants petits que estan flotant poden moure's; els electroimants grans són sempre estàtics, ancorats a un punt fix.\n" +
-		"\x0BEls electroimants inactius no interaccionen magnèticament, però poden actuar com a obstacles de totes maneres.",
+		"\x0BNomés els electroimants menuts que estan flotant poden moure's; els electroimants grans són sempre fixos.\n" +
+		"\x0BEls electroimants inactius no interaccionen magnèticament, però poden actuar com a obstacles físics igualment.",
 	),
 	2: lang.NewText(
 		"\x08MSP Hacking Tutorial ( 3 / 6 )\x07\n" +
@@ -41,24 +41,24 @@ var levelTexts = map[int]*lang.Text {
 		"\x0BLos electroimanes no interactúan con todos los demás elementos a su alrededor, solo aquellos en la misma fila o columna que estén lo suficientemente cerca.",
 		"\x08MSP Tutorial de Pirateig de MSPs ( 3 / 6 )\x07\n" +
 		"\x0B\x09Les Caselles\x07\n" +
-		"\x0BEls electroimants no interactuen amb tots els altres elements al seu voltant, només aquells en la mateixa fila o columna que es trobin prou a prop.",
+		"\x0BEls electroimants no interactuen amb tots els altres elements al seu voltant, només aquells de la mateixa fila o columna que es trobin prou a prop.",
 	),
 	3: lang.NewText(
 		"\x08MSP Hacking Tutorial ( 4 / 6 )\x07\n" +
 		"\x0B\x09Resolution\x07\n" +
-		"\x0BTo successfully take control of an MSP, you must manage to place an electromagnet on top of a field point of the same polarity.\n" + 
+		"\x0BTo successfully take control of an MSP you must manage to place an electromagnet on top of a circular field point of the same polarity.\n" + 
 		"\x0BIn order to do this, you have to use the abilities on the bottom left part of the screen. You have a limited amount of charges per level.\n" +
-		"\x0BSelect and find where to use the abilities to solve this level.",
+		"\x0BSelect the abilities and find where to use them to solve this level.",
 		"\x08MSP Tutorial de Jaqueo de MSPs ( 4 / 6 )\x07\n" +
 		"\x0B\x09Resolución\x07\n" +
-		"\x0BPara tomar control de un MSP, debes conseguir colocar un electroimán sobre cualquier objetivo de la misma polaridad.\n" +
-		"\x0BPara hacer esto has de usar las habilidades de la parte inferior izquierda de la pantalla. Tienes un número limitado de cargas por nivel.\n" +
-		"\x0BSelecciona y encuentra dónde usar las habilidades para resolver este nivel.",
+		"\x0BPara tomar el control de un MSP debes conseguir colocar un electroimán sobre cualquier objetivo circular de la misma polaridad.\n" +
+		"\x0BPara hacer esto necesitas usar las habilidades de la parte inferior izquierda de la pantalla. El número de cargas por nivel es limitado.\n" +
+		"\x0BSelecciona las habilidades y descubre dónde usarlas para resolver este nivel.",
 		"\x08MSP Tutorial de Pirateig de MSPs ( 4 / 6 )\x07\n" +
 		"\x0B\x09Resol·lució\x07\n" +
-		"\x0BPer obtenir el control d'un MSP, has d'aconseguir col·locar un electroimant sobre qualsevol objectiu de la mateixa polaritat.\n" +
+		"\x0BPer obtenir el control d'un MSP has d'aconseguir col·locar un electroimant sobre qualsevol objectiu circular de la mateixa polaritat.\n" +
 		"\x0BPer fer-ho has d'utilitzar les habilitats de la part inferior esquerra de la pantalla. Tens un nombre limitat de càrregues per nivell.\n" +
-		"\x0BSelecciona i descobreix on fer servir les habilitats per resoldre aquest nivell.",
+		"\x0BSelecciona les habilitats i descobreix on fer-les servir per superar aquest nivell.",
 	),
 	4: lang.NewText(
 		"\x08MSP Hacking Tutorial ( 5 / 6 )\x07\n" +
@@ -69,7 +69,8 @@ var levelTexts = map[int]*lang.Text {
 		"\x08MSP Tutorial de Jaqueo de MSPs ( 5 / 6 )\x07\n" +
 		"\x0B\x09Circuitos y Carga\x07\n" +
 		"\x0BLos circuitos se pueden usar para activar los electroimanes o transferir carga entre ellos.\n" + 
-		"\x0BUsa las habilidades de la parte inferior izquierda de la pantalla para experimentar con esto. Aprovecha esta oportunidad para entender mejor cómo funcionan \x09Dock\x07 (acoplar) y \x09Rewire\x07 (reconectar).\n" +
+		"\x0BUsa las habilidades de la parte inferior izquierda de la pantalla para experimentar con esto.\n" +
+		"\x0BAprovecha también para entender mejor cómo funcionan \x09Dock\x07 (acoplar) y \x09Rewire\x07 (reconectar).\n" +
 		"\x0BPara practicar, intenta alcanzar la marca roja repetidamente sin usar la opción de recarga de habilidades.",
 		"\x08MSP Tutorial de Pirateig de MSPs ( 5 / 6 )\x07\n" +
 		"\x0B\x09Circuits i Càrrega\x07\n" +
@@ -82,26 +83,26 @@ var levelTexts = map[int]*lang.Text {
 		"\x0B\x09Synchrony\x07\n" +
 		"\x0BElectromagnets always move in synchrony through the tiles. Correspondingly, used abilities aren't activated until the current movement cycle ends.\n" + 
 		"\x0BSometimes finding a way forward requires more than the right sequence of actions.\n" +
-		"\x0BSolve the level to complete the tutorial. If you fail, click on the bottom right menu icon to reset the level.",
+		"\x0BSolve the level to complete the tutorial. If you fail, click on the bottom right menu icon to reset.",
 		"\x08MSP Tutorial de Jaqueo de MSPs ( 6 / 6 )\x07\n" +
 		"\x0B\x09Sincronía\x07\n" +
 		"\x0BLos electroimanes se mueven en sincronía a través de las casillas. Correspondientemente, las habilidades usadas no se activan hasta que el ciclo de movimiento actual termina.\n" + 
-		"\x0BEncontrar soluciones puede requerir algo más que la secuencia de acciones correcta.\n" +
-		"\x0BResuelve el nivel para completar el tutorial. Si no lo consigues, pulsa el icono de la parte inferior derecha de la pantalla para reiniciar el nivel.",
+		"\x0BEncontrar las soluciones puede requerir algo más que la secuencia de acciones correcta.\n" +
+		"\x0BResuelve el nivel para completar el tutorial. Si fallas, pulsa el icono de la parte inferior derecha de la pantalla para reiniciar.",
 		"\x08MSP Tutorial de Pirateig de MSPs ( 6 / 6 )\x07\n" +
 		"\x0B\x09Sincronia\x07\n" +
 		"\x0BEls electroimants es mouen en sincronia a través de les caselles. Corresponentment, les habilitats usades no s'activen fins que el cicle de moviment actual acaba.\n" + 
 		"\x0BTrobar sol·lucions de vegades requereix alguna cosa més que la seqüència d'accions correcta.\n" +
-		"\x0BResol el nivell per completar el tutorial. Si falles, clica la icona de la part inferior dreta de la pantalla per reiniciar el nivell.",
+		"\x0BResol el nivell per completar el tutorial. Si falles, clica la icona de la part inferior dreta de la pantalla per reiniciar.",
 	),
 	6: lang.NewText(
 		"Street Cleaning Automaton\n\x08MSP V16.349.12 SHELL",
-		"Automata de Limpieza Pública\n\x08MSP V16.349.12 SHELL",
+		"Autómata de Limpieza Pública\n\x08MSP V16.349.12 SHELL",
 		"Autòmata de Neteja Pública\n\x08MSP V16.349.12 SHELL",
 	),
 	7: lang.NewText(
 		"Street Cleaning Automaton\n\x08MSP V16.349.12 CORE",
-		"Automata de Limpieza Pública\n\x08MSP V16.349.12 CORE",
+		"Autómata de Limpieza Pública\n\x08MSP V16.349.12 CORE",
 		"Autòmata de Neteja Pública\n\x08MSP V16.349.12 CORE",
 	),
 	8: lang.NewText(
@@ -110,14 +111,25 @@ var levelTexts = map[int]*lang.Text {
 		"BackSafe Porta Model W\n\x08MSP V16.410.07 CORE",
 	),
 	9: lang.NewText(
-		"MTT GentleGuard 2\n\x08MSP V16.388.65 SHELL",
-		"MTT GentleGuard 2\n\x08MSP V16.388.65 SHELL",
-		"MTT GentleGuard 2\n\x08MSP V16.388.65 SHELL",
+		"MGNT GentleGuard K2\n\x08MSP V16.388.65 SHELL",
+		"MGNT GentleGuard K2\n\x08MSP V16.388.65 SHELL",
+		"MGNT GentleGuard K2\n\x08MSP V16.388.65 SHELL",
 	),
 	10: lang.NewText(
-		"MTT GentleGuard 2\n\x08MSP V16.388.65 CORE",
-		"MTT GentleGuard 2\n\x08MSP V16.388.65 CORE",
-		"MTT GentleGuard 2\n\x08MSP V16.388.65 CORE",
+		"MGNT GentleGuard K2\n\x08MSP V16.388.65 CORE",
+		"MGNT GentleGuard K2\n\x08MSP V16.388.65 CORE",
+		"MGNT GentleGuard K2\n\x08MSP V16.388.65 CORE",
+	),
+	11: lang.NewText(
+		"\x08Modulated MSP Tutorial\x07\n" +
+		"\x0B\x09Switch\x07\n" +
+		"\x0BThe \x09Switch\x07 ability allows changing the polarity of a small electromagnet. It can be used on any powered small electromagnet, even if it's docked.",
+		"\x08Tutorial MSP Modulada\x07\n" +
+		"\x0B\x09Switch\x07\n" +
+		"\x0BLa habilidad \x09Switch\x07 (conmutar) permite cambiar la polaridad de un electroimán pequeño. Se puede usar sobre cualquier electroimán pequeño activado, incluso si no está flotando.",
+		"\x08Tutorial MSP Modulada\x07\n" +
+		"\x0B\x09Switch\x07\n" +
+		"\x0BL'habilitat \x09Switch\x07 (commutar) permet alternar la polaritat d'un electroimant menut. Es pot utilitzar sobre qualsevol electroimant, fins i tot si no està flotant.",
 	),
 }
 
@@ -130,6 +142,9 @@ var uiOptNext = &ui.HChoice {
 var uiOptSolve = &ui.HChoice {
 	Text: lang.NewText("[ Solve to continue ]", "[ Resuelve para seguir ]", "[ Resol per continuar ]"),
 }
+var uiOptSkip = &ui.HChoice {
+	Text: lang.NewText("[ Skip tutorial ]", "[ Saltar el tutorial ]", "[ Saltar el tutorial ]"),
+}
 var uiRecharge = &ui.HChoice {
 	Text: lang.NewText("[ Recharge abilities ]", "[ Recargar habilidades ]", "[ Recarregar habilitats ]"),
 }
@@ -141,6 +156,7 @@ var LevelChoices = map[int][]*ui.HChoice {
 	3: []*ui.HChoice{ uiOptPrev, uiOptSolve },
 	4: []*ui.HChoice{ uiOptPrev, uiRecharge, uiOptNext },
 	5: []*ui.HChoice{ uiOptPrev, uiOptSolve },
+	11: []*ui.HChoice{ uiOptSkip, uiOptSolve },
 }
 
 

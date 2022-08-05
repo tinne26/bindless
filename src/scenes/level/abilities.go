@@ -39,6 +39,7 @@ func (self *Abilities) ConsumeCharge() {
 	}
 }
 
+const abilityIconLogSeparation = 2
 func (self *Abilities) Update(click bool, logCursorX, logCursorY int) {
 	if self.BlinkLeft > 0 { self.BlinkLeft -= 1 }
 	if self.CantSelectLeft > 0 { self.CantSelectLeft -= 1 }
@@ -52,7 +53,7 @@ func (self *Abilities) Update(click bool, logCursorX, logCursorY int) {
 			if pointWithinRect(cx, cy, x, y, x + 29, y + 29) {
 				target = index
 			}
-			x += 29 + 4
+			x += 29 + abilityIconLogSeparation
 		}
 	}
 
@@ -134,22 +135,15 @@ func (self *Abilities) HasChargesLeft(abilityId uint8) bool {
 func (self *Abilities) Draw(screen *ebiten.Image) {
 	x, y := 10, 360 - 9 - 29
 
-	if self.Dock != -1 {
-		self.drawAbility(screen, x, y, 1, self.Dock, graphics.IconDock, graphics.HudDock)
-		x += 29 + 4
+	var drawFn = func(abilityIndex uint8, charges int8, icon, word *ebiten.Image) {
+		self.drawAbility(screen, x, y, abilityIndex, charges, icon, word)
+		x += 29 + abilityIconLogSeparation
 	}
-	if self.Rewire != -1 {
-		self.drawAbility(screen, x, y, 2, self.Rewire, graphics.IconRewire, graphics.HudRewire)
-		x += 29 + 4
-	}
-	if self.Switch != -1 {
-		self.drawAbility(screen, x, y, 3, self.Switch, graphics.IconSwitch, graphics.HudSwitch)
-		x += 29 + 4
-	}
-	if self.Spectre != -1 {
-		self.drawAbility(screen, x, y, 4, self.Spectre, graphics.IconSpectre, graphics.HudSpectre)
-		x += 29 + 4
-	}
+
+	if self.Dock    != -1 { drawFn(1, self.Dock   , graphics.IconDock   , graphics.HudDock   ) }
+	if self.Rewire  != -1 { drawFn(2, self.Rewire , graphics.IconRewire , graphics.HudRewire ) }
+	if self.Switch  != -1 { drawFn(3, self.Switch , graphics.IconSwitch , graphics.HudSwitch ) }
+	if self.Spectre != -1 { drawFn(4, self.Spectre, graphics.IconSpectre, graphics.HudSpectre) }
 }
 
 func (self *Abilities) DrawWordHint(screen *ebiten.Image, col, row int16, word *ebiten.Image) {

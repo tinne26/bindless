@@ -60,3 +60,8 @@ func DrawRect(target *ebiten.Image, rgba color.RGBA) {
 	}	
 	target.DrawTriangles(vertices, []uint16{0, 2, 1, 1, 2, 3}, miniMask, nil)
 }
+
+func MinInt(a, b int) int {
+	if a <= b { return a }
+	return b
+}

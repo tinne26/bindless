@@ -1,7 +1,6 @@
 package level
 
 import "image"
-import "image/color"
 import "fmt"
 import "sort"
 
@@ -60,7 +59,6 @@ type Level struct {
 
 	leftClickPressed bool
 	offscreen *ebiten.Image
-	renderer *etxt.Renderer
 	infoWriter *typewriter.Writer
 	horzChoice *ui.HorzChoice
 	auxMenu *AuxMenu
@@ -72,14 +70,8 @@ func New(ctx *misc.Context, key levelKey) (*Level, error) {
 	winPoints := makeLevelWinPoints(key)
 	highlight := &tileHighlight{}
 
-	renderer := etxt.NewStdRenderer()
-	renderer.SetCacheHandler(ctx.FontCache.NewHandler())
-	renderer.SetAlign(etxt.Bottom, etxt.Right)
-	renderer.SetQuantizationMode(etxt.QuantizeNone) // TODO: if quantized, bug with cache
-	                                                //       not keeping track of quantization
 	coda := ctx.FontLib.GetFont("Coda Regular")
 	if coda == nil { return nil, fmt.Errorf("missing 'Coda' font") }
-	renderer.SetFont(coda)
 
 	lvl := &Level {
 		key: key,
@@ -97,7 +89,6 @@ func New(ctx *misc.Context, key levelKey) (*Level, error) {
 		circuits: circuits,
 		tick: cycleTicks,
 		offscreen: ebiten.NewImage(640, 360),
-		renderer: renderer,
 		pressingRestart: misc.SkipKeyPressed(),
 	}
 
@@ -160,6 +151,7 @@ func (self *Level) Update(logCursorX, logCursorY int) error {
 		if self.fade == fadeOut { self.auxMenu.active = false }
 		if wasActive || self.auxMenu.active {
 			self.pressingRestart = true
+			self.leftClickPressed = true
 			return nil
 		}
 	}
@@ -492,62 +484,6 @@ func (self *Level) DrawHiRes(screen *ebiten.Image, zoomLevel float64) {
 		}
 	}
 	self.auxMenu.DrawHiRes(screen, zoomLevel)
-	return // TODO: complete when necessary
-
-	// draw tutorial info and other misc text
-	var text string
-	if len(self.raisingMagnets) > 0 {
-		if self.key == SwitchTutorial {
-			text = "Tutorial level complete..."
-		} else {
-			text = "Disabling MSP security layer..."
-		}
-	} else if self.floatMagnetCount == 0 {
-		text = "(press ESC or TAB to restart the level)"
-	} else if self.key == CleanerTestDock {
-		if self.abilities.Dock > 0 {
-			if self.abilities.Selected != 1 {
-				text = "(click the first icon on the bottom left to select the 'Dock' ability)"
-			} else {
-				text = "(click on the tile below the floating magnet to use the selected ability)"
-			}
-		}
-	} else if self.key == CleanerTestRewire {
-		if self.abilities.Rewire > 0 {
-			if self.abilities.Selected != 2 {
-				text = "(select the 'Rewire' ability. Numeric keys also work (try 2))"
-			} else {
-				text = "(use 'Rewire' on the tile where the wires split)"
-			}
-		}
-	} else if self.key == CleanerAutomaton {
-		text = "(press ESC or TAB to restart the level when you get locked)"
-	} else if self.key == SwitchTutorial {
-		if self.abilities.Switch > 0 {
-			if self.abilities.Selected != 3 {
-				text = "('Switch' allows changing the polarity of small magnets)"
-			} else {
-				text = "('Switch' can be used on small magnets even if they are docked)"
-			}
-		} else {
-			magnet := self.getFloatMagnet(16, 20)
-			if magnet != nil {
-				if magnet.Polarity() != dev.PolarityNegative && !magnet.HasPendingSwitch() {
-					text = "(yeah, that won't work, but kudos for experimenting ^^)"
-				}
-			}
-		}
-	}
-
-	if text != "" {
-		if self.opacity <= 95 { return }
-		self.renderer.SetColor(color.RGBA{255, 255, 255, self.opacity - 95})
-		self.renderer.SetTarget(screen)
-		self.renderer.SetSizePx(misc.ScaledFontSize(10, zoomLevel))
-
-		bounds := screen.Bounds()
-		self.renderer.Draw(text, bounds.Max.X - int(10*zoomLevel), bounds.Max.Y - int(10*zoomLevel))
-	}
 }
 
 func (self *Level) getFloatMagnet(col, row int16) *dev.FloatMagnet {
@@ -577,7 +513,7 @@ func (self *Level) setupHorzChoices(ctx *misc.Context, font *etxt.Font, key leve
 			} else {
 				choice.Handler = self.fnPrevHandler
 			}
-		case "[ Next ]":
+		case "[ Next ]", "[ Skip tutorial ]":
 			choice.Handler = self.fnNextHandler
 		case "[ Solve to continue ]":
 			choice.Handler = nil
