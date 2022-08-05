@@ -150,14 +150,28 @@ var episodesRawText = []*lang.Text {
 	lang.NewText(
 		"\x08Marunka Machart's cottage, 14 July 3589\x07\x05\n" +
 		"\x0BMirko had been waiting in hidding for the last 6 hours. Marunka Machart, the Headsteer member suspected of Joseph's disappearance, had left the place an hour ago.\x04\n" +
-		"\x0BIt was time to find what was inside that place.\n" +
+		"\x0BIt was time to find what was inside that place.\x04\n" +
 		"\x0BMirko approached silently and tried to sneak, but the attempt for stealth was futile. As soon as he jumped the fence, a guard automaton popped up from nowhere.\n" +
 		"\x0BDisastrously for Mirko, the guard didn't go right away after him, but retreated to report the breach first.\n" +
 		"\x0BAs soon as alarms went off, it turned again towards Mirko.\n" +
 		"\x0B\x09Mirko: \x01\x08Tsk.\x02\x03\x07\n" +
 		"\x0B\x08>>",
-		"no traducido",
-		"no traduït",
+		"\x08Chalet rural de Marunka Machart, 14 de julio de 3589\x07\x05\n" +
+		"\x0BMirko se había estado escondiendo durante las últimas 6 horas. Marunka Machart, la integrante de Cabecera sospechosa de la desaparición de Joseph, había salido una hora antes.\x04\n" +
+		"\x0BEra el momento de ver qué pasaba ahí dentro.\x04\n" +
+		"\x0BMirko se acercó sigilosamente, pero sus esfuerzos fueron en baladí. Tan pronto saltó la verja, un autómata apareció de la nada.\n" +
+		"\x0BPor si faltaba más el autómata no fue a perseguirlo directamente, sinó que primero se retiró a comunicar la intrusión.\n" +
+		"\x0BEn cuanto las alarmas sonaron, volvió a girarse hacia él.\n" +
+		"\x0B\x09Mirko: \x01\x08Tsk.\x02\x03\x07\n" +
+		"\x0B\x08>>",
+		"\x08Xalet rural de Marunka Machart, 14 de juliol de 3589\x07\x05\n" +
+		"\x0BEn Mirko s'havia estat amagant durant les últimes 6 hores. Marunka Machart, la integrant de Capçalera sospitosa de la desaparició d'en Joseph, havia sortit una hora abans.\x04\n" +
+		"\x0BEra el moment de veure què passava allà dins.\x04\n" +
+		"\x0BEn Mirko es va apropar sigil·losament, però la seva cautela va ser inútil. Tan aviat va saltar la tanca, un autòmata va aparèixer del no res.\n" +
+		"\x0BPer a major desgràcia encara, l'autòmata no va començar a perseguir-lo directament, sinò que es va retirar a comunicar la intrusió primer.\n" +
+		"\x0BQuan les alarmes estaven sonant, va tornar a girar-se cap a ell.\n" +
+		"\x0B\x09Mirko: \x01\x08Tsk.\x02\x03\x07\n" +
+		"\x0B\x08>>",
 	),
 	lang.NewText(
 		"\x08Marunka Machart's cottage, 14 July 3589\x07\x05\n" +
@@ -166,8 +180,18 @@ var episodesRawText = []*lang.Text {
 		"\x0B\x09Mirko: \x01\x08Damn, this is \x0Ereally going to be\x0C a close call...\x02\x07\n" +
 		"\x09Mirko: \x01\x08\"Don't push it too hard\"..? Sorry, Jana.\x02\x07\n" +
 		"\x0B\x08>>",
-		"no traducido",
-		"no traduït",
+		"\x08Chalet rural de Marunka Machart, 14 de julio de 3589\x07\x05\n" +
+		"\x0BA Mirko le costó lo suyo desactivar el autómata y ya no quedaba tiempo que perder. Seguridad llegaría en cualquier momento.\x04\n" +
+		"\x0BEl piso principal parecía vacío, así que Mirko bajó directamente al sótano. Allí, una puerta de alta seguridad impedía el acceso.\n" +
+		"\x0B\x09Mirko: \x01\x08Maldita sea, \x0Erealmente esto\x0C va a ser muy justo...\x02\x07\n" +
+		"\x09Mirko: \x01\x08\"No te excedas demasiado\"..? Lo siento, Jana.\x02\x07\n" +
+		"\x0B\x08>>",
+		"\x08Xalet rural de Marunka Machart, 14 de juliol de 3589\x07\x05\n" +
+		"\x0BA en Mirko li va costar Déu i ajuda desactivar l'autòmata i ja no hi havia temps a pedre. Seguretat arribaria en qualsevol moment.\x04\n" +
+		"\x0BEl pis principal semblava buit, així que en Mirko va baixar directament al soterrani. Allà, una porta d'alta seguretat impedia l'accés.\n" +
+		"\x0B\x09Mirko: \x01\x08Merda, \x0Erealment això\x0C serà molt just...\x02\x07\n" +
+		"\x09Mirko: \x01\x08\"No t'excedeixis massa\"..? Ho sento, Jana.\x02\x07\n" +
+		"\x0B\x08>>",
 	),
 	lang.NewText(
 		"\x08Marunka Machart's basement, 14 July 3589\x07\x05\n" +
@@ -181,7 +205,27 @@ var episodesRawText = []*lang.Text {
 		"\x09Kayla: \x01\x07Joseph was taken somewhere else two weeks ago.\x02\n" +
 		"\x0BA third man came out of the hallway.\x05 As much as he wanted to find his brother, Mirko had to free them first.\n" +
 		"\x0B\x08>>",
-		"no traducido",
-		"no traduït",
+		"\x08Sótano del chalet de Marunka Machart, 14 de julio de 3589\x07\x05\n" +
+		"\x0BEl interior era espacioso. Un hombre se sentaba en un sofá leyendo un libro. Al ver a Mirko, se levantó de inmediato.\n" +
+		"\x0B\x09Hombre: \x01\x07Quién..? \x0EQuién eres?\x0C\x02\x04\n" +
+		"\x0BAntes de que Mirko pudiera responder, una mujer llegó corriendo desde otra habitación.\n" +
+		"\x0B\x09Mujer: \x01\x07Has venido a rescatarnos?\x02\n" +
+		"\x0BSus ojos lo decían todo. Lo de los altos cargos de Cabecera abusando las unidades MSP para esclavizar a personas.. ya no era solo un rumor.\n" +
+		"\x0B\x09Hombre: \x01\x07-Kayla, no-\x02\x04\n" +
+		"\x09Mirko: \x01\x07Algo así. Pero no hay tiempo. Está Joseph Tatar aquí?\x02\x04\n" +
+		"\x09Kayla: \x01\x07Se lo llevaron a alguna otra parte hace dos semanas.\x02\n" +
+		"\x0BUn tercer individuo salió del pasillo.\x05 Por más que quisiera encontrar a su hermano, tenía que ayudarlos a ellos primero.\n" +
+		"\x0B\x08>>",
+		"\x08Soterrani del xalet de Marunka Machart, 14 de juliol de 3589\x07\x05\n" +
+		"\x0BL'interior era espaiós. Un home estava assegut al sofà llegint un llibre. Al veure en Mirko, l'home es va aixecar de cop.\n" +
+		"\x0B\x09Home: \x01\x07Qui..? \x0EQui ets?\x0C\x02\x04\n" +
+		"\x0BAbans que en Mirko pogués contestar, una dona va arribar corrent des d'una altra sala.\n" +
+		"\x0B\x09Dona: \x01\x07Has vingut a rescatar-nos?\x02\n" +
+		"\x0BEls seus ulls ho deien tot. Alts càrrecs de Capçalera abusant les unitats MSP para esclavitzar a persones.. ja no era només un rumor.\n" +
+		"\x0B\x09Home: \x01\x07-Kayla, no-\x02\x04\n" +
+		"\x09Mirko: \x01\x07Més o menys. Però no tenim temps. És aquí en Joseph Tatar?\x02\x04\n" +
+		"\x09Kayla: \x01\x07Se'l van emportar a algun altre lloc fa dues setmanes.\x02\n" +
+		"\x0BUn tercer individu va sortir del passadís.\x05 Per més que volgués trobar al seu germà, havia d'ajudar-los a ells primer.\n" +
+		"\x0B\x08>>",
 	),
 }

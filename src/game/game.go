@@ -21,7 +21,7 @@ import "github.com/tinne26/bindless/src/scenes/episode"
 import "github.com/tinne26/bindless/src/scenes/level"
 import "github.com/tinne26/bindless/src/sound"
 
-const numScenes = 34
+const numScenes = 28 // must reach 34
 
 // *Game implements the ebiten.Game interface
 type Game struct {
@@ -335,12 +335,12 @@ func (self *Game) loadScene(id int) error {
 	// TODO: second save scene 29
 	// TODO: third save at 30
 	// TODO: caught scene 31
-	case 32: // to be continued
+	case 26: // to be continued
 		cfgLevelSound(sound.MagneticCityMemories)
 		sound.SetBGMFadeSpeed(0.001)
 		self.scene, err = text.New(self.context, text.ToBeContinued)
 		if err != nil { return err }
-	case 33: // final words
+	case 27: // final words
 		sound.SetBGMFadeSpeed(0.006)
 		sound.RequestFadeOut()
 		self.scene, err = text.New(self.context, text.Afterword)
