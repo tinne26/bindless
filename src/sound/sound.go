@@ -83,9 +83,9 @@ func Load(filesys *embed.FS) error {
 	sfxBytes, err = loadAudioBytes(filesys, folder + "type_c.ogg")
 	if err != nil { return err }
 	SfxTypeC = NewSfxPlayer(ctx, sfxBytes)
-	SfxTypeA.SetVolume(0.4)
-	SfxTypeB.SetVolume(0.4)
-	SfxTypeC.SetVolume(0.4)
+	SfxTypeA.SetVolume(0.34)
+	SfxTypeB.SetVolume(0.34)
+	SfxTypeC.SetVolume(0.34)
 
 	return nil
 }
@@ -114,30 +114,17 @@ func Update() {
 
 func setupNextStream() {
 	activeStream = bgmNextStream
-	var err error
-
-	var loopStart, loopEnd int64
+	needsReset := true
 	switch activeStream {
 	case MagneticCityMemories:
-		loopStart, loopEnd = 0, msToByte(144659)
+		setLoopPoints(0, 6379452*4, needsReset)
 	case ObsessiveMechanics:
-		loopStart, loopEnd = 0, msToByte(101814)
+		_, loopEnd := obsessiveLoopPoints()
+		setLoopPoints(0, loopEnd, needsReset)
 	case MeddlesomeTheory:
-		loopStart, loopEnd = 0, msToByte(51500)
+		setLoopPoints(7456*4, 2295900*4, needsReset)
 	default:
 		panic("unexpected stream")
-	}
-
-	// set new loop points
-	if bgmLooper == nil {
-		bgmLooper = NewLooper(activeStream, loopStart, loopEnd)
-	} else {
-		bgmLooper.Reset(activeStream, loopStart, loopEnd)
-	}
-
-	// hacky fix for obsessive mechanics short loop mode
-	if activeStream == ObsessiveMechanics {
-		cfgObsessiveLoop()
 	}
 
 	if bgmPlayer != nil {
@@ -145,6 +132,8 @@ func setupNextStream() {
 		err := bgmPlayer.Close()
 		if err != nil { panic(err) }
 	}
+
+	var err error
 	bgmPlayer, err = ctx.NewPlayer(bgmLooper)
 	if err != nil { panic(err) }
 
@@ -154,10 +143,14 @@ func setupNextStream() {
 	bgmFadeTarget = bgmMaxVol
 }
 
-func msToByte(ms int) int64 {
-	nearest := int64(176.4*float64(ms))
-	fract := nearest % 4
-	return nearest - fract
+func setLoopPoints(loopStart, loopEnd int64, needsReset bool) {
+	if bgmLooper == nil {
+		bgmLooper = NewLooper(activeStream, loopStart, loopEnd)
+	} else if needsReset {
+		bgmLooper.Reset(activeStream, loopStart, loopEnd)
+	} else {
+		bgmLooper.AdjustLoop(loopStart, loopEnd)
+	}
 }
 
 func RequestBGM(stream io.ReadSeeker) {
@@ -177,16 +170,19 @@ func RequestFadeOut() {
 func SetObssessiveShortLoop(active bool) {
 	if obsessiveShortLoop != active {
 		obsessiveShortLoop = active
-		cfgObsessiveLoop()
+		if activeStream == ObsessiveMechanics {
+			loopStart, loopEnd := obsessiveLoopPoints()
+			needsReset := false
+			setLoopPoints(loopStart, loopEnd, needsReset)
+		}
 	}
 }
 
-func cfgObsessiveLoop() {
-	if activeStream != ObsessiveMechanics { return }
+func obsessiveLoopPoints() (int64, int64) {
 	if obsessiveShortLoop {
-		bgmLooper.AdjustLoop(0, msToByte(29091))
+		return 0, 1283320*4
 	} else {
-		bgmLooper.AdjustLoop(msToByte(29091), msToByte(101814))
+		return 1283337*4, 4491300*4
 	}
 }
 
