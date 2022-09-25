@@ -21,7 +21,7 @@ import "github.com/tinne26/bindless/src/scenes/episode"
 import "github.com/tinne26/bindless/src/scenes/level"
 import "github.com/tinne26/bindless/src/sound"
 
-const numScenes = 28 // must reach 34
+const numScenes = 29 // must reach 34
 
 // *Game implements the ebiten.Game interface
 type Game struct {

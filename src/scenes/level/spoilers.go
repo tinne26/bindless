@@ -123,13 +123,28 @@ var levelTexts = map[int]*lang.Text {
 	11: lang.NewText(
 		"\x08Modulated MSP Tutorial\x07\n" +
 		"\x0B\x09Switch\x07\n" +
-		"\x0BThe \x09Switch\x07 ability allows changing the polarity of a small electromagnet. It can be used on any powered small electromagnet, even if it's docked.",
-		"\x08Tutorial MSP Modulada\x07\n" +
+		"\x0BThe \x09Switch\x07 ability allows changing the polarity of a small electromagnet. It can be used on any powered small electromagnet, even those that are docked.",
+		"\x08Tutorial de MSP Modulada\x07\n" +
 		"\x0B\x09Switch\x07\n" +
-		"\x0BLa habilidad \x09Switch\x07 (conmutar) permite cambiar la polaridad de un electroimán pequeño. Se puede usar sobre cualquier electroimán pequeño activado, incluso si no está flotando.",
-		"\x08Tutorial MSP Modulada\x07\n" +
+		"\x0BLa habilidad \x09Switch\x07 (conmutar) permite cambiar la polaridad de un electroimán pequeño. Se puede usar sobre cualquier electroimán pequeño activado, incluso aquellos que no estan flotando.",
+		"\x08Tutorial d'MSP Modulada\x07\n" +
 		"\x0B\x09Switch\x07\n" +
-		"\x0BL'habilitat \x09Switch\x07 (commutar) permet alternar la polaritat d'un electroimant petit. Es pot utilitzar sobre qualsevol electroimant, fins i tot si no està flotant.",
+		"\x0BL'habilitat \x09Switch\x07 (commutar) permet alternar la polaritat d'un electroimant petit. Es pot utilitzar sobre qualsevol electroimant, fins i tot aquells que no estan flotant.",
+	),
+	12: lang.NewText(
+		"MGNT EliteGuard K2\n\x08MSP V16.772.09 SHELL",
+		"MGNT EliteGuard K2\n\x08MSP V16.772.09 SHELL",
+		"MGNT EliteGuard K2\n\x08MSP V16.772.09 SHELL",
+	),
+	13: lang.NewText(
+		"MGNT EliteGuard K2\n\x08MSP V16.772.09 CORE",
+		"MGNT EliteGuard K2\n\x08MSP V16.772.09 CORE",
+		"MGNT EliteGuard K2\n\x08MSP V16.772.09 CORE",
+	),
+	14: lang.NewText(
+		"BackSafe Door Model TX\n\x08MSP V16.284.04 CORE",
+		"BackSafe Puerta Modelo TX\n\x08MSP V16.284.04 CORE",
+		"BackSafe Porta Model TX\n\x08MSP V16.284.04 CORE",
 	),
 }
 
