@@ -96,17 +96,17 @@ func (self *Abilities) Update(click bool, logCursorX, logCursorY int) {
 	if target != 0 {
 		if self.Hovered != target {
 			self.Hovered = target
-			if !click { sound.PlaySFX(sound.SfxLoudNav) }
+			if !click { sound.SfxNav.Play() }
 		}
 		if click {
 			if target == self.Selected {
 				self.Selected = 0
-				sound.PlaySFX(sound.SfxClick)
+				sound.SfxClick.Play()
 			} else if self.HasChargesLeft(target) {
 				self.Selected = target
-				sound.PlaySFX(sound.SfxClick)
+				sound.SfxClick.Play()
 			} else {
-				sound.PlaySFX(sound.SfxNope)
+				sound.SfxNope.Play()
 				self.CantSelectLeft = 6
 				self.CantSelectTarget = target
 			}

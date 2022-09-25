@@ -136,7 +136,7 @@ func (self *Level) Status() sceneitf.Status {
 	if self.fade == fadeOut {
 		if self.opacity == 0 { return self.overDir }
 	} else if pressingRestart && !self.pressingRestart {
-		sound.PlaySFX(sound.SfxNope)
+		sound.SfxNope.Play()
 		return sceneitf.Restart
 	}
 	return sceneitf.KeepAlive
@@ -195,7 +195,7 @@ func (self *Level) Update(logCursorX, logCursorY int) error {
 		if self.highlight.col != col || self.highlight.row != row {
 			self.highlight.col = col
 			self.highlight.row = row
-			sound.PlaySFX(sound.SfxLoudNav)
+			sound.SfxTileNav.Play()
 		}
 	} else {
 		self.highlight.active = false
@@ -325,7 +325,7 @@ func (self *Level) Update(logCursorX, logCursorY int) error {
 	self.abilities.Update(newClick, logCursorX, logCursorY)
 	if newClick && self.highlight.active && self.abilities.Selected == 0 {
 		self.abilities.BlinkLeft = 6
-		sound.PlaySFX(sound.SfxNope)
+		sound.SfxNope.Play()
 	}
 
 	// handle hovering state and apply clicks if relevant
@@ -388,10 +388,10 @@ func (self *Level) Update(logCursorX, logCursorY int) error {
 			if abilityUsed {
 				self.abilities.ConsumeCharge()
 				self.abilityExecCues = append(self.abilityExecCues, NewAbilityExecCue(col, row))
-				sound.PlaySFX(sound.SfxAbility)
+				sound.SfxAbility.Play()
 			} else {
 				self.abilities.BlinkLeft = 6
-				sound.PlaySFX(sound.SfxNope)
+				sound.SfxNope.Play()
 			}
 		}
 	}
@@ -531,7 +531,7 @@ func (self *Level) fnNextHandler(_ string) {
 	self.fade = fadeOut
 	self.fadeOutSpeed = 6
 	self.overDir = sceneitf.IsOverNext
-	sound.PlaySFX(sound.SfxClick)
+	sound.SfxClick.Play()
 	self.horzChoice.Unfocus()
 }
 
@@ -539,7 +539,7 @@ func (self *Level) fnPrevHandler(_ string) {
 	self.fade = fadeOut
 	self.fadeOutSpeed = 6
 	self.overDir = sceneitf.IsOverPrev
-	sound.PlaySFX(sound.SfxClick)
+	sound.SfxClick.Play()
 	self.horzChoice.Unfocus()
 }
 
@@ -549,11 +549,11 @@ func (self *Level) fnRechargeHandler(caller string) {
 		if caller == "__ongame__" { // magnet reached target normally
 			self.abilities.Dock   = 3
 			self.abilities.Rewire = 2
-			sound.PlaySFX(sound.SfxClick)
+			sound.SfxClick.Play()
 		} else { // player manually clicked on the recharge option
 			self.abilities.Dock   = 4
 			self.abilities.Rewire = 4
-			sound.PlaySFX(sound.SfxAbility)
+			sound.SfxAbility.Play()
 		}
 	default:
 		panic("unhandled recharge case")
@@ -592,18 +592,18 @@ func (self *Level) fnHandlerAuxMenuRoot(opt string) {
 		self.overDir = sceneitf.Restart
 		self.auxMenu.menu.Unselect()
 		self.auxMenu.active = false
-		sound.PlaySFX(sound.SfxClick)
+		sound.SfxClick.Play()
 	case "Shortcuts":
 		self.auxMenu.menu.NavIn()
-		sound.PlaySFX(sound.SfxClick)
+		sound.SfxClick.Play()
 	case "Fullscreen":
 		self.auxMenu.menu.Unselect()
 		self.auxMenu.active = false
 		ebiten.SetFullscreen(!ebiten.IsFullscreen())
-		sound.PlaySFX(sound.SfxClick)
+		sound.SfxClick.Play()
 	case "-- Continue --":
 		self.auxMenu.active = false
-		sound.PlaySFX(sound.SfxClick)
+		sound.SfxClick.Play()
 	default:
 		panic(opt)
 	}
@@ -612,8 +612,8 @@ func (self *Level) fnHandlerAuxMenuRoot(opt string) {
 func (self *Level) fnHandlerShortcuts(opt string) {
 	if opt == "-- Back --" {
 		self.auxMenu.menu.NavOut()	
-		sound.PlaySFX(sound.SfxClick)
+		sound.SfxClick.Play()
 	} else {
-		sound.PlaySFX(sound.SfxNope)
+		sound.SfxNope.Play()
 	}
 }

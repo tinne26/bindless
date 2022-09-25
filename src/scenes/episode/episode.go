@@ -54,9 +54,9 @@ func (self *Episode) Update(logCursorX, logCursorY int) error {
 	} else if !self.skipPressed {
 		self.skipPressed = true
 		if self.writer.ReachedEnd() {
-			sound.PlaySFX(sound.SfxNope)
+			sound.SfxNope.Play()
 		} else {
-			sound.PlaySFX(sound.SfxAbility)
+			sound.SfxAbility.Play()
 			self.writer.SkipToEnd()
 		}
 	}
@@ -70,7 +70,7 @@ func (self *Episode) Update(logCursorX, logCursorY int) error {
 	case fadeNone:
 		if self.writer.ReachedEnd() && misc.MousePressed() {
 			self.fade = fadeOut
-			sound.PlaySFX(sound.SfxClick)
+			sound.SfxClick.Play()
 		}
 	case fadeOut:
 		if self.opacity <= 4 { self.opacity = 0 } else { self.opacity -= 4 }

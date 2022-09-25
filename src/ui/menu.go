@@ -118,7 +118,7 @@ func (self *Menu) Update(logCursorX, logCursorY int) {
 	subMenu := self.tree.NavDepth(self.selDepth)
 	changed := self.updateHoverPosition(subMenu, logCursorX, logCursorY)
 	if changed && !self.prevFrameClick {
-		sound.PlaySFX(sound.SfxLoudNav)
+		sound.SfxNav.Play()
 	}
 	self.prevFrameClick = false
 
@@ -131,10 +131,10 @@ func (self *Menu) Update(logCursorX, logCursorY int) {
 		if self.selDepth > 0 {
 			self.selDepth -= 1
 			subMenu.Unselect()
-			sound.PlaySFX(sound.SfxClick)
+			sound.SfxClick.Play()
 			self.prevFrameClick = true
 		} else {
-			sound.PlaySFX(sound.SfxNope)
+			sound.SfxNope.Play()
 		}
 		return
 	}

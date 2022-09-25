@@ -98,7 +98,7 @@ func (self *HorzChoice) Update(logCursorX, logCursorY int) {
 	// detect hover position
 	changed := self.updateHoverPosition(logCursorX, logCursorY)
 	if changed && !self.prevFrameClick {
-		sound.PlaySFX(sound.SfxLoudNav)
+		sound.SfxNav.Play()
 	}
 	self.prevFrameClick = false
 
@@ -112,7 +112,7 @@ func (self *HorzChoice) Update(logCursorX, logCursorY int) {
 			self.prevFrameClick = true
 			choice := self.choices[self.hoverIndex]
 			if choice.Handler == nil {
-				sound.PlaySFX(sound.SfxNope)
+				sound.SfxNope.Play()
 			} else {
 				choice.Handler(choice.Text.English())
 			}

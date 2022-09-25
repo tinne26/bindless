@@ -221,37 +221,37 @@ func (self *Game) loadScene(id int) error {
 		self.scene, err = text.New(self.context, text.Preamble)
 		if err != nil { return err }
 	case 2: // tutorial part 1
-		cfgLevelSound(sound.MagneticCityMemories)
+		cfgLevelSound(sound.MeddlesomeTheory)
 		self.scene, err = level.New(self.context, level.Tutorial1)
 		if err != nil { return err }
 	case 3: // tutorial part 2
-		cfgLevelSound(sound.MagneticCityMemories)
+		cfgLevelSound(sound.MeddlesomeTheory)
 		self.scene, err = level.New(self.context, level.Tutorial2)
 		if err != nil { return err }
 	case 4: // tutorial part 3
-		cfgLevelSound(sound.MagneticCityMemories)
+		cfgLevelSound(sound.MeddlesomeTheory)
 		self.scene, err = level.New(self.context, level.Tutorial3)
 		if err != nil { return err }
 	case 5: // tutorial part 4
-		cfgLevelSound(sound.MagneticCityMemories)
+		cfgLevelSound(sound.MeddlesomeTheory)
 		if self.maxSceneUnlocked > 5 { // allow skip if tutorial already solved
 			level.LevelChoices[int(level.Tutorial4)] = level.LevelChoices[int(level.Tutorial1)]
 		}
 		self.scene, err = level.New(self.context, level.Tutorial4)
 		if err != nil { return err }
 	case 6: // tutorial part 5
-		cfgLevelSound(sound.MagneticCityMemories)
+		cfgLevelSound(sound.MeddlesomeTheory)
 		self.scene, err = level.New(self.context, level.Tutorial5)
 		if err != nil { return err }
 	case 7: // tutorial part 6
-		cfgLevelSound(sound.MagneticCityMemories)
+		cfgLevelSound(sound.MeddlesomeTheory)
 		if self.maxSceneUnlocked > 7 { // allow skip if tutorial already solved
 			level.LevelChoices[int(level.Tutorial6)] = level.LevelChoices[int(level.Tutorial1)]
 		}
 		self.scene, err = level.New(self.context, level.Tutorial6)
 		if err != nil { return err }
 	case 8: // text transition to main game
-		cfgLevelSound(sound.MagneticCityMemories)
+		cfgLevelSound(sound.MeddlesomeTheory)
 		sound.SetBGMFadeSpeed(0.005)
 		self.scene, err = text.New(self.context, text.TutorialEnd)
 		if err != nil { return err }

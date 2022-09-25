@@ -28,7 +28,7 @@ func (self *AuxMenu) Update(logCursorX, logCursorY int) {
 		skipKeyPressed := misc.SkipKeyPressed()
 		if self.menu.AtRoot() && skipKeyPressed && !self.skipKeyPressed {
 			self.skipKeyPressed = true
-			sound.PlaySFX(sound.SfxClick)
+			sound.SfxClick.Play()
 			self.menu.Unselect()
 			self.active  = false
 			self.hovered = false
@@ -44,7 +44,7 @@ func (self *AuxMenu) Update(logCursorX, logCursorY int) {
 	if logCursorX >= 640 - 10 - 21 && logCursorX <= 640 - 9 && logCursorY >= 360 - 10 - 16 && logCursorY <= 360 - 9 {
 		if !self.hovered {
 			self.hovered = true
-			sound.PlaySFX(sound.SfxLoudNav)
+			sound.SfxNav.Play()
 		}
 	} else {
 		self.hovered = false
@@ -57,7 +57,7 @@ func (self *AuxMenu) Update(logCursorX, logCursorY int) {
 	} else if !self.mousePressed {
 		self.mousePressed = true
 		if self.hovered {
-			sound.PlaySFX(sound.SfxClick)
+			sound.SfxClick.Play()
 			self.active = true
 		}
 	}

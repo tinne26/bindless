@@ -185,14 +185,14 @@ func (self *Title) adjustedOpacity(opacity uint8) uint8 {
 func (self *Title) menuRootHandler(option string) {
 	switch option {
 	case "Start Game":
-		sound.PlaySFX(sound.SfxAbility)
+		sound.SfxAbility.Play()
 		self.exitFadeout += 1
 		self.menu.Unselect()
 	case "Language": // language
-		sound.PlaySFX(sound.SfxClick)
+		sound.SfxClick.Play()
 		self.menu.NavIn()
 	case "Fullscreen": // fullscreen switch
-		sound.PlaySFX(sound.SfxClick)
+		sound.SfxClick.Play()
 		ebiten.SetFullscreen(!ebiten.IsFullscreen())
 	default:
 		panic(option)
@@ -204,15 +204,15 @@ func (self *Title) menuLangHandler(option string) {
 	switch option {
 	case "English":
 		lang.Set(lang.EN)
-		sound.PlaySFX(sound.SfxClick)
+		sound.SfxClick.Play()
 	case "Español":
 		lang.Set(lang.ES)
-		sound.PlaySFX(sound.SfxClick)
+		sound.SfxClick.Play()
 	case "Català":
 		lang.Set(lang.CA)
-		sound.PlaySFX(sound.SfxClick)
+		sound.SfxClick.Play()
 	case "-- Back --":
-		sound.PlaySFX(sound.SfxClick)
+		sound.SfxClick.Play()
 	default:
 		panic(option)
 	}

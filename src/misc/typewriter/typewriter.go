@@ -98,7 +98,13 @@ func (self *Writer) Tick() {
 		
 		self.index += 1
 		if self.wait != 0 {
-			sound.PlaySFX(sound.SfxNav)
+			switch rand.Intn(3) {
+			case 0: sound.SfxTypeA.Play()
+			case 1: sound.SfxTypeB.Play()
+			case 2: sound.SfxTypeC.Play()
+			default:
+				panic("rand.Intn outside expected range")
+			}
 		}
 
 		// quick fix to support utf8 for spanish and catalan

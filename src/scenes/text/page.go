@@ -58,9 +58,9 @@ func (self *Page) Update(logCursorX, logCursorY int) error {
 	} else if !self.skipPressed {
 		self.skipPressed = true
 		if self.writer.ReachedEnd() {
-			sound.PlaySFX(sound.SfxNope)
+			sound.SfxNope.Play()
 		} else {
-			sound.PlaySFX(sound.SfxAbility)
+			sound.SfxAbility.Play()
 			self.writer.SkipToEnd()
 		}
 	}
@@ -86,7 +86,7 @@ func (self *Page) Update(logCursorX, logCursorY int) error {
 		if self.writer.ReachedEnd() && self.choices == nil && misc.MousePressed() {
 			self.fade = fadeOut
 			self.endStatus = sceneitf.IsOverNext
-			sound.PlaySFX(sound.SfxClick)
+			sound.SfxClick.Play()
 			//sound.RequestFadeOut()
 		}
 	case fadeOut:
@@ -137,11 +137,11 @@ func (self *Page) Status() sceneitf.Status {
 func (self *Page) fnToStoryHandler(_ string) {
 	self.fade = fadeOut
 	self.endStatus = sceneitf.ToStory
-	sound.PlaySFX(sound.SfxClick)
+	sound.SfxClick.Play()
 }
 
 func (self *Page) fnToTutorialHandler(_ string) {
 	self.fade = fadeOut
 	self.endStatus = sceneitf.ToTutorial
-	sound.PlaySFX(sound.SfxClick)
+	sound.SfxClick.Play()
 }

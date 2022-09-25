@@ -4,7 +4,7 @@ import _ "embed"
 
 import "github.com/hajimehoshi/ebiten/v2"
 
- //go:embed fall_magnet_cut.kage
+//go:embed fall_magnet_cut.kage
 var fallMagnetCutSrc []byte
 
 var FallMagnetCut *ebiten.Shader
