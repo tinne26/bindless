@@ -19,14 +19,15 @@ const (
 
 type episodeKey int
 const (
-	CleaningAutomaton episodeKey = 0
-	ResearchLabDoor   episodeKey = 1
-	ResearchLabGuard  episodeKey = 2
-	ResearchLabSteal  episodeKey = 3
-	JanaNewAbility    episodeKey = 4
-	Infiltration      episodeKey = 5
-	BasementDoor      episodeKey = 6
-	InTheBasement     episodeKey = 7
+	PreOperation      episodeKey = 0
+	CleaningAutomaton episodeKey = 1
+	ResearchLabDoor   episodeKey = 2
+	ResearchLabGuard  episodeKey = 3
+	ResearchLabSteal  episodeKey = 4
+	JanaNewAbility    episodeKey = 5
+	Infiltration      episodeKey = 6
+	BasementDoor      episodeKey = 7
+	InTheBasement     episodeKey = 8
 )
 
 type Episode struct {

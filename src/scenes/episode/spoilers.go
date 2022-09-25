@@ -18,6 +18,41 @@ var episodeImgPaths = []string {
 
 var episodesRawText = []*lang.Text {
 	lang.NewText(
+		"\x08Mirko's home, Ritapola, 5 June 3589\x07\x05\n" +
+		"\x0BMirko opened the door and invited her inside.\x03\n" +
+		"\x0B\x09Jana: \x01\x07Good news, Mirko. The operating room will be free this thursday.\x02\n" +
+		"\x09Mirko: \x01\x07So.. the time has finally come?\x04 That's good.\x02\x03\n" +
+		"\x09Jana: \x01\x07Ye\x0Eah\x0C..\x02\n" +
+		"\x0BHer voice trembled halfway.\x04 She looked away for an instant, but quickly resumed with her usual playful tone:\x03\n" +
+		"\x0B\x09Jana: \x01\x07Oh, I've got your learning materials ready too. \x05I tried to make it accessible even for \x0Edummies like you\x0C, so make sure to engrave it in your brain!\x02\x04\n" +
+		"\x0B\x08Knowing her, that \"dummy\" level probably escaped most average adults.\x03\n" +
+		"\x0B\x09Mirko: \x01\x07Never thought the day where I'd get excited about homework would finally arrive!\x02\n" +
+		"\x09Jana: \x01\x07\x0DHaha\x0C, definitely not the type!\x02\n" +
+		"\x0B\x08>>",
+		"\x08Casa de Mirko, Ritapola, 5 de junio de 3589\x07\x05\n" +
+		"\x0BMirko abrió la puerta y la invitó a entrar.\x03\n" +
+		"\x0B\x09Jana: \x01\x07Buenas noticias, Mirko. La sala de operaciones estará libre este jueves.\x02\n" +
+		"\x09Mirko: \x01\x07Así que.. ha llegado la hora?\x04 Eso es bueno.\x02\x03\n" +
+		"\x09Jana: \x01\x07Cl\x0Earo\x0C..\x02\n" +
+		"\x0BSu voz tembló a la mitad.\x04 Jana apartó la mirada un instante, pero rápidamente recuperó su tono pillo habitual:\x03\n" +
+		"\x0B\x09Jana: \x01\x07Oh, también tengo preparado tu material de estudio. \x05He intentado hacerlo accesible incluso para \x0Etortuguitos como tú\x0C, así que asegúrate de grabártelo bien en la cabeza!\x02\x04\n" +
+		"\x0B\x08Conociéndola, lo más probable era que sus \"tortuguitos\" escaparan la mayoría de adultos promedio.\x03\n" +
+		"\x0B\x09Mirko: \x01\x07Nunca pensé que llegaría el día en que me emocionaría por hacer los deberes!\x02\n" +
+		"\x09Jana: \x01\x07\x0DJaja\x0C, definitivamente no das el pego!\x02\n" +
+		"\x0B\x08>>",
+		"\x08Casa d'en Mirko, Ritapola, 5 de juny de 3589\x07\x05\n" +
+		"\x0BEn Mirko va obrir la porta i la va convidar a passar.\x03\n" +
+		"\x0B\x09Jana: \x01\x07Bones notícies, Mirko. La sala d'operacions estarà lliure aquest dijous.\x02\n" +
+		"\x09Mirko: \x01\x07Així que.. finalment ha arribat l'hora?\x04 Això és bo.\x02\x03\n" +
+		"\x09Jana: \x01\x07\x0ESí\x0C..\x02\n" +
+		"\x0BLa veu li va tremolar.\x04 La Jana va apartar la mirada un instant, però ràpidament va recuperar el seu to trapella habitual:\x03\n" +
+		"\x0B\x09Jana: \x01\x07Ah, també tinc preparat el teu material d'estudi. \x05He intentat fer-lo accessible fins i tot per \x0Etortuguetes como tu\x0C, així que assegura't de gravar-te'l bé al cap!\x02\x04\n" +
+		"\x0B\x08Coneixent-la, el més probable era que les seves \"tortuguetes\" escapessin la majoria d'adults.\x03\n" +
+		"\x0B\x09Mirko: \x01\x07Mai m'hauria imaginat que arribaria el dia en que m'emocionaria per fer els deures!\x02\n" +
+		"\x09Jana: \x01\x07\x0DHaha\x0C, definitivament no dones el perfil!\x02\n" +
+		"\x0B\x08>>",
+	),
+	lang.NewText(
 		"\x08Ritapola outskirts, 29 June 3589\x07\x05\n" +
 		"\x0BMirko ran right in front of the automaton.\x03\n" +
 		"\x0B\x09S\x10C\x10A: \x01\x07Please remain clear of the walkway while I carry out my cleaning duties.\x03\x02\n" +

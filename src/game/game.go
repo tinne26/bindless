@@ -220,109 +220,113 @@ func (self *Game) loadScene(id int) error {
 		sound.SetBGMFadeSpeed(0.005)
 		self.scene, err = text.New(self.context, text.Preamble)
 		if err != nil { return err }
-	case 2: // tutorial part 1
+	case 2: // pre-operation scene
+		cfgLevelSound(sound.MagneticCityMemories)
+		self.scene, err = episode.New(self.context, episode.PreOperation)
+		if err != nil { return err }
+	case 3: // tutorial part 1
 		cfgLevelSound(sound.MeddlesomeTheory)
 		self.scene, err = level.New(self.context, level.Tutorial1)
 		if err != nil { return err }
-	case 3: // tutorial part 2
+	case 4: // tutorial part 2
 		cfgLevelSound(sound.MeddlesomeTheory)
 		self.scene, err = level.New(self.context, level.Tutorial2)
 		if err != nil { return err }
-	case 4: // tutorial part 3
+	case 5: // tutorial part 3
 		cfgLevelSound(sound.MeddlesomeTheory)
 		self.scene, err = level.New(self.context, level.Tutorial3)
 		if err != nil { return err }
-	case 5: // tutorial part 4
+	case 6: // tutorial part 4
 		cfgLevelSound(sound.MeddlesomeTheory)
 		if self.maxSceneUnlocked > 5 { // allow skip if tutorial already solved
 			level.LevelChoices[int(level.Tutorial4)] = level.LevelChoices[int(level.Tutorial1)]
 		}
 		self.scene, err = level.New(self.context, level.Tutorial4)
 		if err != nil { return err }
-	case 6: // tutorial part 5
+	case 7: // tutorial part 5
 		cfgLevelSound(sound.MeddlesomeTheory)
 		self.scene, err = level.New(self.context, level.Tutorial5)
 		if err != nil { return err }
-	case 7: // tutorial part 6
+	case 8: // tutorial part 6
 		cfgLevelSound(sound.MeddlesomeTheory)
 		if self.maxSceneUnlocked > 7 { // allow skip if tutorial already solved
 			level.LevelChoices[int(level.Tutorial6)] = level.LevelChoices[int(level.Tutorial1)]
 		}
 		self.scene, err = level.New(self.context, level.Tutorial6)
 		if err != nil { return err }
-	case 8: // text transition to main game
+	case 9: // text transition to main game
 		cfgLevelSound(sound.MeddlesomeTheory)
 		sound.SetBGMFadeSpeed(0.005)
 		self.scene, err = text.New(self.context, text.TutorialEnd)
 		if err != nil { return err }
-	case 9: // first scene (cleaning automaton)
+	case 10: // cleaner automaton scene
 		cfgLevelSound(sound.ObsessiveMechanics)
 		sound.SetObssessiveShortLoop(true)
 		self.scene, err = episode.New(self.context, episode.CleaningAutomaton)
 		if err != nil { return err }
-	case 10: // cleaner automaton first level
+	case 11: // cleaner automaton first level
 		cfgLevelSound(sound.ObsessiveMechanics)
 		self.scene, err = level.New(self.context, level.CleanerAutomaton)
 		if err != nil { return err }
-	case 11: // cleaner automaton second level
+	case 12: // cleaner automaton second level
 		cfgLevelSound(sound.ObsessiveMechanics)
 		self.scene, err = level.New(self.context, level.CleanerAutomaton2)
 		if err != nil { return err }
-	case 12: // episode research lab door
+	case 13: // episode research lab door
 		cfgLevelSound(sound.ObsessiveMechanics)
 		self.scene, err = episode.New(self.context, episode.ResearchLabDoor)
 		if err != nil { return err }
-	case 13: // research lab door
+	case 14: // research lab door
 		cfgLevelSound(sound.ObsessiveMechanics)
 		self.scene, err = level.New(self.context, level.ResearchLabDoor)
 		if err != nil { return err }
-	case 14: // episode research lab guard
+	case 15: // episode research lab guard
 		cfgLevelSound(sound.ObsessiveMechanics)
 		sound.SetObssessiveShortLoop(true)
 		self.scene, err = episode.New(self.context, episode.ResearchLabGuard)
 		if err != nil { return err }
-	case 15: // first guard layer
+	case 16: // first guard layer
 		cfgLevelSound(sound.ObsessiveMechanics)
 		self.scene, err = level.New(self.context, level.ResearchLabGuard1)
 		if err != nil { return err }
-	case 16: // second guard layer
+	case 17: // second guard layer
 		cfgLevelSound(sound.ObsessiveMechanics)
 		self.scene, err = level.New(self.context, level.ResearchLabGuard2)
 		if err != nil { return err }
-	case 17: // episode research lab
+	case 18: // episode research lab
 		cfgLevelSound(sound.MagneticCityMemories)
 		self.scene, err = episode.New(self.context, episode.ResearchLabSteal)
 		if err != nil { return err }
-	case 18: // episode jana's note and modified MSP
+	case 19: // episode jana's note and modified MSP
 		cfgLevelSound(sound.MagneticCityMemories)
 		self.scene, err = episode.New(self.context, episode.JanaNewAbility)
 		if err != nil { return err }
-	case 19: // switch tutorial
+	case 20: // switch tutorial
 		cfgLevelSound(sound.MagneticCityMemories)
 		self.scene, err = level.New(self.context, level.SwitchTutorial)
 		if err != nil { return err }
-	case 20: // episode (failed) infiltration
+	case 21: // episode (failed) infiltration
 		cfgLevelSound(sound.ObsessiveMechanics)
 		sound.SetObssessiveShortLoop(true)
 		self.scene, err = episode.New(self.context, episode.Infiltration)
 		if err != nil { return err }
-	case 21: // infiltration guard level (first part)
+	case 22: // infiltration guard level (first part)
 		cfgLevelSound(sound.ObsessiveMechanics)
 		self.scene, err = level.New(self.context, level.FinalGuard)
 		if err != nil { return err }
-	case 22: // infiltration guard level (second part, this one is *so cool*)
+	case 23: // infiltration guard level (second part, this one is *so cool*)
 		cfgLevelSound(sound.ObsessiveMechanics)
 		self.scene, err = level.New(self.context, level.FinalGuard2)
 		if err != nil { return err }
-	case 23: // episode basement door
+	case 24: // episode basement door
 		cfgLevelSound(sound.MagneticCityMemories)
 		self.scene, err = episode.New(self.context, episode.BasementDoor)
 		if err != nil { return err }
-	case 24: // final door level
+	case 25: // final door level
 		cfgLevelSound(sound.MagneticCityMemories)
 		self.scene, err = level.New(self.context, level.FinalDoor)
 		if err != nil { return err }
-	case 25: // episode in the basement
+	case 26: // episode in the basement
 		cfgLevelSound(sound.MagneticCityMemories)
 		self.scene, err = episode.New(self.context, episode.InTheBasement)
 		if err != nil { return err }
@@ -335,12 +339,12 @@ func (self *Game) loadScene(id int) error {
 	// TODO: second save scene 29
 	// TODO: third save at 30
 	// TODO: caught scene 31
-	case 26: // to be continued
+	case 27: // to be continued
 		cfgLevelSound(sound.MagneticCityMemories)
 		sound.SetBGMFadeSpeed(0.001)
 		self.scene, err = text.New(self.context, text.ToBeContinued)
 		if err != nil { return err }
-	case 27: // final words
+	case 28: // final words
 		sound.SetBGMFadeSpeed(0.006)
 		sound.RequestFadeOut()
 		self.scene, err = text.New(self.context, text.Afterword)

@@ -18,27 +18,33 @@ var gameTexts = []*lang.Text {
 		"\x0B\x09MSP Units\x07, implanted in the spine of every citizen, allowed \x09Headsteer\x07 to maintain the social stability.\n" +
 		"\x0BDeveloped back during the Primal Wars, \x09MSP Units\x07 were once the key to end the violent outbursts that plagued the country. Nowadays, these magnetic devices had evolved to allow even greater control over individuals, with certain monitoring functions mandated to remain always active.\n" +
 		"\x0BMost people had little reason to complain, but for Mirko... things changed when his brother abandoned the love of his life and his family to go work for Marunka Machart, a member of \x09Headsteer\x07.\x03\n" +
-		"\x0BIt didn't make any sense. What if the rumors were true? He... had no choice.",
+		"\x0BIt didn't make any sense. What if the rumors were true? He... had no choice.\n" +
+		"\x0B\x08>>",
 		"\x08Preámbulo\x07\n" +
 		"\x0BLa vida en 3589 no trataba nada mal al ciudadano promedio: el habitaje y la comida estaban garantizados por el estado, el trabajo era voluntario, las calles estaban limpias y las libertades eran mayoritariamente respetadas.\n" +
 		"\x0BLas \x09unidades MSP\x07, implantadas en la parte alta de la columna de cada ciudadano, permitían a \x09Cabecera\x07 mantener la estabilidad social.\n" +
 		"\x0BDesarrolladas durante las Guerras Primales, en algún momento del pasado las \x09unidades MSP\x07 fueron claves para acabar con las olas de violencia que plagaban el país. Hoy en día, estos dispositivos magnéticos habían evolucionado para permitir un control sobre los individuos incluso mayor, con ciertas funciones de monitoraje permanentemente activas bajo imperativo legal.\n" +
 		"\x0BLa mayoría de la población no tenía motivo de queja, pero para Mirko... las cosas cambiaron cuando su hermano repentinamente abandonó al amor de su vida y su familia para ir a trabajar para Marunka Machart, una integrante de \x09Cabecera\x07.\x03\n" +
-		"\x0BNo tenía ningún sentido. Y si los rumores eran ciertos..? Ahora no le quedaba más alternativa.",
+		"\x0BNo tenía ningún sentido. Y si los rumores eran ciertos..? Ahora no le quedaba más alternativa.\n" +
+		"\x0B\x08>>",
 		"\x08Preàmbul\x07\n" +
 		"\x0BL'any 3589, la vida no era gens dolenta pel ciutadà mitjà: l'habitatge i el menjar estaven garantitzats per l'estat, la feina era voluntària, els carrers estaven nets i les llibertats eren majoritàriament respectades.\n" +
 		"\x0BLes \x09unitats MSP\x07, implantades a la part alta de la columna de cada ciutadà, permetien a \x09Capçalera\x07 mantenir l'estabilitat social.\n" +
 		"\x0BDesenvolupades durant les Guerres Primals, les \x09unitats MSP\x07 van ser claus en el passat per acabar amb les onades de violència que arrasaven el país. Avui en dia, aquests dispositius magnètics havien evolucionat per permetre un control fins i tot major sobre les persones, amb certes funcions de monitoratge decretades a romandre permanentment actives.\n" +
 		"\x0BLa majoria de la població no tenia motius per queixar-se, però per a en Mirko... les coses van canviar quan el seu germà sobtadament va abandonar l'amor de la seva vida i la seva família per anar a treballar per Marunka Machart, una integrant de \x09Capçalera\x07.\x03\n" +
-		"\x0BNo tenia cap sentit. I si els rumors eren certs..? Ara no li quedava cap altra alternativa.",
+		"\x0BNo tenia cap sentit. I si els rumors eren certs..? Ara no li quedava cap altra alternativa.\n" +
+		"\x0B\x08>>",
 	),
 	lang.NewText(
-		"You managed to clear the tutorial!\n" +
-		"\x0BThere's still a lot you will have to figure out on your own, but you seem now better equipped to take on the challenge... \x0Eare you ready for it?\x0C",
-		"Has conseguido superar el tutorial!\n" +
-		"\x0BTodavía tienes mucho que aprender por tu cuenta, pero ahora pareces mejor preparado para enfrentarte al desafío... \x0Eestás listo para ello?\x0C",
-		"Has aconseguit superar el tutorial!\n" +
-		"\x0BEncara et queda bastant per aprendre pel teu compte, però ara sembles més ben preparat per encarar el repte... \x0Eestàs a punt?\x0C",
+		"Two weeks later...\n\x0B\x08>>",
+		"Dos semanas después...\n\x0B\x08>>",
+		"Dues setmanes després...\n\x0B\x08>>",
+		// "You managed to clear the tutorial!\n" +
+		// "\x0BThere's still a lot you will have to figure out on your own, but you seem now better equipped to take on the challenge... \x0Eare you ready for it?\x0C",
+		// "Has conseguido superar el tutorial!\n" +
+		// "\x0BTodavía tienes mucho que aprender por tu cuenta, pero ahora pareces mejor preparado para enfrentarte al desafío... \x0Eestás listo para ello?\x0C",
+		// "Has aconseguit superar el tutorial!\n" +
+		// "\x0BEncara et queda bastant per aprendre pel teu compte, però ara sembles més ben preparat per encarar el repte... \x0Eestàs a punt?\x0C",
 	),
 	lang.NewText(
 		"\x0BMirko managed to release two of the slaves, but got caught while trying to disable the MSP unit of the third one.\x04\n" +
@@ -87,8 +93,8 @@ var optStoryNow = &ui.HChoice {
 }
 
 var gameChoices = [][]*ui.HChoice {
-	[]*ui.HChoice{ optStartStory, optTutorial },
-	[]*ui.HChoice{ optRepeatTutorial, optStoryNow },
+	nil, //[]*ui.HChoice{ optStartStory, optTutorial },
+	nil, //[]*ui.HChoice{ optRepeatTutorial, optStoryNow },
 	nil,
 	nil,
 }

@@ -73,6 +73,7 @@ func Load(filesys *embed.FS) error {
 	sfxBytes, err = loadAudioBytes(filesys, folder + "click.ogg")
 	if err != nil { return err }
 	SfxClick = NewSfxPlayer(ctx, sfxBytes)
+	SfxClick.SetVolume(0.74)
 
 	sfxBytes, err = loadAudioBytes(filesys, folder + "type_a.ogg")
 	if err != nil { return err }
