@@ -9,7 +9,7 @@ You can play from the browser or download at [itch.io](https://tinne26.itch.io/b
 ```
 go run github.com/tinne26/bindless@v0.0.2
 ```
-*(Notice that on linux Ebitengine has a [few dependencies](https://ebiten.org/documents/install.html?os=linux#Dependencies) that you may need to install if you have never used Ebitengine with Golang.)*
+*(Notice that on linux Ebitengine has a [few dependencies](https://ebitengine.org/en/documents/install.html?os=linux#Installing_dependencies) that you may need to install if you have never used Ebitengine with Golang.)*
 
 ## Controls And Mechanics
 The game requires a mouse or touchpad to play. Mechanics are explained in the tutorial within the game itself.
