@@ -116,14 +116,18 @@ func Update() {
 func setupNextStream() {
 	activeStream = bgmNextStream
 	needsReset := true
+	var volFactor float64
 	switch activeStream {
 	case MagneticCityMemories:
 		setLoopPoints(0, 6379452*4, needsReset)
+		volFactor = 1.0
 	case ObsessiveMechanics:
 		_, loopEnd := obsessiveLoopPoints()
 		setLoopPoints(0, loopEnd, needsReset)
+		volFactor = 1.17
 	case MeddlesomeTheory:
 		setLoopPoints(7456*4, 2295900*4, needsReset)
+		volFactor = 0.8
 	default:
 		panic("unexpected stream")
 	}
@@ -141,7 +145,7 @@ func setupNextStream() {
 	bgmNextStream = nil
 	bgmPlayer.SetVolume(0)
 	bgmPlayer.Play()
-	bgmFadeTarget = bgmMaxVol
+	bgmFadeTarget = bgmMaxVol*volFactor
 }
 
 func setLoopPoints(loopStart, loopEnd int64, needsReset bool) {

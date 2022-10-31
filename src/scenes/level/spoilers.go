@@ -146,6 +146,11 @@ var levelTexts = map[int]*lang.Text {
 		"BackSafe Puerta Modelo TX\n\x08MSP V16.284.04 CORE",
 		"BackSafe Porta Model TX\n\x08MSP V16.284.04 CORE",
 	),
+	15: lang.NewText(
+		"Organic Subject\n\x08MSP V15.404.62 CORE",
+		"Sujeto Orgánico\n\x08MSP V15.404.62 CORE",
+		"Subjecte Orgànic\n\x08MSP V15.404.62 CORE",
+	),
 }
 
 var prevText = lang.NewText("[ Previous ]", "[ Anterior ]", "[ Anterior ]")

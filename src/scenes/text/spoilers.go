@@ -39,23 +39,17 @@ var gameTexts = []*lang.Text {
 		"Two weeks later...\n\x0B\x08>>",
 		"Dos semanas después...\n\x0B\x08>>",
 		"Dues setmanes després...\n\x0B\x08>>",
-		// "You managed to clear the tutorial!\n" +
-		// "\x0BThere's still a lot you will have to figure out on your own, but you seem now better equipped to take on the challenge... \x0Eare you ready for it?\x0C",
-		// "Has conseguido superar el tutorial!\n" +
-		// "\x0BTodavía tienes mucho que aprender por tu cuenta, pero ahora pareces mejor preparado para enfrentarte al desafío... \x0Eestás listo para ello?\x0C",
-		// "Has aconseguit superar el tutorial!\n" +
-		// "\x0BEncara et queda bastant per aprendre pel teu compte, però ara sembles més ben preparat per encarar el repte... \x0Eestàs a punt?\x0C",
 	),
 	lang.NewText(
-		"\x0BMirko managed to release two of the slaves, but got caught while trying to disable the MSP unit of the third one.\x04\n" +
+		"\x0BMirko managed to release two of the captives, but got caught while trying to disable the MSP unit of the third one.\x04\n" +
 		"\x0BSeeing the deployment of public safety units around the zone and the lack of contact from Mirko, Jana started fearing the worst.\x04\n" +
 		"\x0BShe was a loose end, and they would surely come for her next. But... she hadn't given up just yet.\x04\n" +
 		"\x0B\x08>> to be continued",
-		"\x0BMirko consiguió liberar a dos de los esclavos, pero lo capturaron mientras trataba de desactivar la MSP del tercero.\x04\n" +
+		"\x0BMirko consiguió liberar a dos de los cautivos, pero lo capturaron mientras trataba de desactivar la MSP del tercero.\x04\n" +
 		"\x0BViendo el despliegue de unidades de seguridad pública alrededor de la zona y la falta de contacto de Mirko, Jana empezó a imaginarse lo peor.\x04\n" +
 		"\x0BAhora era un cabo suelto, así que seguro vendrían a por ella pronto. Pero... Jana todavía no se había rendido.\x04\n" +
 		"\x0B\x08>> continuará",
-		"\x0BEn Mirko va aconseguir alliberar a dos dels esclaus, però el van atrapar mentre intentava desactivar la MSP del tercer.\x04\n" +
+		"\x0BEn Mirko va aconseguir alliberar a dos dels captius, però el van atrapar mentre intentava desactivar la MSP del tercer.\x04\n" +
 		"\x0BVeient el desplegament d'unitats de seguretat pública al voltant de la zona i la falta de contacte d'en Mirko, la Jana va començar a témer el pitjor.\x04\n" +
 		"\x0BAra era l'única involucrada que restava, així que segur que vindrien a buscar-la aviat. Però... la Jana encara no s'havia rendit.\x04\n" +
 		"\x0B\x08>> continuarà",

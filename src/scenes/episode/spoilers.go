@@ -23,10 +23,9 @@ var episodesRawText = []*lang.Text {
 		"\x0B\x09Jana: \x01\x07Good news, Mirko. The operating room will be free this thursday.\x02\n" +
 		"\x09Mirko: \x01\x07So.. the time has finally come?\x04 That's good.\x02\x03\n" +
 		"\x09Jana: \x01\x07Ye\x0Eah\x0C..\x02\n" +
-		"\x0BHer voice trembled halfway.\x04 She looked away for an instant, but quickly resumed with her usual playful tone:\x03\n" +
+		"\x0BShe looked away for an instant, but quickly resumed with her usual tone:\x03\n" +
 		"\x0B\x09Jana: \x01\x07Oh, I've got your learning materials ready too. \x05I tried to make it accessible even for \x0Edummies like you\x0C, so make sure to engrave it in your brain!\x02\x04\n" +
-		"\x0B\x08Knowing her, that \"dummy\" level probably escaped most average adults.\x03\n" +
-		"\x0B\x09Mirko: \x01\x07Never thought the day where I'd get excited about homework would finally arrive!\x02\n" +
+		"\x09Mirko: \x01\x07Never thought the day where I'd get excited about homework would finally arrive!\x02\n" +
 		"\x09Jana: \x01\x07\x0DHaha\x0C, definitely not the type!\x02\n" +
 		"\x0B\x08>>",
 		"\x08Casa de Mirko, Ritapola, 5 de junio de 3589\x07\x05\n" +
@@ -34,10 +33,9 @@ var episodesRawText = []*lang.Text {
 		"\x0B\x09Jana: \x01\x07Buenas noticias, Mirko. La sala de operaciones estará libre este jueves.\x02\n" +
 		"\x09Mirko: \x01\x07Así que.. ha llegado la hora?\x04 Eso es bueno.\x02\x03\n" +
 		"\x09Jana: \x01\x07Cl\x0Earo\x0C..\x02\n" +
-		"\x0BSu voz tembló a la mitad.\x04 Jana apartó la mirada un instante, pero rápidamente recuperó su tono pillo habitual:\x03\n" +
-		"\x0B\x09Jana: \x01\x07Oh, también tengo preparado tu material de estudio. \x05He intentado hacerlo accesible incluso para \x0Etortuguitos como tú\x0C, así que asegúrate de grabártelo bien en la cabeza!\x02\x04\n" +
-		"\x0B\x08Conociéndola, lo más probable era que sus \"tortuguitos\" escaparan la mayoría de adultos promedio.\x03\n" +
-		"\x0B\x09Mirko: \x01\x07Nunca pensé que llegaría el día en que me emocionaría por hacer los deberes!\x02\n" +
+		"\x0BJana apartó la mirada un instante, pero rápidamente recuperó su tono habitual:\x03\n" +
+		"\x0B\x09Jana: \x01\x07Oh, también tengo preparado tu material de estudio. \x05He intentado hacerlo accesible incluso para \x0Etortuguitas como tú\x0C, así que asegúrate de grabártelo bien en la cabeza!\x02\x04\n" +
+		"\x09Mirko: \x01\x07Nunca pensé que llegaría el día en que me emocionaría por hacer los deberes!\x02\n" +
 		"\x09Jana: \x01\x07\x0DJaja\x0C, definitivamente no das el pego!\x02\n" +
 		"\x0B\x08>>",
 		"\x08Casa d'en Mirko, Ritapola, 5 de juny de 3589\x07\x05\n" +
@@ -45,10 +43,9 @@ var episodesRawText = []*lang.Text {
 		"\x0B\x09Jana: \x01\x07Bones notícies, Mirko. La sala d'operacions estarà lliure aquest dijous.\x02\n" +
 		"\x09Mirko: \x01\x07Així que.. finalment ha arribat l'hora?\x04 Això és bo.\x02\x03\n" +
 		"\x09Jana: \x01\x07\x0ESí\x0C..\x02\n" +
-		"\x0BLa veu li va tremolar.\x04 La Jana va apartar la mirada un instant, però ràpidament va recuperar el seu to trapella habitual:\x03\n" +
+		"\x0BLa Jana va apartar la mirada un instant, però ràpidament va recuperar el seu to habitual:\x03\n" +
 		"\x0B\x09Jana: \x01\x07Ah, també tinc preparat el teu material d'estudi. \x05He intentat fer-lo accessible fins i tot per \x0Etortuguetes como tu\x0C, així que assegura't de gravar-te'l bé al cap!\x02\x04\n" +
-		"\x0B\x08Coneixent-la, el més probable era que les seves \"tortuguetes\" escapessin la majoria d'adults.\x03\n" +
-		"\x0B\x09Mirko: \x01\x07Mai m'hauria imaginat que arribaria el dia en que m'emocionaria per fer els deures!\x02\n" +
+		"\x09Mirko: \x01\x07Mai m'hauria imaginat que arribaria el dia en que m'emocionaria per fer els deures!\x02\n" +
 		"\x09Jana: \x01\x07\x0DHaha\x0C, definitivament no dones el perfil!\x02\n" +
 		"\x0B\x08>>",
 	),
@@ -158,7 +155,7 @@ var episodesRawText = []*lang.Text {
 		"\x0BLike every day, Mirko checked the hidden spot.\n" +
 		"\x0B\x09Mirko: \x01\x08\x0D!\x0C\x02\x04\n" +
 		"\x0B\x07He snatched the note and eagerly read it:\x04\n" +
-		"\x0B\x09Jana: \x01\x08I can't guarantee it will be 100% safe, but it's the best I could do. I should be the one doing this, not you. I know Joseph's your brother, but it kills me having to stay here and wait. I'm even tempted to remove my MSP myself. I know, I know, don't worry, I won't.\x03\n" +
+		"\x0B\x09Jana: \x01\x08I can't guarantee it will be 100% safe, but it's the best I could do. I know he's your brother, but it should be me doing this, not you. Waiting here... sometimes I'm tempted to remove my MSP myself. I know, I know, don't worry.\x03\n" +
 		"\x0BDon't push it too hard. And good luck out there.\x02\x05\n" +
 		"\x0B\x07Jana had finally done it.\x04\n" +
 		"\x0B\x08The ability \x09[Switch]\x08 has been unlocked.\n" +
@@ -167,7 +164,7 @@ var episodesRawText = []*lang.Text {
 		"\x0BComo cada día, Mirko revisó el escondrijo.\n" +
 		"\x0B\x09Mirko: \x01\x08\x0D!\x0C\x02\x04\n" +
 		"\x0B\x07Mirko cogió la nota y la leyó con afán:\x04\n" +
-		"\x0B\x09Jana: \x01\x08No puedo garantizar que sea 100% seguro, pero es lo mejor que he podido hacer. Tendría que ser yo la que hiciera esto, no tú. Ya sé que Joseph es tu hermano, pero me mata tener que quedarme aquí esperando. A veces me quitaría mi MSP yo misma. Lo sé, lo sé, no te preocupes, me contendré.\x03\n" +
+		"\x0B\x09Jana: \x01\x08No puedo garantizar que sea 100% seguro, pero es lo mejor que he podido hacer. Ya sé que es tu hermano, pero tendría que ser yo quién hiciera esto, no tú. Aquí esperando... a veces me quitaría mi MSP yo misma. Lo sé, lo sé, no te preocupes.\x03\n" +
 		"\x0BNo te excedas demasiado. Y buena suerte ahí fuera.\x02\x05\n" +
 		"\x0B\x07Jana finalmente lo había conseguido.\x04\n" +
 		"\x0B\x08La habilidad \x09[Switch]\x08 ha sido desbloqueada.\n" +
@@ -176,7 +173,7 @@ var episodesRawText = []*lang.Text {
 		"\x0BCom cada dia, en Mirko va revisar l'amagatall.\n" +
 		"\x0B\x09Mirko: \x01\x08\x0D!\x0C\x02\x04\n" +
 		"\x0B\x07En Mirko va treure la nota i va llegir ansiosament:\x04\n" +
-		"\x0B\x09Jana: \x01\x08No puc garantitzar que sigui 100% segur, però és el millor que he pogut fer. Hauria de ser jo qui fes això, no tu. Ja sé que en Joseph és el teu germà, però em mata haver de quedar-me aquí esperant. A vegades em treuria la MSP jo mateixa. Ho sé, ho sé, no et preocupis, em contindré.\x03\n" +
+		"\x0B\x09Jana: \x01\x08No puc garantitzar que sigui 100% segur, però és el millor que he pogut fer. Ja sé que és el teu germà, però hauria de ser jo qui fes això, no tu. Aquí esperant... a vegades em treuria la MSP jo mateixa. Ho sé, ho sé, no et preocupis.\x03\n" +
 		"\x0BNo t'excedeixis massa allà fora. Bona sort.\x02\x05\n" +
 		"\x0B\x07La Jana finalment ho havia aconseguit.\x04\n" +
 		"\x0B\x08L'habilitat \x09[Switch]\x08 ha estat desbloquejada.\n" +
@@ -195,7 +192,7 @@ var episodesRawText = []*lang.Text {
 		"\x0BMirko se había estado escondiendo durante las últimas 6 horas. Marunka Machart, la integrante de Cabecera sospechosa de la desaparición de Joseph, había salido una hora antes.\x04\n" +
 		"\x0BEra el momento de ver qué pasaba ahí dentro.\x04\n" +
 		"\x0BMirko se acercó sigilosamente, pero sus esfuerzos fueron en baladí. Tan pronto saltó la verja, un autómata apareció de la nada.\n" +
-		"\x0BPor si faltaba más el autómata no fue a perseguirlo directamente, sinó que primero se retiró a comunicar la intrusión.\n" +
+		"\x0BPor si fuera poco, el autómata no fue a perseguirlo directamente, sinó que primero se retiró a comunicar la intrusión.\n" +
 		"\x0BEn cuanto las alarmas sonaron, volvió a girarse hacia él.\n" +
 		"\x0B\x09Mirko: \x01\x08Tsk.\x02\x03\x07\n" +
 		"\x0B\x08>>",
@@ -233,8 +230,8 @@ var episodesRawText = []*lang.Text {
 		"\x0BThe interior was spacious. A man was sitting on a couch, reading a book. He immediately got up when he saw Mirko.\n" +
 		"\x0B\x09Man: \x01\x07Who..? \x0EWho are you?\x0C\x02\x04\n" +
 		"\x0BBefore Mirko could respond, a woman came running from another room.\n" +
-		"\x0B\x09Woman: \x01\x07Did you come to rescue us?\x02\n" +
-		"\x0BHer eyes told him everything. High-profile members of Headsteer abusing MSP units to turn people into slaves.. was no longer just a rumor.\n" +
+		"\x0B\x09Woman: \x01\x07Did you come to rescue us!?\x02\n" +
+		"\x0BNow it was clear that it wasn't just a rumor. High-profile members of Headsteer abusing MSP units... and even keeping people captive.\x03\n" +
 		"\x0B\x09Man: \x01\x07-Kayla, don't-\x02\x04\n" +
 		"\x09Mirko: \x01\x07Something like that. But we don't have time. Is Joseph Tatar here?\x02\x04\n" +
 		"\x09Kayla: \x01\x07Joseph was taken somewhere else two weeks ago.\x02\n" +
@@ -244,8 +241,8 @@ var episodesRawText = []*lang.Text {
 		"\x0BEl interior era espacioso. Un hombre se sentaba en un sofá leyendo un libro. Al ver a Mirko, se levantó de inmediato.\n" +
 		"\x0B\x09Hombre: \x01\x07Quién..? \x0EQuién eres?\x0C\x02\x04\n" +
 		"\x0BAntes de que Mirko pudiera responder, una mujer llegó corriendo desde otra habitación.\n" +
-		"\x0B\x09Mujer: \x01\x07Has venido a rescatarnos?\x02\n" +
-		"\x0BSus ojos lo decían todo. Lo de los altos cargos de Cabecera abusando las unidades MSP para esclavizar a personas.. ya no era solo un rumor.\n" +
+		"\x0B\x09Mujer: \x01\x07Has venido a rescatarnos!?\x02\n" +
+		"\x0BAhora quedaba claro que no era solo un rumor. Altos cargos de Cabecera abusando de las unidades MSP... e incluso manteniendo a gente en cautiverio.\x03\n" +
 		"\x0B\x09Hombre: \x01\x07-Kayla, no-\x02\x04\n" +
 		"\x09Mirko: \x01\x07Algo así. Pero no hay tiempo. Está Joseph Tatar aquí?\x02\x04\n" +
 		"\x09Kayla: \x01\x07Se lo llevaron a alguna otra parte hace dos semanas.\x02\n" +
@@ -255,8 +252,8 @@ var episodesRawText = []*lang.Text {
 		"\x0BL'interior era espaiós. Un home estava assegut al sofà llegint un llibre. Al veure en Mirko, l'home es va aixecar de cop.\n" +
 		"\x0B\x09Home: \x01\x07Qui..? \x0EQui ets?\x0C\x02\x04\n" +
 		"\x0BAbans que en Mirko pogués contestar, una dona va arribar corrent des d'una altra sala.\n" +
-		"\x0B\x09Dona: \x01\x07Has vingut a rescatar-nos?\x02\n" +
-		"\x0BEls seus ulls ho deien tot. Alts càrrecs de Capçalera abusant les unitats MSP para esclavitzar a persones.. ja no era només un rumor.\n" +
+		"\x0B\x09Dona: \x01\x07Has vingut a rescatar-nos!?\x02\n" +
+		"\x0BAra quedava clar que no era només un rumor. Alts càrrecs de Capçalera abusant de les unitats MSP... i fins i tot mantenint a gent en captiveri.\x03\n" +
 		"\x0B\x09Home: \x01\x07-Kayla, no-\x02\x04\n" +
 		"\x09Mirko: \x01\x07Més o menys. Però no tenim temps. És aquí en Joseph Tatar?\x02\x04\n" +
 		"\x09Kayla: \x01\x07Se'l van emportar a algun altre lloc fa dues setmanes.\x02\n" +
