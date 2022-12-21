@@ -1,0 +1,20 @@
+name: build linux binary
+on: [workflow_dispatch]
+jobs:
+   build-linux:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+           go-version: 1.18
+      - name: install dependencies
+        shell: bash
+        run: sudo apt-get -y install libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libasound2-dev
+      - name: build linux static binary
+        run: go build -o bindless-linux-64bits -trimpath -ldflags "-w -s" main.go
+      - name: upload linux static binary
+        uses: actions/upload-artifact@v3
+        with:
+           name: bindless-linux-64bits
+           path: bindless-linux-64bits
