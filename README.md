@@ -7,7 +7,7 @@ The puzzles are based on electromagnetic simulations where you use abilities to 
 
 You can play from the browser or download at [itch.io](https://tinne26.itch.io/bindless), get static binaries from the releases here on Github, or if you have Golang 1.18+, you can also build and run directly with:
 ```
-go run github.com/tinne26/bindless@v0.0.2
+go run github.com/tinne26/bindless@v0.0.3
 ```
 *(Notice that on linux Ebitengine has a [few dependencies](https://ebitengine.org/en/documents/install.html?os=linux#Installing_dependencies) that you may need to install if you have never used Ebitengine with Golang.)*
 
@@ -23,7 +23,7 @@ Special acknowledgments:
 - [jeandeaual/go-locale](https://github.com/jeandeaual/go-locale) (Cross-platform locale detection).
 
 ## Misc. Esoteric Knowledge
-- Unusual program arguments: `--directx` to use DirectX (Windows only), `--windowed` to start the game in windowed mode and `--en`, `--es` or `--ca` to set the language from the start overriding locale autodetection.
+- Unusual program arguments: `--directx` to use DirectX (Windows only), `--windowed` to start the game in windowed mode, `--maxfps` to test performance and `--en`, `--es` or `--ca` to set the language from the start overriding locale autodetection.
 - Large magnets have a wider magnetic field than small magnets (3 vs 2 tiles).
 - In the cases where magnets could be pulled/pushed in different directions, closeness to other magnets and movement inertia are the deciding factors.
 

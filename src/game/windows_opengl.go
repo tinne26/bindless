@@ -9,10 +9,10 @@ import "os"
 func init() {
 	// allow directX if passed as program flag
 	for _, arg := range os.Args {
-		if arg == "--directX" { return }
+		if arg == "--directX" || arg == "--directx" { return }
 	}
 
 	// set openGL as the graphics backend otherwise
-	err := os.Setenv("EBITEN_GRAPHICS_LIBRARY", "opengl")
+	err := os.Setenv("EBITENGINE_GRAPHICS_LIBRARY", "opengl")
 	if err != nil { panic(err) }
 }

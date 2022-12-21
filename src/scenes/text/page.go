@@ -40,10 +40,10 @@ func New(ctx *misc.Context, key pageKey) (*Page, error) {
 		page.choices.SetLogOptSeparation(4)
 		for _, choice := range choices {
 			switch choice.Text.English() {
-			case "[ Play the tutorial ]", "[ Hmm.. can I repeat the tutorial? ]":
-				choice.Handler = page.fnToTutorialHandler
-			case "[ Skip the tutorial ]", "[ LET'S GET TO IT! ]":
-				choice.Handler = page.fnToStoryHandler
+			case "[ Nah, I got this ]", "[ Hmmm... yeah, but no ]":
+				choice.Handler = page.fnToNextHandler
+			default:
+				panic("unhandled text page choice \"" + choice.Text.English() + "\"")
 			}
 			page.choices.AddHChoice(choice)
 		}
@@ -134,14 +134,8 @@ func (self *Page) Status() sceneitf.Status {
 	return sceneitf.KeepAlive
 }
 
-func (self *Page) fnToStoryHandler(_ string) {
+func (self *Page) fnToNextHandler(_ string) {
 	self.fade = fadeOut
-	self.endStatus = sceneitf.ToStory
-	sound.SfxClick.Play()
-}
-
-func (self *Page) fnToTutorialHandler(_ string) {
-	self.fade = fadeOut
-	self.endStatus = sceneitf.ToTutorial
+	self.endStatus = sceneitf.IsOverNext
 	sound.SfxClick.Play()
 }

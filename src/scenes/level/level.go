@@ -513,7 +513,7 @@ func (self *Level) setupHorzChoices(ctx *misc.Context, font *etxt.Font, key leve
 			} else {
 				choice.Handler = self.fnPrevHandler
 			}
-		case "[ Next ]", "[ Skip tutorial ]":
+		case "[ Next ]", "[ Skip tutorial ]", "[ Finish ]":
 			choice.Handler = self.fnNextHandler
 		case "[ Solve to continue ]":
 			choice.Handler = nil
@@ -605,7 +605,7 @@ func (self *Level) fnHandlerAuxMenuRoot(opt string) {
 		self.auxMenu.active = false
 		sound.SfxClick.Play()
 	default:
-		panic(opt)
+		panic("unhandled level choice \"" + opt + "\"")
 	}
 }
 

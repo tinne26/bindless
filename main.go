@@ -61,6 +61,10 @@ func main() {
 	isFullscreen := true
 	for _, arg := range os.Args {
 		if arg == "--windowed" { isFullscreen = false }
+		if arg == "--maxfps" {
+			ebiten.SetFPSMode(ebiten.FPSModeVsyncOffMaximum)
+			game.SetFPSDebugActive()
+		}
 	}
 	ebiten.SetFullscreen(isFullscreen)
 

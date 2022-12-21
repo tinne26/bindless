@@ -489,10 +489,9 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 		
 		fmGapPos := dev.NewFloatMagnet(col - 4, row - 1, dev.StDocked, dev.PolarityPositive)
 		magnets.Set(col - 4, row - 1, fmGapPos)
-
-		smFarDead := dev.NewStaticMagnet(col + 3, row - 2, dev.PolarityNeutral.AsFunc())
-		magnets.Set(col + 3, row - 2, smFarDead)
 		
+		smFarDead := dev.NewStaticMagnet(col + 2, row - 3, dev.PolarityNeutral.AsFunc())
+		magnets.Set(col + 2, row - 3, smFarDead)
 		smFarPos := dev.NewStaticMagnet(col + 3, row + 1, dev.PolarityPositive.AsFunc())
 		magnets.Set(col + 3, row + 1, smFarPos)
 		smFarPos2 := dev.NewStaticMagnet(col + 4, row - 1, dev.PolarityPositive.AsFunc())
@@ -534,9 +533,6 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 		magnets.Set(col + 1, row + 2, fmMain)
 		fmSac  := dev.NewFloatMagnet(col - 1, row, dev.StFloating, dev.PolarityPositive)
 		magnets.Set(col - 1, row, fmSac)
-
-		fmBlocker := dev.NewFloatMagnet(col + 4, row + 2, dev.StDocked, dev.PolarityNeutral)
-		magnets.Set(col + 4, row + 2, fmBlocker)
 		
 		powDock := dev.NewPowerDock(col - 3, row - 2)
 		circuits.Set(col - 3, row - 2, powDock)
@@ -558,6 +554,8 @@ func makeLevelDevices(key levelKey) (iso.Map[circuitItf], iso.Map[dev.Magnet]) {
 		magnets.Set(col - 2, row, smPowA)
 		smPowB := dev.NewStaticMagnet(col, row + 2, wSwitch.OutB)
 		magnets.Set(col, row + 2, smPowB)
+		smBlocker := dev.NewStaticMagnet(col + 4, row + 2, dev.PolarityNeutral.AsFunc())
+		magnets.Set(col + 4, row + 2, smBlocker)
 		smAttract := dev.NewStaticMagnet(col + 3, row - 1, dev.PolarityNegative.AsFunc())
 		magnets.Set(col + 3, row - 1, smAttract)
 	case Tutorial5:

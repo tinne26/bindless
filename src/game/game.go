@@ -58,6 +58,11 @@ func (self *Game) Layout(w, h int) (int, int) {
 	return int(float64(w)*factor), int(float64(h)*factor)
 }
 
+func (self *Game) LayoutF(width, height float64) (float64, float64) {
+	scale := ebiten.DeviceScaleFactor()
+	return math.Ceil(width*scale), math.Ceil(height*scale)
+}
+
 func (self *Game) Update() error {
 	// first scene load when asset loading is done
 	if !misc.IsLoadingDone() { return nil }
@@ -128,12 +133,6 @@ func (self *Game) Update() error {
 		if err != nil { return err }
 	case sceneitf.Restart: // start scene again
 		err := self.loadScene(self.sceneId)
-		if err != nil { return err }
-	case sceneitf.ToTutorial:
-		err := self.loadScene(2) // so hardcoded...
-		if err != nil { return err }
-	case sceneitf.ToStory:
-		err := self.loadScene(9) // so hardcoded...
 		if err != nil { return err }
 	default:
 		panic(status)
@@ -207,7 +206,13 @@ func (self *Game) Draw(screen *ebiten.Image) {
 	}
 }
 
+func (self *Game) SetFPSDebugActive() {
+	self.fpsDebugActive = true
+}
+
 func (self *Game) loadScene(id int) error {
+	//id = 25 // use for testing
+
 	var err error
 	switch id {
 	case 0: // title screen
@@ -238,7 +243,7 @@ func (self *Game) loadScene(id int) error {
 		if err != nil { return err }
 	case 6: // tutorial part 4
 		cfgLevelSound(sound.MeddlesomeTheory)
-		if self.maxSceneUnlocked > 5 { // allow skip if tutorial already solved
+		if self.maxSceneUnlocked > 6 { // allow skip if tutorial already solved
 			level.LevelChoices[int(level.Tutorial4)] = level.LevelChoices[int(level.Tutorial1)]
 		}
 		self.scene, err = level.New(self.context, level.Tutorial4)
@@ -247,17 +252,22 @@ func (self *Game) loadScene(id int) error {
 		cfgLevelSound(sound.MeddlesomeTheory)
 		self.scene, err = level.New(self.context, level.Tutorial5)
 		if err != nil { return err }
-	case 8: // tutorial part 6
+	// case 8: // tutorial part 6
+	// 	cfgLevelSound(sound.MeddlesomeTheory)
+	// 	if self.maxSceneUnlocked > 7 { // allow skip if tutorial already solved
+	// 		level.LevelChoices[int(level.Tutorial6)] = level.LevelChoices[int(level.Tutorial1)]
+	// 	}
+	// 	self.scene, err = level.New(self.context, level.Tutorial6)
+	// 	if err != nil { return err }
+	case 8: // mirko finishes the tutorial
 		cfgLevelSound(sound.MeddlesomeTheory)
-		if self.maxSceneUnlocked > 7 { // allow skip if tutorial already solved
-			level.LevelChoices[int(level.Tutorial6)] = level.LevelChoices[int(level.Tutorial1)]
-		}
-		self.scene, err = level.New(self.context, level.Tutorial6)
+		sound.SetBGMFadeSpeed(0.005)
+		self.scene, err = text.New(self.context, text.TutorialEnd)
 		if err != nil { return err }
 	case 9: // text transition to main game
 		cfgLevelSound(sound.MeddlesomeTheory)
 		sound.SetBGMFadeSpeed(0.005)
-		self.scene, err = text.New(self.context, text.TutorialEnd)
+		self.scene, err = text.New(self.context, text.TwoWeeksLater)
 		if err != nil { return err }
 	case 10: // cleaner automaton scene
 		cfgLevelSound(sound.ObsessiveMechanics)
@@ -330,6 +340,11 @@ func (self *Game) loadScene(id int) error {
 		cfgLevelSound(sound.MagneticCityMemories)
 		self.scene, err = episode.New(self.context, episode.InTheBasement)
 		if err != nil { return err }
+	// case 27: // try to help captive 1
+	// 	cfgLevelSound(sound.MeddlesomeTheory)
+	// 	self.scene, err = level.New(self.context, level.Captive1)
+	// 	if err != nil { return err }
+	
 	// TODO: first save at 26
 	// the idea for saves could be that there's a magnet that's trying to
 	// save itself in a way, and it's clever or something, but can't quite
@@ -349,6 +364,15 @@ func (self *Game) loadScene(id int) error {
 		sound.RequestFadeOut()
 		self.scene, err = text.New(self.context, text.Afterword)
 		if err != nil { return err }
+	// IDEA:
+	// what if we do levels with a timer? they have to be auto-generated levels so they
+	// are different when you retry, and you can easily retry.
+	// I can use modular building blocks for the levels, so it's not impossible,
+	// but that will probably be too weak, and I need something slightly cleverer.
+	// single floating magnet, and either transition between magnets, or fairly straight-forward
+	// pathing, where you have a at least four tiles to react and activate the right next thing.
+	// mostly falling off on failure. so, follow the path but activating the right tiles.
+	// we could even display some autogen codes, or display them when finishing a set run.
 	default:
 		panic("invalid scene id")
 	}

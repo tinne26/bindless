@@ -58,7 +58,7 @@ func Load(filesys *embed.FS) error {
 	sfxBytes, err := loadAudioBytes(filesys, folder + "tile_nav.ogg")
 	if err != nil { return err }
 	SfxNav = NewSfxPlayer(ctx, sfxBytes)
-	SfxNav.SetVolume(0.4)
+	SfxNav.SetVolume(0.44)
 	SfxTileNav = NewSfxPlayer(ctx, sfxBytes)
 	SfxTileNav.SetVolume(0.36)
 
@@ -69,6 +69,7 @@ func Load(filesys *embed.FS) error {
 	sfxBytes, err = loadAudioBytes(filesys, folder + "ability.ogg")
 	if err != nil { return err }
 	SfxAbility = NewSfxPlayer(ctx, sfxBytes)
+	SfxAbility.SetVolume(0.8)
 
 	sfxBytes, err = loadAudioBytes(filesys, folder + "click.ogg")
 	if err != nil { return err }

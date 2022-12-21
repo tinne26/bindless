@@ -7,33 +7,48 @@ type pageKey int
 const (
 	Preamble      pageKey = 0
 	TutorialEnd   pageKey = 1
-	ToBeContinued pageKey = 2
-	Afterword     pageKey = 3
+	TwoWeeksLater pageKey = 2
+	ToBeContinued pageKey = 3
+	Afterword     pageKey = 4
 )
 
 var gameTexts = []*lang.Text {
 	lang.NewText(
 		"\x08Preamble\x07\n" +
-		"\x0BIn 3589, life was good for the average citizen: housing and food were guaranteed by the state, work was voluntary, streets were clean and most freedoms were respected.\n" +
+		"\x0BIn 3589, life was good for the average citizen: housing and food were guaranteed by the automaton network, work was highly voluntary, streets were clean and most freedoms were respected.\n" +
 		"\x0B\x09MSP Units\x07, implanted in the spine of every citizen, allowed \x09Headsteer\x07 to maintain the social stability.\n" +
-		"\x0BDeveloped back during the Primal Wars, \x09MSP Units\x07 were once the key to end the violent outbursts that plagued the country. Nowadays, these magnetic devices had evolved to allow even greater control over individuals, with certain monitoring functions mandated to remain always active.\n" +
-		"\x0BMost people had little reason to complain, but for Mirko... things changed when his brother abandoned the love of his life and his family to go work for Marunka Machart, a member of \x09Headsteer\x07.\x03\n" +
-		"\x0BIt didn't make any sense. What if the rumors were true? He... had no choice.\n" +
+		"\x0BDeveloped back during the Primal Wars, \x09MSP Units\x07 were once the key to end the violent outbursts that plagued the country. Nowadays, these magnetic devices had evolved to allow even greater control over individuals, with certain control functions mandated to remain permanently active.\n" +
+		"\x0BMost people had little reason to complain, but for Mirko... things changed when his brother abandoned the love of his life and his family to go work for Marunka Nosek, a member of \x09Headsteer\x07.\x03\n" +
+		"\x0BIt didn't make any sense. What if the rumors were true? He... had to get to the bottom of this.\n" +
 		"\x0B\x08>>",
 		"\x08Preámbulo\x07\n" +
-		"\x0BLa vida en 3589 no trataba nada mal al ciudadano promedio: el habitaje y la comida estaban garantizados por el estado, el trabajo era voluntario, las calles estaban limpias y las libertades eran mayoritariamente respetadas.\n" +
+		"\x0BLa vida en 3589 no trataba nada mal al ciudadano promedio: el habitaje y la comida estaban garantizados por la red de autómatas, el trabajo era altamente voluntario, las calles estaban limpias y las libertades eran mayoritariamente respetadas.\n" +
 		"\x0BLas \x09unidades MSP\x07, implantadas en la parte alta de la columna de cada ciudadano, permitían a \x09Cabecera\x07 mantener la estabilidad social.\n" +
-		"\x0BDesarrolladas durante las Guerras Primales, en algún momento del pasado las \x09unidades MSP\x07 fueron claves para acabar con las olas de violencia que plagaban el país. Hoy en día, estos dispositivos magnéticos habían evolucionado para permitir un control sobre los individuos incluso mayor, con ciertas funciones de monitoraje permanentemente activas bajo imperativo legal.\n" +
-		"\x0BLa mayoría de la población no tenía motivo de queja, pero para Mirko... las cosas cambiaron cuando su hermano repentinamente abandonó al amor de su vida y su familia para ir a trabajar para Marunka Machart, una integrante de \x09Cabecera\x07.\x03\n" +
-		"\x0BNo tenía ningún sentido. Y si los rumores eran ciertos..? Ahora no le quedaba más alternativa.\n" +
+		"\x0BDesarrolladas durante las Guerras Primales, en algún momento del pasado las \x09unidades MSP\x07 fueron claves para acabar con las olas de violencia que plagaban el país. Hoy en día, estos dispositivos magnéticos habían evolucionado para permitir un control sobre los individuos incluso mayor, con ciertas funciones de control permanentemente activas bajo imperativo legal.\n" +
+		"\x0BLa mayoría de la población no tenía motivo de queja, pero para Mirko... las cosas cambiaron cuando su hermano repentinamente abandonó al amor de su vida y su familia para ir a trabajar para Marunka Nosek, una integrante de \x09Cabecera\x07.\x03\n" +
+		"\x0BNo tenía ningún sentido. Y si los rumores eran ciertos..? Tenía que llegar al fondo de esto.\n" +
 		"\x0B\x08>>",
 		"\x08Preàmbul\x07\n" +
-		"\x0BL'any 3589, la vida no era gens dolenta pel ciutadà mitjà: l'habitatge i el menjar estaven garantitzats per l'estat, la feina era voluntària, els carrers estaven nets i les llibertats eren majoritàriament respectades.\n" +
+		"\x0BL'any 3589, la vida no era gens dolenta pel ciutadà mitjà: l'habitatge i el menjar estaven garantitzats per la xarxa d'autòmates, la feina era altament voluntària, els carrers estaven nets i les llibertats eren majoritàriament respectades.\n" +
 		"\x0BLes \x09unitats MSP\x07, implantades a la part alta de la columna de cada ciutadà, permetien a \x09Capçalera\x07 mantenir l'estabilitat social.\n" +
-		"\x0BDesenvolupades durant les Guerres Primals, les \x09unitats MSP\x07 van ser claus en el passat per acabar amb les onades de violència que arrasaven el país. Avui en dia, aquests dispositius magnètics havien evolucionat per permetre un control fins i tot major sobre les persones, amb certes funcions de monitoratge decretades a romandre permanentment actives.\n" +
-		"\x0BLa majoria de la població no tenia motius per queixar-se, però per a en Mirko... les coses van canviar quan el seu germà sobtadament va abandonar l'amor de la seva vida i la seva família per anar a treballar per Marunka Machart, una integrant de \x09Capçalera\x07.\x03\n" +
-		"\x0BNo tenia cap sentit. I si els rumors eren certs..? Ara no li quedava cap altra alternativa.\n" +
+		"\x0BDesenvolupades durant les Guerres Primals, les \x09unitats MSP\x07 van ser claus en el passat per acabar amb les onades de violència que arrasaven el país. Avui en dia, aquests dispositius magnètics havien evolucionat per permetre un control fins i tot major sobre les persones, amb certes funcions de control decretades a romandre permanentment actives.\n" +
+		"\x0BLa majoria de la població no tenia motius per queixar-se, però per a en Mirko... les coses van canviar quan el seu germà sobtadament va abandonar l'amor de la seva vida i la seva família per anar a treballar per Marunka Nosek, una integrant de \x09Capçalera\x07.\x03\n" +
+		"\x0BNo tenia cap sentit. I si els rumors eren certs..? Havia d'arribar al fons de la qüestió.\n" +
 		"\x0B\x08>>",
+	),
+	lang.NewText(
+		"\x09Mirko: \x01\x08Ok, ok. That was a lot to take in...\x02\x04\n" +
+		"\x09Mirko: \x01\x08But I think I get the basics now.\x02\n" +
+		"\x0B\x09Mirko: \x01\x08...\x02\x04\n" +
+		"\x09Mirko: \x01\x08Or.. maybe I should study a bit more?\x02",
+		"\x09Mirko: \x01\x08Bueno, bueno. No era poca cosa precisamente...\x02\x04\n" +
+		"\x09Mirko: \x01\x08Pero creo que ya he empezado a pillar lo básico.\x02\n" +
+		"\x0B\x09Mirko: \x01\x08...\x02\x04\n" +
+		"\x09Mirko: \x01\x08O.. quizás tendría que estudiar un poco más?\x02",
+		"\x09Mirko: \x01\x08Bé, bé. No era poca cosa precisament...\x02\x04\n" +
+		"\x09Mirko: \x01\x08Però crec que ja he començat a treure'n l'entrellat.\x02\n" +
+		"\x0B\x09Mirko: \x01\x08...\x02\x04\n" +
+		"\x09Mirko: \x01\x08O.. potser hauria d'estudiar una mica més?\x02",
 	),
 	lang.NewText(
 		"Two weeks later...\n\x0B\x08>>",
@@ -73,22 +88,17 @@ var gameTexts = []*lang.Text {
 	),	
 }
 
-var optTutorial = &ui.HChoice {
-	Text: lang.NewText("[ Play the tutorial ]", "[ Jugar el tutorial ]", "[ Jugar el tutorial ]"),
+var optStoryLearnedEnough = &ui.HChoice {
+	Text: lang.NewText("[ Nah, I got this ]", "[ Nah, todo controlado ]", "[ Nah, tot controlat ]"),
 }
-var optRepeatTutorial = &ui.HChoice {
-	Text: lang.NewText("[ Hmm.. can I repeat the tutorial? ]", "[ Mmm.. puedo repetir el tutorial? ]", "[ Mmm.. puc repetir el tutorial? ]"),
-}
-var optStartStory = &ui.HChoice {
-	Text: lang.NewText("[ Skip the tutorial ]", "[ Saltarse el tutorial ]", "[ Saltar-se el tutorial ]"),
-}
-var optStoryNow = &ui.HChoice {
-	Text: lang.NewText("[ LET'S GET TO IT! ]", "[ VAMOS ALLÁ! ]", "[ VINGA, SOM-HI! ]"),
+var optStoryDidNotLearn = &ui.HChoice {
+	Text: lang.NewText("[ Hmmm... yeah, but no ]", "[ Mmmm... sí, pero no ]", "[ Mmmm... sí, però no ]"),
 }
 
 var gameChoices = [][]*ui.HChoice {
-	nil, //[]*ui.HChoice{ optStartStory, optTutorial },
-	nil, //[]*ui.HChoice{ optRepeatTutorial, optStoryNow },
+	nil,
+	[]*ui.HChoice{ optStoryLearnedEnough, optStoryDidNotLearn },
+	nil,
 	nil,
 	nil,
 }
